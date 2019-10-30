@@ -1,10 +1,24 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-  const App = () => (
-    <Button variant="contained" color="primary">
-      Hello World
-    </Button>
-  );
-  
+import { Header } from './components/Header';
+import { SpecialistDashboard } from './views/SpecialistDashboard';
+
+const App = () => (
+  <Router>
+    <div>
+      <Header />
+
+      <Switch>
+        <Route path="/test">
+          <div>This is a test page.</div>
+        </Route>
+        <Route path="/">
+          <SpecialistDashboard />
+        </Route>
+      </Switch>
+    </div>
+  </Router>
+);
+
 export default App;
