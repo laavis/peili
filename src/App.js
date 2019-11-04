@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import { Header } from './components/Header';
 import { SpecialistDashboard } from './views/SpecialistDashboard';
+import { OrganizationPanel } from './views/OrganizationPanel';
 
 const App = () => (
   <Router>
@@ -10,11 +11,14 @@ const App = () => (
       <Header />
 
       <Switch>
-        <Route path="/test">
+        <Route path='/test'>
           <div>This is a test page.</div>
         </Route>
-        <Route path="/">
+        <Route path='/specialist'>
           <SpecialistDashboard />
+        </Route>
+        <Route path='/organization'>
+          <OrganizationPanel />
         </Route>
       </Switch>
     </div>
