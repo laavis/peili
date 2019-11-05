@@ -80,6 +80,13 @@ const useStyles = makeStyles(theme => ({
 
 export const OrganizationPanel = () => {
   const classes = useStyles();
+
+  const [editable, setEditable] = React.useState(false);
+
+  const handleEditClick = () => {
+    setEditable(true);
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.topSection}>
@@ -118,14 +125,14 @@ export const OrganizationPanel = () => {
             <div>
               <Typography className={classes.sectionTitle}>Locations</Typography>
               {data.locations.map(x => (
-                <LocationCard {...x} />
+                <LocationCard editable={editable} {...x} />
               ))}
             </div>
           </Grid>
         </Grid>
       </div>
       <div>
-        <Fab color='primary' variant='extended' aria-label='edit' className={classes.fab}>
+        <Fab onClick={handleEditClick} className={classes.fab} color='primary' variant='extended' aria-label='edit'>
           <EditIcon className={classes.extendedIcon} />
           Edit
         </Fab>
