@@ -6,11 +6,34 @@ import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import Card from '@material-ui/core/Card';
 import DefaultImage from '../img/Image.png';
+
+// Components
+import { LocationCard } from '../components/LocationCard';
+
+const data = {
+  locations: [
+    {
+      country: 'FI',
+      city: 'Helsinki',
+      postalCode: '00550',
+      address: 'Inarintie 35'
+    },
+    {
+      country: 'FI',
+      city: 'Vantaa',
+      postalCode: '12345',
+      address: 'Korsonkatu 6'
+    },
+    {
+      country: 'FI',
+      city: 'Kotka',
+      postalCode: '48410',
+      address: 'Kasilanpolku 20'
+    }
+  ]
+};
+
 const useStyles = makeStyles(theme => ({
-  root: {
-    padding: 64,
-    backgroundColor: '#f3f3f3'
-  },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
@@ -20,9 +43,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between'
   },
-  list: {
-    width: '100%'
-  },
+
   fab: {
     margin: theme.spacing(1)
   },
@@ -32,15 +53,28 @@ const useStyles = makeStyles(theme => ({
   profileImage: {
     minWidth: 80
   },
-  organizationGrid: {
+  wrapper: {
+    padding: '32px 64px'
+  },
+  grid: {
     maxWidth: 1320,
-    margin: 'auto'
+    margin: '0 auto'
   },
-  baseCard: {
-    padding: 16
+  topSection: {
+    background: '#ffffff',
+    padding: '32px 64px'
   },
-  locationCity: {
-    fontWeight: '600'
+  bottomSection: {
+    padding: '32px 64px'
+  },
+  root: {
+    background: '#f3f3f3'
+  },
+  sectionTitle: {
+    fontSize: '1.125rem', // 18px
+    fontWeight: 600,
+    marginLeft: '1rem',
+    marginBottom: '0.5rem'
   }
 }));
 
@@ -48,10 +82,10 @@ export const OrganizationPanel = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <div className={classes.organizationGrid}>
-        <Grid container spacing='4'>
+      <div className={classes.topSection}>
+        <Grid className={classes.grid} container spacing='4'>
           <Grid item xs='12'>
-            <Typography variant='h5'>Organization</Typography>
+            <Typography variant='h5'>Kohtaus Ry</Typography>
           </Grid>
           <Grid item xs='6'>
             <Grid container spacing='2'>
@@ -61,12 +95,6 @@ export const OrganizationPanel = () => {
                 </Card>
               </Grid>
               <Grid item xs='8'>
-                <div>
-                  <Typography variant='subtitle2' gutterBottom>
-                    Name
-                  </Typography>
-                  <Typography variant='body1'>Kohtaus Ry</Typography>
-                </div>
                 <div>
                   <Typography variant='subtitle2' gutterBottom>
                     Short Description
@@ -80,19 +108,19 @@ export const OrganizationPanel = () => {
             </Grid>
           </Grid>
           <Grid item xs='6'>
-            kack
+            Other stuff
           </Grid>
         </Grid>
-        <Grid container spacing='4'>
+      </div>
+      <div className={classes.bottomSection}>
+        <Grid className={classes.grid} container spacing='4'>
           <Grid item xs='6'>
-            <Card className={classes.baseCard}>
-              <Typography variant='overline' gutterBottom className={classes.locationCity}>
-                Helsinki
-              </Typography>
-              <Typography variant='body1' className={classes.locationCity}>
-                Inarintie 35
-              </Typography>
-            </Card>
+            <div>
+              <Typography className={classes.sectionTitle}>Locations</Typography>
+              {data.locations.map(x => (
+                <LocationCard {...x} />
+              ))}
+            </div>
           </Grid>
         </Grid>
       </div>
