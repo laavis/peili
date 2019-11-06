@@ -23,7 +23,3 @@ jobs:
           npm test
         env:
           CI: true
-      - name: Deploy
-        uses: maxheld83/ghpages@v0.2.1
-        env:
-          BUILD_DIR: build
