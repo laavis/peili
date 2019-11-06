@@ -1,12 +1,9 @@
 name: React CI
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -14,28 +11,21 @@ jobs:
         node-version: [12.x]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
-
+      - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: npm install, test
+      - name: npm install, build, and test
         run: |
           npm ci
+          npm run build --if-present
           npm test
         env:
           CI: true
-
-      - name: Build and Deploy
-        uses: laavis/peili@master
-        with:
-          node-version: ${{ matrix.node-version }}
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v2.5.0
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: dist
-          CI: true
-          BUILD_SCRIPT: npm ci && npm install && npm run build
+          ACTIONS_DEPLOY_KEY: ${{ secrets.CI_ACCESS_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: ./build
