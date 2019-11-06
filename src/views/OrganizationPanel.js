@@ -98,7 +98,7 @@ export const OrganizationPanel = () => {
             <Grid container spacing="2">
               <Grid item xs="4">
                 <Card className={classes.profileImage}>
-                  <img src={DefaultImage} />
+                  <img alt="Organization Logo" src={DefaultImage} />
                 </Card>
               </Grid>
               <Grid item xs="8">
