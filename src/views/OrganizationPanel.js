@@ -8,7 +8,7 @@ import Card from '@material-ui/core/Card';
 import DefaultImage from '../img/Image.png';
 
 // Components
-import { LocationCard } from '../components/LocationCard';
+import { LocationCard } from '../components/organization/Location';
 
 const data = {
   locations: [
@@ -90,43 +90,40 @@ export const OrganizationPanel = () => {
   return (
     <div className={classes.root}>
       <div className={classes.topSection}>
-        <Grid className={classes.grid} container spacing="4">
-          <Grid item xs="12">
-            <Typography variant="h5">Kohtaus Ry</Typography>
+        <Grid className={classes.grid} container spacing='4'>
+          <Grid item xs='12'>
+            <Typography variant='h5'>Kohtaus Ry</Typography>
           </Grid>
-          <Grid item xs="6">
-            <Grid container spacing="2">
-              <Grid item xs="4">
+          <Grid item xs='6'>
+            <Grid container spacing='2'>
+              <Grid item xs='4'>
                 <Card className={classes.profileImage}>
-                  <img alt="Organization Logo" src={DefaultImage} />
+                  <img alt='Organization Logo' src={DefaultImage} />
                 </Card>
               </Grid>
-              <Grid item xs="8">
+              <Grid item xs='8'>
                 <div>
-                  <Typography variant="subtitle2" gutterBottom>
+                  <Typography variant='subtitle2' gutterBottom>
                     Short Description
                   </Typography>
-                  <Typography variant="body1">
-                    Kohtaus ry on vuonna 2014 perustettu yhdistys, jonka
-                    tarkoituksena on vähentää nuorten aikuisten yksinäisyyttä ja
-                    syrjään jäämistä.
+                  <Typography variant='body1'>
+                    Kohtaus ry on vuonna 2014 perustettu yhdistys, jonka tarkoituksena on vähentää nuorten aikuisten
+                    yksinäisyyttä ja syrjään jäämistä.
                   </Typography>
                 </div>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs="6">
+          <Grid item xs='6'>
             Other stuff
           </Grid>
         </Grid>
       </div>
       <div className={classes.bottomSection}>
-        <Grid className={classes.grid} container spacing="4">
-          <Grid item xs="6">
+        <Grid className={classes.grid} container spacing='4'>
+          <Grid item xs='6'>
             <div>
-              <Typography className={classes.sectionTitle}>
-                Locations
-              </Typography>
+              <Typography className={classes.sectionTitle}>Locations</Typography>
               {data.locations.map(x => (
                 <LocationCard editable={editable} {...x} />
               ))}
@@ -135,13 +132,7 @@ export const OrganizationPanel = () => {
         </Grid>
       </div>
       <div>
-        <Fab
-          onClick={handleEditClick}
-          className={classes.fab}
-          color="primary"
-          variant="extended"
-          aria-label="edit"
-        >
+        <Fab onClick={handleEditClick} className={classes.fab} color='primary' variant='extended' aria-label='edit'>
           <EditIcon className={classes.extendedIcon} />
           Edit
         </Fab>

@@ -1,11 +1,9 @@
-import {
-  ExpansionPanelDetails,
-  ExpansionPanelSummary
-} from '@material-ui/core';
+import { ExpansionPanelDetails, ExpansionPanelSummary } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import TextField from '@material-ui/core/TextField';
 import React from 'react';
 
 const useStyles = makeStyles(theme => ({
@@ -46,23 +44,16 @@ export const LocationCard = ({ city, address, editable }) => {
 
   return (
     <div className={classes.wrapper}>
-      <ExpansionPanel
-        expanded={editable ? expanded : false}
-        onChange={handleExpandedChange}
-      >
-        <ExpansionPanelSummary
-          expandIcon={icon}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
+      <ExpansionPanel expanded={editable ? expanded : false} onChange={handleExpandedChange}>
+        <ExpansionPanelSummary expandIcon={icon} aria-controls='panel1bh-content' id='panel1bh-header'>
           <div className={classes.summary}>
-            <Typography className={classes.city} variant="overline">
+            <Typography className={classes.city} variant='overline'>
               {city}
             </Typography>
             <Typography className={classes.address}>{address}</Typography>
           </div>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>shdlkasjghd</ExpansionPanelDetails>
+        <ExpansionPanelDetails></ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
   );
