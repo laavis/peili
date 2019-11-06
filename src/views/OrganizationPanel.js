@@ -6,9 +6,10 @@ import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import Card from '@material-ui/core/Card';
 import DefaultImage from '../img/Image.png';
+import Button from '@material-ui/core/Button';
 
 // Components
-import { LocationCard } from '../components/organization/Location';
+import { Location } from '../components/organization/Location';
 
 const data = {
   locations: [
@@ -75,6 +76,14 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 600,
     marginLeft: '1rem',
     marginBottom: '0.5rem'
+  },
+  locationWrapper: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  buttonAdd: {
+    width: 'fit-content',
+    alignSelf: 'flex-end'
   }
 }));
 
@@ -122,11 +131,14 @@ export const OrganizationPanel = () => {
       <div className={classes.bottomSection}>
         <Grid className={classes.grid} container spacing='4'>
           <Grid item xs='6'>
-            <div>
+            <div className={classes.locationWrapper}>
               <Typography className={classes.sectionTitle}>Locations</Typography>
               {data.locations.map(x => (
-                <LocationCard editable={editable} {...x} />
+                <Location editable={editable} {...x} />
               ))}
+              <Button className={classes.buttonAdd} color='primary'>
+                Add Location
+              </Button>
             </div>
           </Grid>
         </Grid>

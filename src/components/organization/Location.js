@@ -1,10 +1,20 @@
-import { ExpansionPanelDetails, ExpansionPanelSummary } from '@material-ui/core';
+import React from 'react';
+import { ExpansionPanelDetails, ExpansionPanelSummary, Menu } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from '@material-ui/core/TextField';
-import React from 'react';
+import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import Grid from '@material-ui/core/Grid';
+
+// data
+import countries from '../../data/countries';
+import cities from '../../data/cities';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -26,20 +36,37 @@ const useStyles = makeStyles(theme => ({
     letterSpacing: '0.15px',
     lineHeight: 1
   },
-  disabled: {
-    backgroundColor: 'white'
+  formControl: {
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  selectFormCtrl: {
+    width: '100%'
   }
 }));
 
-export const LocationCard = ({ city, address, editable }) => {
+export const Location = ({ city, address, editable }) => {
   const classes = useStyles();
+
+  // Editable
   const icon = editable ? <ExpandMoreIcon /> : null;
-
   const [expanded, setExpanded] = React.useState(false);
-
   const handleExpandedChange = (event, isExpanded) => {
     if (!editable) return;
     setExpanded(isExpanded);
+  };
+
+  // Country select
+  const [country, setCountry] = React.useState('');
+  const handleCountryChange = event => {
+    setCountry(event.target.value);
+  };
+
+  // City select
+  const [cityValue, setCity] = React.useState('');
+  const handleCityChange = event => {
+    setCity(event.target.value);
   };
 
   return (
@@ -53,7 +80,52 @@ export const LocationCard = ({ city, address, editable }) => {
             <Typography className={classes.address}>{address}</Typography>
           </div>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails></ExpansionPanelDetails>
+        <ExpansionPanelDetails>
+          <FormControl className={classes.formControl}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <FormControl className={classes.selectFormCtrl}>
+                  <InputLabel id='location-select-country-label'>Country</InputLabel>
+                  <Select
+                    className={classes.select}
+                    labelId='location-select-country-label'
+                    value={country}
+                    onChange={handleCountryChange}
+                  >
+                    {countries.map(x => (
+                      <MenuItem value={x.code}>{x.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl className={classes.selectFormCtrl}>
+                  <InputLabel id='location-select-city-label'>City</InputLabel>
+                  <Select
+                    className={classes.select}
+                    labelId='location-select-city-label'
+                    value={cityValue}
+                    onChange={handleCityChange}
+                  >
+                    {cities.map(x => (
+                      <MenuItem value={x.code}>{x.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <FormControl>
+              <TextField label='Address' margin='normal' />
+            </FormControl>
+            <Grid container>
+              <Grid item xs={6}>
+                <FormControl>
+                  <TextField label='Postal Code' margin='normal' />
+                </FormControl>
+              </Grid>
+            </Grid>
+          </FormControl>
+        </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
   );

@@ -1,0 +1,16 @@
+[
+  { "name": "Helsinki", "code": "FI" },
+  { "name": "Espoo", "code": "FI" },
+  { "name": "Tampere", "code": "FI" },
+  { "name": "Kotka", "code": "FI" },
+  { "name": "Jyväskylä", "code": "FI" },
+  { "name": "Vantaa", "code": "FI" },
+  { "name": "Turku", "code": "FI" },
+  { "name": "Rovaniemi", "code": "FI" },
+  { "name": "Lappeenranta", "code": "FI" },
+  { "name": "New York", "code": "US" },
+  { "name": "Atlanta", "code": "US" },
+  { "name": "Washington", "code": "US" },
+  { "name": "Seattle", "code": "US" },
+  { "name": "San Fransisco", "code": "US" }
+]
