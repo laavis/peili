@@ -24,8 +24,10 @@ jobs:
         env:
           CI: true
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v2.5.0
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          target_branch: gh-pages
+          build_dir: build
         env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.CI_ACCESS_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: ./build
+          GITHUB_TOKEN: ${{ secrets.CI_ACCESS_TOKEN }}
