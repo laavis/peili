@@ -15,10 +15,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: npm install, test
         run: |
           npm ci
@@ -26,19 +28,11 @@ jobs:
         env:
           CI: true
 
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
-    steps:
       - name: Checkout
         uses: actions/checkout@master
 
       - name: Build and Deploy
-        uses: laavis/github-pages-deploy-action@master
+        uses: laavis/peili@master
         with:
           node-version: ${{ matrix.node-version }}
         env:
