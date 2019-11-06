@@ -14,7 +14,8 @@ jobs:
         node-version: [12.x]
 
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@master
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -27,9 +28,6 @@ jobs:
           npm test
         env:
           CI: true
-
-      - name: Checkout
-        uses: actions/checkout@master
 
       - name: Build and Deploy
         uses: laavis/peili@master
