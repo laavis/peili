@@ -9,7 +9,7 @@ import DefaultImage from '../img/Image.png';
 import Button from '@material-ui/core/Button';
 
 // Components
-import { Location } from '../components/organization/Location';
+import { Feeds, Keywords, Location, TargetGroup } from '../components/organization';
 
 const data = {
   locations: [
@@ -129,8 +129,8 @@ export const OrganizationPanel = () => {
         </Grid>
       </div>
       <div className={classes.bottomSection}>
-        <Grid className={classes.grid} container spacing='4'>
-          <Grid item xs='6'>
+        <Grid className={classes.grid} container spacing='4' xs='12' sm='12' md='6' lg='6'>
+          <Grid item style={{ width: '50%'}}>
             <div className={classes.locationWrapper}>
               <Typography className={classes.sectionTitle}>Locations</Typography>
               {data.locations.map(x => (
@@ -139,6 +139,41 @@ export const OrganizationPanel = () => {
               <Button className={classes.buttonAdd} color='primary'>
                 Add Location
               </Button>
+            </div>
+            <div className={classes.locationWrapper}>
+              <Typography className={classes.sectionTitle}>Contacts</Typography>
+              {data.locations.map(x => (
+                <Location editable={editable} {...x} />
+              ))}
+              <Button className={classes.buttonAdd} color='primary'>
+                Add Location
+              </Button>
+            </div>
+            <div className={classes.locationWrapper}>
+              <Typography className={classes.sectionTitle}>Services</Typography>
+              {data.locations.map(x => (
+                <Location editable={editable} {...x} />
+              ))}
+              <Button className={classes.buttonAdd} color='primary'>
+                Add Location
+              </Button>
+            </div>
+          </Grid>
+          <Grid item style={{ width: '50%'}}>
+            <div className={classes.locationWrapper}>
+              <Typography className={classes.sectionTitle}>Target Groups</Typography>
+              <TargetGroup editable={editable} />
+              <Button className={classes.buttonAdd} color='primary'>
+                Add Target Group
+              </Button>
+            </div>
+            <div className={classes.locationWrapper}>
+              <Typography className={classes.sectionTitle}>Keywords</Typography>
+              <Keywords editable = { editable } />
+            </div>
+            <div className={classes.locationWrapper}>
+              <Typography className={classes.sectionTitle}>Feeds</Typography>
+              <Feeds editable = { editable } />
             </div>
           </Grid>
         </Grid>

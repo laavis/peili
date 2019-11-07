@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const Location = ({ city, address, editable }) => {
+export default ({ city, address, editable }) => {
   const classes = useStyles();
 
   // Editable
