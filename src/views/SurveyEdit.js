@@ -125,18 +125,26 @@ export const SurveyEdit = () => {
               <Question
                 index={1}
                 title="Question #1"
-                type="Choose One"
+                type="chooseOne"
                 expanded={expanded === 1}
                 handleExpandChange={handleChange}
               />
               <Question
                 index={2}
                 title="Question #2"
-                type="Choose Multiple"
+                type="chooseMultiple"
                 expanded={expanded === 2}
                 handleExpandChange={handleChange}
               />
             </Box>
+          </Box>
+
+          <Box className={classes.section}>
+            <Typography variant="h6" className={classes.sectionTitle}>
+              Scoring & Grading
+            </Typography>
+
+            <Paper className={classes.sectionPaper}>Coming soon...</Paper>
           </Box>
         </Grid>
         <Grid item md={6} sm={12} xs={12}></Grid>

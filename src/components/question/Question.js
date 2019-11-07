@@ -7,6 +7,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React from 'react';
 import { QuestionDetails } from './QuestionDetails';
 
+const typeTitle = {
+  chooseOne: 'Choose One',
+  chooseMultiple: 'Choose Multiple'
+};
+
 export const Question = ({
   index,
   title,
@@ -26,12 +31,12 @@ export const Question = ({
             {title}
           </Typography>
           <Typography variant="caption" display="block">
-            {type}
+            {typeTitle[type]}
           </Typography>
         </Box>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <QuestionDetails />
+        <QuestionDetails type={type} />
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );
