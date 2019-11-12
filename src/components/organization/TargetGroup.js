@@ -25,11 +25,15 @@ const useStyles = makeStyles(theme => ({
     },
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 120,
+        width: '100%'
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+    selectFormCtrl: {
+        margin: theme.spacing(1),
+        width: '45%'
+    }
 }));
 
 export default ({ editable }) => {
@@ -52,8 +56,8 @@ export default ({ editable }) => {
         <div className={classes.wrapper}>
             <ExpansionPanel expanded={editable ? expanded : false} onChange={handleExpandedChange}>
                 <ExpansionPanelSummary expandIcon={icon} aria-controls='panel1bh-content' id='panel1bh-header'>
-                    <div className={classes.summary}>
-                        <FormControl required className={classes.formControl}>
+                    <Grid container direction = "row">
+                        <FormControl required className={classes.selectFormCtrl}>
                             <InputLabel id="demo-simple-select-required-label">Age</InputLabel>
                             <Select
                             labelId="demo-simple-select-required-label"
@@ -71,68 +75,68 @@ export default ({ editable }) => {
                             </Select>
                             <FormHelperText>Required</FormHelperText>
                         </FormControl>
-                    </div>
+                    </Grid>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    
-                            <FormControl className={classes.formControl} style={{ width: '100%' }}>
-                                <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                                    From
-                                </InputLabel>
-                                <Select
-                                labelId="demo-simple-select-placeholder-label-label"
-                                id="demo-simple-select-placeholder-label"
-                                value={age}
-                                onChange={handleChange}
-                                displayEmpty
-                                className={classes.selectEmpty}
-                                >
-                                <MenuItem value={18}>18</MenuItem>
-                                <MenuItem value={22}>22</MenuItem>
-                                <MenuItem value={30}>30</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <FormControl className={classes.formControl} style={{ width: '100%' }}>
-                                <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                                    To
-                                </InputLabel>
-                                <Select
-                                labelId="demo-simple-select-placeholder-label-label"
-                                id="demo-simple-select-placeholder-label"
-                                value={age}
-                                onChange={handleChange}
-                                displayEmpty
-                                className={classes.selectEmpty}
-                                >
-                                <MenuItem value={18}>18</MenuItem>
-                                <MenuItem value={22}>22</MenuItem>
-                                <MenuItem value={30}>30</MenuItem>
-                                </Select>
-                            </FormControl>
-
-                    <Targets />
-
-                    <div>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-label">Add Target</InputLabel>
+                    <Grid container direction = "row">                      
+                        <FormControl className={classes.selectFormCtrl}>
+                            <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+                                From
+                            </InputLabel>
                             <Select
-                            labelId="demo-simple-select-label"
+                            labelId="demo-simple-select-placeholder-label-label"
+                            id="demo-simple-select-placeholder-label"
+                            value={age}
+                            onChange={handleChange}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                            >
+                            <MenuItem value={18}>18</MenuItem>
+                            <MenuItem value={22}>22</MenuItem>
+                            <MenuItem value={30}>30</MenuItem>
+                            </Select>
+                        </FormControl>                           
+                            
+                        <FormControl className={classes.selectFormCtrl}>
+                            <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+                                To
+                            </InputLabel>
+                            <Select
+                            labelId="demo-simple-select-placeholder-label-label"
+                            id="demo-simple-select-placeholder-label"
+                            value={age}
+                            onChange={handleChange}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                            >
+                            <MenuItem value={18}>18</MenuItem>
+                            <MenuItem value={22}>22</MenuItem>
+                            <MenuItem value={30}>30</MenuItem>
+                            </Select>
+                        </FormControl>
+                        
+                        <Grid item>
+                            <Targets />
+                        </Grid>
+                        
+                        <FormControl className={classes.selectFormCtrl}>
+                            <InputLabel id="demo-simple-select-placeholder-label-label">Add Target</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-placeholder-label-label"
                             id="demo-simple-select"
                             value={age}
                             onChange={handleChange}
+                            displayEmpty
+                            className={classes.selectEmpty}
                             >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
                             <MenuItem value={10}>Ten</MenuItem>
                             <MenuItem value={20}>Twenty</MenuItem>
                             <MenuItem value={30}>Thirty</MenuItem>
                             </Select>
                         </FormControl>
-                    </div>
-
+                    </Grid>
                 </ExpansionPanelDetails>
-                </ExpansionPanel>
+            </ExpansionPanel>
         </div>
     )
 }
