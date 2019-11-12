@@ -1,60 +1,299 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import TextField from './CachedInput';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import SpellcheckIcon from '@material-ui/icons/Spellcheck';
+import CallSplitIcon from '@material-ui/icons/CallSplit';
 import React from 'react';
 
-const data = {
-  options: ['Option #1', 'Option #2', 'Option #3', 'Option #4', 'Option #5']
+import {
+  listPossibleRoutes,
+  getDefaultRouteNumber,
+  handleSurveyOptionUpdate
+} from './QuestionUtil';
+
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+
+import Translation from './questionLocale.json';
+import Locale from './Locale';
+
+const l = Locale(Translation, 'fi');
+
+const typeTitle = {
+  chooseOne: 'Choose One',
+  chooseMultiple: 'Choose Multiple'
 };
 
 const useStyles = makeStyles(theme => ({
   section: {
     marginBottom: theme.spacing(3)
   },
+  badge: {
+    position: 'absolute',
+    display: 'block',
+    top: 0,
+    right: -6,
+    width: 12,
+    height: 12,
+    borderRadius: '50%',
+    backgroundColor: '#CD5B5B'
+  },
+  dialog: {
+    width: 600
+  },
   option: {
     display: 'flex',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 0,
     marginTop: 8,
+    borderRadius: 4,
+    border: `1px solid ${theme.palette.divider}`
+  },
+  optionContainer: {
+    display: 'flex',
+    flex: 1,
+    padding: theme.spacing(2),
     maxWidth: 500
+  },
+  optionMain: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    overflow: 'hidden',
+    marginLeft: theme.spacing(2)
+  },
+  optionAdvanced: {
+    display: 'flex'
   },
   optionInput: {
     flex: 1,
-    marginLeft: 12,
-    marginRight: 20
+    marginLeft: 0,
+    marginTop: 0
+  },
+  optionInputSecondary: {
+    flex: 1,
+    overflow: 'hidden',
+    marginLeft: 0,
+    marginTop: theme.spacing(2)
+  },
+  optionInputMenu: {
+    maxWidth: 500
+  },
+  optionInputMenuItem: {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
+  },
+  optionInputScore: {
+    marginLeft: 0,
+    marginRight: theme.spacing(3),
+    marginTop: theme.spacing(2),
+    width: 100
+  },
+  optionIconLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: -4
+  },
+  optionIconLabelIcon: {
+    marginRight: theme.spacing(0.75)
   },
   optionButton: {
-    marginTop: theme.spacing(1),
-    marginLeft: theme.spacing(4)
+    marginTop: theme.spacing(1)
+  },
+  optionMove: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing(1),
+    borderLeft: `1px solid ${theme.palette.divider}`
+  },
+  subtitle: {
+    fontSize: '0.75em',
+    marginBottom: theme.spacing(2)
   }
 }));
 
-export const QuestionChooseOne = () => {
+export const QuestionChooseOne = ({ index, survey, setSurvey }) => {
   const classes = useStyles();
+
+  const question = survey.questions[index];
+
+  const defaultNextQuestionNumber = getDefaultRouteNumber(
+    survey.questions,
+    index
+  );
+
+  const possibleRoutes = listPossibleRoutes(survey.questions, index);
+
+  const handleNameUpdate = option => name => {
+    setSurvey(
+      handleSurveyOptionUpdate(survey, index, option, {
+        name
+      })
+    );
+  };
+
+  const handleScoreUpdate = option => event => {
+    setSurvey(
+      handleSurveyOptionUpdate(survey, index, option, {
+        score: event.target.value
+      })
+    );
+  };
+
+  const handleRouteUpdate = option => event => {
+    setSurvey(
+      handleSurveyOptionUpdate(survey, index, option, {
+        route: event.target.value
+      })
+    );
+  };
 
   return (
     <Box className={classes.section}>
-      <Typography variant="subtitle2">Options</Typography>
-      {data.options.map(x => (
-        <Box className={classes.option}>
-          <RadioButtonUncheckedIcon />
-          <TextField className={classes.optionInput} margin="dense" value={x} />
-          <DragIndicatorIcon color="disabled" />
+      <Typography variant="h6">{l('questionOptionsText')}</Typography>
+      <Typography variant="body2" className={classes.subtitle}>
+        {l('questionOptionsInfo')}
+      </Typography>
+
+      {question.options.map((x, i) => (
+        <Box key={i} className={classes.option}>
+          <Box className={classes.optionContainer}>
+            <RadioButtonUncheckedIcon />
+            <Box className={classes.optionMain}>
+              <TextField
+                className={classes.optionInput}
+                margin="dense"
+                label={l('questionOptionNameLabel')}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={x.name}
+                onChange={handleNameUpdate(i)}
+              />
+
+              <Box className={classes.optionAdvanced}>
+                <TextField
+                  className={classes.optionInputScore}
+                  margin="dense"
+                  type="number"
+                  label={
+                    <span className={classes.optionIconLabel}>
+                      <SpellcheckIcon
+                        style={{ color: '#56B47C' }}
+                        className={classes.optionIconLabelIcon}
+                      />{' '}
+                      {l('questionOptionScoreLabel')}
+                    </span>
+                  }
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  InputProps={{
+                    style: {
+                      marginTop: 19
+                    }
+                  }}
+                  value={x.score}
+                  onBlur={handleScoreUpdate(i)}
+                />
+
+                <FormControl className={classes.optionInputSecondary}>
+                  <InputLabel
+                    shrink
+                    id="demo-simple-select-placeholder-label-label"
+                    className={classes.optionIconLabel}
+                  >
+                    <CallSplitIcon
+                      style={{ color: '#CD5B5B' }}
+                      className={classes.optionIconLabelIcon}
+                    />{' '}
+                    {l('questionOptionRouteLabel')}
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-placeholder-label-label"
+                    id="demo-simple-select-placeholder-label"
+                    value={x.route}
+                    onChange={handleRouteUpdate(i)}
+                    MenuProps={{
+                      className: classes.optionInputMenu
+                    }}
+                    displayEmpty
+                  >
+                    <MenuItem
+                      value={null}
+                      className={classes.optionInputMenuItem}
+                    >
+                      <em>Default ({defaultNextQuestionNumber || 'End'})</em>
+                    </MenuItem>
+
+                    {possibleRoutes.map(x => (
+                      <MenuItem value={x.id}>
+                        {x.index + 1}. {x.title}
+                      </MenuItem>
+                    ))}
+
+                    <MenuItem value="end">End Survey</MenuItem>
+                  </Select>
+                  <FormHelperText>
+                    {l('questionOptionRouteInfo')}
+                  </FormHelperText>
+                </FormControl>
+              </Box>
+            </Box>
+          </Box>
+          <Box className={classes.optionMove}>
+            <KeyboardArrowUpIcon />
+            <KeyboardArrowDownIcon />
+          </Box>
+          {/*
+          <Box>
+            <Button
+              color="primary"
+              size="small"
+              className={classes.optionButton}
+              startIcon={<SpellcheckIcon />}
+              onClick={handleOpen}
+            >
+              Score
+              <span className={classes.badge} />
+            </Button>
+            <Button
+              color="primary"
+              size="small"
+              className={classes.optionButton}
+              startIcon={<CallSplitIcon />}
+              onClick={handleOpen}
+            >
+              Route
+            </Button>
+          </Box>
+          */}
         </Box>
       ))}
 
-      <Button
-        color="primary"
-        size="small"
-        className={classes.optionButton}
-        startIcon={<AddIcon />}
-      >
-        Add Option
-      </Button>
+      <Box style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.optionButton}
+          startIcon={<AddIcon />}
+        >
+          {l('questionOptionAddText')}
+        </Button>
+      </Box>
     </Box>
   );
 };

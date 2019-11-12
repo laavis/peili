@@ -2,18 +2,98 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import TextField from '../components/question/CachedInput';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Question } from '../components/question/Question';
+
+import Translation from '../components/question/questionLocale.json';
+import Locale from '../components/question/Locale';
+
+const l = Locale(Translation, 'fi');
+
+const data = {
+  title: 'Test Survey',
+  description: '',
+  intro: '',
+  questions: [
+    {
+      id: 'q1',
+      index: 0,
+      title: 'Question #1',
+      type: 'chooseOne',
+      defaultRoute: 'q3',
+      options: [
+        {
+          name: 'Option #1',
+          score: 0,
+          route: null
+        },
+        {
+          name: 'Option #2',
+          score: 1,
+          route: 'q2'
+        },
+        {
+          name: 'Option #3',
+          score: 2,
+          route: 'end'
+        }
+      ]
+    },
+    {
+      id: 'q2',
+      index: 1,
+      title:
+        'This is a really long question name, hopefully everything will still work as intended, bla bla bla bla bla bla bla bla bla bla bla bla',
+      type: 'chooseOne',
+      defaultRoute: null,
+      options: [
+        {
+          name: 'Option #1',
+          score: 0,
+          route: null
+        },
+        {
+          name: 'Option #2',
+          score: 0,
+          route: 'q3'
+        }
+      ]
+    },
+    {
+      id: 'q3',
+      index: 2,
+      title: 'Question #3',
+      type: 'chooseOne',
+      defaultRoute: null,
+      options: [
+        {
+          name: 'Option #1',
+          score: 0,
+          route: null
+        },
+        {
+          name: 'Option #2',
+          score: 1,
+          route: null
+        }
+      ]
+    }
+  ]
+};
 
 const useStyles = makeStyles(theme => ({
   root: {
     padding: 64
   },
   title: {
+    width: '100%',
     marginLeft: 16,
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
   },
   subtitle: {
     marginLeft: 16,
@@ -55,10 +135,24 @@ const useStyles = makeStyles(theme => ({
 export const SurveyEdit = () => {
   const classes = useStyles();
 
+  const [survey, setSurvey] = React.useState(data);
+
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+  };
+
+  const handleTitleUpdate = title => {
+    setSurvey({ ...survey, title });
+  };
+
+  const handleDescriptionUpdate = description => {
+    setSurvey({ ...survey, description });
+  };
+
+  const handleIntroUpdate = intro => {
+    setSurvey({ ...survey, intro });
   };
 
   return (
@@ -66,76 +160,79 @@ export const SurveyEdit = () => {
       <Grid container spacing={0}>
         <Grid item md={6} sm={12} xs={12}>
           <Typography variant="h3" className={classes.title}>
-            New Survey
+            {survey.title}
           </Typography>
           <Typography
             variant="subtitle1"
             color="textSecondary"
             className={classes.subtitle}
           >
-            2 Questions – Published
+            {survey.questions.length} {l('infoQuestions')} –{' '}
+            {l('infoStatePublished')}
           </Typography>
 
           <Box className={classes.section}>
             <Typography variant="h6" className={classes.sectionTitle}>
-              Details
+              {l('detailsText')}
             </Typography>
             <Paper className={classes.sectionPaper}>
               <TextField
                 className={classes.input}
-                label="Title"
+                label={l('detailsTitleLabel')}
                 margin="normal"
                 variant="outlined"
+                value={survey.title}
+                onChange={handleTitleUpdate}
               />
               <TextField
                 className={classes.input}
-                label="Description"
+                label={l('detailsDescriptionLabel')}
                 multiline
                 rows="4"
                 margin="normal"
                 variant="outlined"
-                helperText="Shown to the user while browsing for surveys"
+                helperText={l('detailsDescriptionInfo')}
+                value={survey.description}
+                onChange={handleDescriptionUpdate}
               />
             </Paper>
           </Box>
 
           <Box className={classes.section}>
             <Typography variant="h6" className={classes.sectionTitle}>
-              Intro
+              {l('introText')}
             </Typography>
             <Paper className={classes.sectionPaper}>
               <TextField
                 className={classes.input}
-                label="Text"
+                label={l('introTextLabel')}
                 multiline
                 rows="4"
                 margin="normal"
                 variant="outlined"
-                helperText="Shown to the user when starting the survey"
+                helperText={l('introTextInfo')}
+                value={survey.intro}
+                onChange={handleIntroUpdate}
               />
             </Paper>
           </Box>
 
           <Box className={classes.section}>
             <Typography variant="h6" className={classes.sectionTitle}>
-              Questions
+              {l('questionsText')}
             </Typography>
 
             <Box>
-              <Question
-                index={1}
-                title="Question #1"
-                type="chooseOne"
-                expanded={expanded === 1}
-                handleExpandChange={handleChange}
-              />
-              <Question
-                index={2}
-                title="Question #2"
-                type="chooseMultiple"
-                expanded={expanded === 2}
-                handleExpandChange={handleChange}
-              />
+              {survey.questions.map((x, i) => (
+                <Question
+                  key={x.id}
+                  index={i}
+                  survey={survey}
+                  setSurvey={setSurvey}
+                  expanded={expanded === i}
+                  handleExpandChange={handleChange}
+                />
+              ))}
             </Box>
           </Box>
 

@@ -1,0 +1,101 @@
+{
+  "infoText": {
+    "en": "New Survey",
+    "fi": "Uusi Kysely"
+  },
+  "infoQuestions": {
+    "en": "Question(s)",
+    "fi": "Kysymys(tä)"
+  },
+  "infoStatePublished": {
+    "en": "Published",
+    "fi": "Julkaistu"
+  },
+  "detailsText": {
+    "en": "Details",
+    "fi": "Perustiedot"
+  },
+  "detailsTitleLabel": {
+    "en": "Title",
+    "fi": "Otsikko"
+  },
+  "detailsDescriptionLabel": {
+    "en": "Description",
+    "fi": "Kuvaus"
+  },
+  "detailsDescriptionInfo": {
+    "en": "Shown to the user while browsing for surveys",
+    "fi": "Näytetään käyttäjille kyselyitä selatessa"
+  },
+  "introText": {
+    "en": "Intro",
+    "fi": "Johdanto"
+  },
+  "introTextLabel": {
+    "en": "Text",
+    "fi": "Teksti"
+  },
+  "introTextInfo": {
+    "en": "Shown to the user before starting the survey",
+    "fi": "Näytetään käyttäjille ennen kyselyn aloittamista"
+  },
+  "questionsText": {
+    "en": "Questions",
+    "fi": "Kysymykset"
+  },
+  "questionDefaultName": {
+    "en": "Question",
+    "fi": "Kysymys"
+  },
+  "questionDetailsText": "detailsText",
+  "questionDetailsInfo": {
+    "en": "Edit the title and type of the question",
+    "fi": "Muokkaa kysymyksen tekstiä ja tyyppiä"
+  },
+  "questionDetailsTitleLabel": "detailsTitleLabel",
+  "questionDetailsTypeLabel": {
+    "en": "Type",
+    "fi": "Tyyppi"
+  },
+  "questionDetailsTypeInfo": {
+    "en": "Question type cannot be changed afterwards",
+    "fi": "Kysymyksen tyyppiä ei voi enää muuttaa"
+  },
+  "questionRouteText": {
+    "en": "Route",
+    "fi": "Reititys"
+  },
+  "questionRouteInfo": {
+    "en": "Preview which question is shown next to the user based on selected option",
+    "fi": "Esikatsele mikä kysymys käyttäjälle näytetään seuraavaksi vastausvaihtoehtojen perusteella"
+  },
+  "questionOptionsText": {
+    "en": "Options",
+    "fi": "Vastausvaihtoehdot"
+  },
+  "questionOptionsInfo": {
+    "en": "Edit the possbile response options and what they do",
+    "fi": "Muokkaa vastausvaihtoehtoja ja niiden toiminnallisuutta"
+  },
+  "questionOptionDefaultName": {
+    "en": "Option",
+    "fi": "Vastausvaihtoehto"
+  },
+  "questionOptionNameLabel": {
+    "en": "Name",
+    "fi": "Nimi"
+  },
+  "questionOptionScoreLabel": {
+    "en": "Score",
+    "fi": "Tulos"
+  },
+  "questionOptionRouteLabel": "questionRouteText",
+  "questionOptionRouteInfo": {
+    "en": "Next question when this option is picked",
+    "fi": "Seuraava kysymys jos tämä vaihtoehto valitaan"
+  },
+  "questionOptionAddText": {
+    "en": "Add Option",
+    "fi": "Lisää Vastausvaihtoehto"
+  }
+}
