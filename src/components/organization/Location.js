@@ -1,12 +1,11 @@
 import React from 'react';
-import { ExpansionPanelDetails, ExpansionPanelSummary, Menu } from '@material-ui/core';
+import { ExpansionPanelDetails, ExpansionPanelSummary } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -19,6 +18,9 @@ import cities from '../../data/cities';
 const useStyles = makeStyles(theme => ({
   wrapper: {
     marginBottom: 8
+  },
+  expansionPanel: {
+    padding: '0 1rem 0 1rem'
   },
   summary: {
     display: 'flex',
@@ -46,33 +48,40 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ city, address, editable }) => {
+export default ({ city, country, address, editable, open, handleOpen, handleChange }) => {
   const classes = useStyles();
 
   // Editable
   const icon = editable ? <ExpandMoreIcon /> : null;
-  const [expanded, setExpanded] = React.useState(false);
+
   const handleExpandedChange = (event, isExpanded) => {
     if (!editable) return;
-    setExpanded(isExpanded);
+    handleOpen(isExpanded);
   };
 
   // Country select
-  const [country, setCountry] = React.useState('');
   const handleCountryChange = event => {
-    setCountry(event.target.value);
+    handleChange({ country: event.target.value });
   };
 
   // City select
-  const [cityValue, setCity] = React.useState('');
   const handleCityChange = event => {
-    setCity(event.target.value);
+    handleChange({ city: event.target.value });
   };
 
+  // Address
+  const handleAddressChange = event => {
+    handleChange({ address: event.target.value });
+  };
   return (
     <div className={classes.wrapper}>
-      <ExpansionPanel expanded={editable ? expanded : false} onChange={handleExpandedChange}>
-        <ExpansionPanelSummary expandIcon={icon} aria-controls='panel1bh-content' id='panel1bh-header'>
+      <ExpansionPanel expanded={editable ? open : false} onChange={handleExpandedChange}>
+        <ExpansionPanelSummary
+          className={classes.expansionPanel}
+          expandIcon={icon}
+          aria-controls='panel1bh-content'
+          id='panel1bh-header'
+        >
           <div className={classes.summary}>
             <Typography className={classes.city} variant='overline'>
               {city}
@@ -88,12 +97,14 @@ export default ({ city, address, editable }) => {
                   <InputLabel id='location-select-country-label'>Country</InputLabel>
                   <Select
                     className={classes.select}
-                    labelId='location-select-country-label'
+                    labelid='location-select-country-label'
                     value={country}
                     onChange={handleCountryChange}
                   >
                     {countries.map(x => (
-                      <MenuItem value={x.code}>{x.name}</MenuItem>
+                      <MenuItem key={x.code} value={x.code}>
+                        {x.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -103,19 +114,21 @@ export default ({ city, address, editable }) => {
                   <InputLabel id='location-select-city-label'>City</InputLabel>
                   <Select
                     className={classes.select}
-                    labelId='location-select-city-label'
-                    value={cityValue}
+                    labelid='location-select-city-label'
+                    value={city}
                     onChange={handleCityChange}
                   >
-                    {cities.map(x => (
-                      <MenuItem value={x.code}>{x.name}</MenuItem>
+                    {cities.map((x, i) => (
+                      <MenuItem key={i} value={x.name}>
+                        {x.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
             </Grid>
             <FormControl>
-              <TextField label='Address' margin='normal' />
+              <TextField label='Address' margin='normal' value={address} onChange={handleAddressChange} />
             </FormControl>
             <Grid container>
               <Grid item xs={6}>
