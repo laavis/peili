@@ -4,35 +4,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
 import Card from '@material-ui/core/Card';
 import DefaultImage from '../img/Image.png';
 import Button from '@material-ui/core/Button';
 
 // Components
 import { Feeds, Keywords, Location, TargetGroup } from '../components/organization';
-
-const data = {
-  locations: [
-    {
-      country: 'FI',
-      city: 'Helsinki',
-      postalCode: '00550',
-      address: 'Inarintie 35'
-    },
-    {
-      country: 'FI',
-      city: 'Vantaa',
-      postalCode: '12345',
-      address: 'Korsonkatu 6'
-    },
-    {
-      country: 'FI',
-      city: 'Kotka',
-      postalCode: '48410',
-      address: 'Kasilanpolku 20'
-    }
-  ]
-};
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,9 +22,13 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between'
   },
-
   fab: {
-    margin: theme.spacing(1)
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed'
   },
   extendedIcon: {
     marginRight: theme.spacing(1)
@@ -84,33 +66,77 @@ const useStyles = makeStyles(theme => ({
   buttonAdd: {
     width: 'fit-content',
     alignSelf: 'flex-end'
+  },
+  hide: {
+    display: 'none'
   }
 }));
 
 export const OrganizationPanel = () => {
   const classes = useStyles();
 
+  const [open, setOpen] = React.useState(null);
+
+  const [locations, setLocations] = React.useState([]);
+
   const [editable, setEditable] = React.useState(false);
+
+  React.useEffect(() => {
+    const storedLocations = JSON.parse(localStorage.getItem('locations') || '[]');
+    setLocations(storedLocations);
+  }, []);
 
   const handleEditClick = () => {
     setEditable(true);
   };
 
+  const handleOpen = index => isOpen => {
+    setOpen(isOpen ? index : null);
+  };
+
+  const handleAddClick = () => {
+    let lastIndex = locations.length;
+
+    setLocations([
+      ...locations,
+      {
+        country: 'FI',
+        city: '',
+        postalCode: '',
+        address: ''
+      }
+    ]);
+
+    setOpen(lastIndex);
+
+    console.log(locations);
+  };
+
+  const handleSaveClick = () => {
+    localStorage.setItem('locations', JSON.stringify(locations));
+  };
+
+  const handleLocationChange = index => data => {
+    let newLocations = [...locations];
+    newLocations[index] = { ...newLocations[index], ...data };
+    setLocations(newLocations);
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.topSection}>
-        <Grid className={classes.grid} container spacing='4'>
-          <Grid item xs='12'>
+        <Grid className={classes.grid} container spacing={4}>
+          <Grid item xs={12}>
             <Typography variant='h5'>Kohtaus Ry</Typography>
           </Grid>
-          <Grid item xs='6'>
-            <Grid container spacing='2'>
-              <Grid item xs='4'>
+          <Grid item xs={6}>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
                 <Card className={classes.profileImage}>
                   <img alt='Organization Logo' src={DefaultImage} />
                 </Card>
               </Grid>
-              <Grid item xs='8'>
+              <Grid item xs={8}>
                 <div>
                   <Typography variant='subtitle2' gutterBottom>
                     Short Description
@@ -123,43 +149,32 @@ export const OrganizationPanel = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs='6'>
+          <Grid item xs={6}>
             Other stuff
           </Grid>
         </Grid>
       </div>
       <div className={classes.bottomSection}>
-        <Grid className={classes.grid} container spacing='4' xs='12' sm='12' md='6' lg='6'>
-          <Grid item style={{ width: '50%'}}>
+        <Grid className={classes.grid} container spacing={4}>
+          <Grid item style={{ width: '50%' }}>
             <div className={classes.locationWrapper}>
               <Typography className={classes.sectionTitle}>Locations</Typography>
-              {data.locations.map(x => (
-                <Location editable={editable} {...x} />
+              {locations.map((x, i) => (
+                <Location
+                  {...x}
+                  key={i}
+                  open={open === i}
+                  editable={editable}
+                  handleChange={handleLocationChange(i)}
+                  handleOpen={handleOpen(i)}
+                />
               ))}
-              <Button className={classes.buttonAdd} color='primary'>
-                Add Location
-              </Button>
-            </div>
-            <div className={classes.locationWrapper}>
-              <Typography className={classes.sectionTitle}>Contacts</Typography>
-              {data.locations.map(x => (
-                <Location editable={editable} {...x} />
-              ))}
-              <Button className={classes.buttonAdd} color='primary'>
-                Add Location
-              </Button>
-            </div>
-            <div className={classes.locationWrapper}>
-              <Typography className={classes.sectionTitle}>Services</Typography>
-              {data.locations.map(x => (
-                <Location editable={editable} {...x} />
-              ))}
-              <Button className={classes.buttonAdd} color='primary'>
+              <Button className={editable ? classes.buttonAdd : classes.hide} color='primary' onClick={handleAddClick}>
                 Add Location
               </Button>
             </div>
           </Grid>
-          <Grid item style={{ width: '50%'}}>
+          <Grid item style={{ width: '50%' }}>
             <div className={classes.locationWrapper}>
               <Typography className={classes.sectionTitle}>Target Groups</Typography>
               <TargetGroup editable={editable} />
@@ -169,19 +184,26 @@ export const OrganizationPanel = () => {
             </div>
             <div className={classes.locationWrapper}>
               <Typography className={classes.sectionTitle}>Keywords</Typography>
-              <Keywords editable = { editable } />
+              <Keywords editable={editable} />
             </div>
             <div className={classes.locationWrapper}>
               <Typography className={classes.sectionTitle}>Feeds</Typography>
-              <Feeds editable = { editable } />
+              <Feeds editable={editable} />
             </div>
           </Grid>
         </Grid>
       </div>
       <div>
+        <Button onClick={handleSaveClick}>SAVE</Button>
+
         <Fab onClick={handleEditClick} className={classes.fab} color='primary' variant='extended' aria-label='edit'>
           <EditIcon className={classes.extendedIcon} />
           Edit
+        </Fab>
+
+        <Fab onClick={handleSaveClick} className={classes.fab} color='primary' variant='extended' aria-label='save'>
+          <SaveIcon className={classes.extendedIcon} />
+          Save
         </Fab>
       </div>
     </div>
