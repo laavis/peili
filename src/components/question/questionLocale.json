@@ -47,6 +47,18 @@
     "en": "Question",
     "fi": "Kysymys"
   },
+  "questionsType": {
+    "en": {
+      "selectOne": "Select One",
+      "selectMultiple": "Select Multiple",
+      "text": "Freetext"
+    },
+    "fi": {
+      "selectOne": "Valitse Yksi",
+      "selectMultiple": "Valitse Monta",
+      "text": "Tekstikenttä"
+    }
+  },
   "questionDetailsText": "detailsText",
   "questionDetailsInfo": {
     "en": "Edit the title and type of the question",
@@ -82,17 +94,29 @@
     "fi": "Vastausvaihtoehto"
   },
   "questionOptionNameLabel": {
-    "en": "Name",
-    "fi": "Nimi"
+    "en": "Text",
+    "fi": "Teksti"
   },
   "questionOptionScoreLabel": {
     "en": "Score",
     "fi": "Tulos"
   },
+  "questionOptionAllowEmptyLabel": {
+    "en": "Allow empty",
+    "fi": "Salli tyhjä vastaus"
+  },
+  "questionOptionEmptyRouteLabel": {
+    "en": "Text (Empty)",
+    "fi": "Teksti (Tyhjä)"
+  },
   "questionOptionRouteLabel": "questionRouteText",
   "questionOptionRouteInfo": {
     "en": "Next question when this option is picked",
     "fi": "Seuraava kysymys jos tämä vaihtoehto valitaan"
+  },
+  "questionOptionEmptyRouteInfo": {
+    "en": "Next question if the text field is left empty",
+    "fi": "Seuraava kysymys jos tekstikenttä jää tyhjäksi"
   },
   "questionOptionAddText": {
     "en": "Add Option",

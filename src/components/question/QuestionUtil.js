@@ -1,3 +1,8 @@
+import Translation from './questionLocale.json';
+import Locale from './Locale';
+
+const l = Locale(Translation, 'fi');
+
 export const listPossibleRoutes = (questionList, questionIndex) => {
   return [...questionList.filter((x, i) => i > questionIndex)];
 };
@@ -22,6 +27,12 @@ export const listIncomingRoutes = (questionList, questionIndex) => {
     });
   }
 
+  for (const route of routeList) {
+    if (route.question && route.question.type === 'text' && route.option) {
+      route.option.name = l('questionOptionEmptyRouteLabel');
+    }
+  }
+
   return routeList;
 };
 
@@ -35,36 +46,53 @@ export const listOutgoingRoutes = (questionList, questionIndex) => {
       question: questionList.find(y => y.id === x.route)
     }));
 
-  let defaultRoute = question.defaultRoute;
-  if (defaultRoute === 'end' || questionIndex === questionList.length - 1) {
+  let defaultRoute = getDefaultRoute(questionList, questionIndex);
+  if (defaultRoute === 'end' || !defaultRoute) {
     defaultRoute = { option: null, question: null };
   } else {
     defaultRoute = {
       option: null,
-      question: questionList.find(x => x.id === defaultRoute)
+      question: questionList.find(x => x.id === defaultRoute.id)
     };
   }
 
-  routeList.push(defaultRoute);
+  if (routeList.length < question.options.length || question.type === 'text') {
+    routeList.push(defaultRoute);
+  }
+
+  if (question.type === 'text') {
+    for (let route of routeList) {
+      if (route.option) {
+        route.option.name = l('questionOptionEmptyRouteLabel');
+      }
+    }
+  }
 
   return routeList;
 };
 
-export const getDefaultRouteNumber = (questionList, questionIndex) => {
+export const getDefaultRoute = (questionList, questionIndex) => {
   const question = questionList[questionIndex];
 
-  let defaultNextQuestionNumber = null;
-  if (question.defaultRoute === 'end') {
-    defaultNextQuestionNumber = null;
+  let defaultRoute = null;
+  if (
+    question.defaultRoute === 'end' ||
+    (!question.defaultRoute && questionList.length === questionIndex + 1)
+  ) {
+    defaultRoute = 'end';
   } else if (question.defaultRoute) {
-    defaultNextQuestionNumber = `${questionList.find(
-      x => x.id === question.defaultRoute
-    ).index + 1}.`;
-  } else if (questionList.length - 1 < questionIndex) {
-    defaultNextQuestionNumber = `${questionIndex + 2}.`;
+    defaultRoute = questionList.find(x => x.id === question.defaultRoute);
+  } else {
+    defaultRoute = questionList[questionIndex + 1];
   }
 
-  return defaultNextQuestionNumber;
+  return defaultRoute;
+};
+
+export const getDefaultRouteNumber = (questionList, questionIndex) => {
+  const route = getDefaultRoute(questionList, questionIndex);
+  if (route === 'end') return null;
+  return route ? `${route.index + 1}.` : null;
 };
 
 export const checkRouteStatus = question => {

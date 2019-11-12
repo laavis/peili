@@ -15,6 +15,8 @@ import {
   handleSurveyOptionUpdate
 } from './QuestionUtil';
 
+import { QuestionOptionRoute } from './QuestionOptionRoute';
+
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -145,18 +147,18 @@ export const QuestionChooseOne = ({ index, survey, setSurvey }) => {
     );
   };
 
-  const handleScoreUpdate = option => event => {
+  const handleScoreUpdate = option => score => {
     setSurvey(
       handleSurveyOptionUpdate(survey, index, option, {
-        score: event.target.value
+        score
       })
     );
   };
 
-  const handleRouteUpdate = option => event => {
+  const handleRouteUpdate = option => route => {
     setSurvey(
       handleSurveyOptionUpdate(survey, index, option, {
-        route: event.target.value
+        route
       })
     );
   };
@@ -207,50 +209,16 @@ export const QuestionChooseOne = ({ index, survey, setSurvey }) => {
                     }
                   }}
                   value={x.score}
-                  onBlur={handleScoreUpdate(i)}
+                  onChange={handleScoreUpdate(i)}
                 />
 
-                <FormControl className={classes.optionInputSecondary}>
-                  <InputLabel
-                    shrink
-                    id="demo-simple-select-placeholder-label-label"
-                    className={classes.optionIconLabel}
-                  >
-                    <CallSplitIcon
-                      style={{ color: '#CD5B5B' }}
-                      className={classes.optionIconLabelIcon}
-                    />{' '}
-                    {l('questionOptionRouteLabel')}
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-placeholder-label-label"
-                    id="demo-simple-select-placeholder-label"
-                    value={x.route}
-                    onChange={handleRouteUpdate(i)}
-                    MenuProps={{
-                      className: classes.optionInputMenu
-                    }}
-                    displayEmpty
-                  >
-                    <MenuItem
-                      value={null}
-                      className={classes.optionInputMenuItem}
-                    >
-                      <em>Default ({defaultNextQuestionNumber || 'End'})</em>
-                    </MenuItem>
-
-                    {possibleRoutes.map(x => (
-                      <MenuItem value={x.id}>
-                        {x.index + 1}. {x.title}
-                      </MenuItem>
-                    ))}
-
-                    <MenuItem value="end">End Survey</MenuItem>
-                  </Select>
-                  <FormHelperText>
-                    {l('questionOptionRouteInfo')}
-                  </FormHelperText>
-                </FormControl>
+                <QuestionOptionRoute
+                  survey={survey}
+                  index={index}
+                  value={x.route}
+                  onChange={handleRouteUpdate(i)}
+                  className={classes.optionInputSecondary}
+                />
               </Box>
             </Box>
           </Box>

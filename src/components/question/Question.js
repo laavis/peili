@@ -13,10 +13,10 @@ import { checkRouteStatus } from './QuestionUtil';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
 
-const typeTitle = {
-  chooseOne: 'Choose One',
-  chooseMultiple: 'Choose Multiple'
-};
+import Translation from './questionLocale.json';
+import Locale from './Locale';
+
+const l = Locale(Translation, 'fi');
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -64,6 +64,8 @@ export const Question = ({
 
   const question = survey.questions[index];
 
+  const questionTypes = l('questionsType');
+
   return (
     <ExpansionPanel expanded={expanded} onChange={handleExpandChange(index)}>
       <StyledExpansionPanelSummary
@@ -76,7 +78,7 @@ export const Question = ({
             {question.title}
           </Typography>
           <Typography variant="caption" display="block">
-            {typeTitle[question.type]}
+            {questionTypes[question.type]}
           </Typography>
 
           <Box className={classes.statusIconContainer}>

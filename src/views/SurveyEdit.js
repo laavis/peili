@@ -20,63 +20,88 @@ const data = {
     {
       id: 'q1',
       index: 0,
-      title: 'Question #1',
-      type: 'chooseOne',
-      defaultRoute: 'q3',
+      title: 'Tupakoitko tai käytätkö nuuskaa?',
+      type: 'selectOne',
+      defaultRoute: null,
       options: [
         {
-          name: 'Option #1',
+          name: 'En',
           score: 0,
+          route: 'q3'
+        },
+        {
+          name: 'Tupakoin (käytän nuuskaa) satunnaisesti',
+          score: 1,
           route: null
         },
         {
-          name: 'Option #2',
-          score: 1,
-          route: 'q2'
-        },
-        {
-          name: 'Option #3',
+          name: 'Tupakoin (käytän nuuskaa) päivittäin ',
           score: 2,
-          route: 'end'
+          route: null
         }
       ]
     },
     {
       id: 'q2',
       index: 1,
-      title:
-        'This is a really long question name, hopefully everything will still work as intended, bla bla bla bla bla bla bla bla bla bla bla bla',
-      type: 'chooseOne',
+      title: 'Minkä ikäisenä aloitit tupakoinnin?',
+      type: 'text',
       defaultRoute: null,
       options: [
         {
-          name: 'Option #1',
+          name: 'Text',
           score: 0,
           route: null
-        },
-        {
-          name: 'Option #2',
-          score: 0,
-          route: 'q3'
         }
       ]
     },
     {
       id: 'q3',
       index: 2,
-      title: 'Question #3',
-      type: 'chooseOne',
+      title:
+        'Oletko kokeillut tai käyttänyt päihteitä viimeisen vuoden aikana?',
+      type: 'selectMultiple',
       defaultRoute: null,
       options: [
         {
-          name: 'Option #1',
+          name: 'En',
           score: 0,
           route: null
         },
         {
-          name: 'Option #2',
+          name:
+            'Alkoholia (ei huomioida maistamista esim. lusikallisen verran)',
           score: 1,
           route: null
+        },
+        {
+          name: 'Lääkkeitä, että saisin "pään sekaisin"',
+          score: 4,
+          route: null
+        },
+        {
+          name: 'Liuotinaineita (imppaaminen)',
+          score: 4,
+          route: null
+        },
+        {
+          name: 'Huumausaineita',
+          score: 4,
+          route: null,
+          other: true
+        },
+        {
+          name: 'Jotain muita päihteitä',
+          score: 4,
+          route: null,
+          other: true
+        },
+        {
+          name:
+            'Alkoholia ja edellä mainittuja aineita samaan aikaan (sekakäyttö)',
+          score: 4,
+          route: null,
+          other: true
         }
       ]
     }

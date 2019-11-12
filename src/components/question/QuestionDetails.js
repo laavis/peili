@@ -18,6 +18,7 @@ import {
   listPossibleRoutes,
   listIncomingRoutes,
   listOutgoingRoutes,
+  getDefaultRoute,
   handleSurveyQuestionUpdate
 } from './QuestionUtil';
 
@@ -26,6 +27,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { QuestionChooseOne } from './QuestionChooseOne';
 import { QuestionChooseMultiple } from './QuestionChooseMultiple';
+import { QuestionText } from './QuestionText';
+import { QuestionRouteTable } from './QuestionRouteTable';
 
 import Translation from './questionLocale.json';
 import Locale from './Locale';
@@ -46,25 +49,16 @@ const useStyles = makeStyles(theme => ({
   menu: {
     width: 200
   },
+  details: {
+    paddingTop: '0 !important',
+    paddingBottom: '0 !important'
+  },
   routeSection: {
     marginBottom: theme.spacing(3)
   },
   routeSectionInput: {
     width: '100%',
     maxWidth: 518
-  },
-  table: {
-    tableLayout: 'fixed'
-  },
-  routeCell: {
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden'
-  },
-  routeIconCell: {},
-  routeIconCellIcon: {
-    width: 16,
-    height: 16
   },
   subtitle: {
     fontSize: '0.75em',
@@ -93,10 +87,14 @@ export const QuestionDetails = ({ index, survey, setSurvey }) => {
   const classes = useStyles();
 
   const question = survey.questions[index];
+  let defaultRoute = getDefaultRoute(survey.questions, index);
+  if (defaultRoute && defaultRoute !== 'end') defaultRoute = defaultRoute.id;
+
+  const questionTypes = l('questionsType');
 
   let content = null;
   switch (question.type) {
-    case 'chooseOne':
+    case 'selectOne':
       content = (
         <QuestionChooseOne
           index={index}
@@ -105,13 +103,18 @@ export const QuestionDetails = ({ index, survey, setSurvey }) => {
         />
       );
       break;
-    case 'chooseMultiple':
+    case 'selectMultiple':
       content = (
         <QuestionChooseMultiple
           index={index}
           survey={survey}
           setSurvey={setSurvey}
         />
+      );
+      break;
+    case 'text':
+      content = (
+        <QuestionText index={index} survey={survey} setSurvey={setSurvey} />
       );
       break;
     default:
@@ -138,13 +141,15 @@ export const QuestionDetails = ({ index, survey, setSurvey }) => {
     <Box className={classes.box}>
       {/* Details */}
       <Box className={classes.section}>
+        {/*
         <Typography variant="h6">{l('questionDetailsText')}</Typography>
         <Typography variant="body2" className={classes.subtitle}>
           {l('questionDetailsInfo')}
         </Typography>
+        */}
 
         <Grid container spacing={4}>
-          <Grid item md={8} sm={12} xs={12}>
+          <Grid item md={8} sm={12} xs={12} className={classes.details}>
             <TextField
               variant="outlined"
               className={classes.input}
@@ -154,13 +159,13 @@ export const QuestionDetails = ({ index, survey, setSurvey }) => {
               onChange={handleTitleUpdate}
             />
           </Grid>
-          <Grid item md={4} sm={12} xs={12}>
+          <Grid item md={4} sm={12} xs={12} className={classes.details}>
             <TextField
               variant="outlined"
               select
               label={l('questionDetailsTypeLabel')}
               className={classes.input}
-              value={'selectOne'}
+              value={question.type}
               SelectProps={{
                 MenuProps: {
                   className: classes.menu
@@ -170,8 +175,8 @@ export const QuestionDetails = ({ index, survey, setSurvey }) => {
               margin="normal"
               disabled
             >
-              <MenuItem key={'selectOne'} value={'selectOne'}>
-                Select One
+              <MenuItem key={question.type} value={question.type}>
+                {questionTypes[question.type]}
               </MenuItem>
             </TextField>
           </Grid>
@@ -192,120 +197,42 @@ export const QuestionDetails = ({ index, survey, setSurvey }) => {
           {l('questionRouteInfo')}
         </Typography>
 
-        <Box className={classes.routeSection}>
-          <TextField
-            select
-            label="Default Next Question"
-            className={classes.routeSectionInput}
-            value={question.defaultRoute}
-            onChange={handleRouteUpdate}
-            SelectProps={{
-              MenuProps: {
-                className: classes.inputMenu
-              }
-            }}
-            helperText="Next question for options without custom route rules"
-            margin="normal"
-            variant="outlined"
-          >
-            {listPossibleRoutes(survey.questions, index).map(x => (
-              <MenuItem
-                className={classes.inputMenuItem}
-                key={x.id}
-                value={x.id}
-              >
-                {x.index + 1}. {x.title}
+        {/* TODO: Figure out if this is nessesary... */}
+        {false && (
+          <Box className={classes.routeSection}>
+            <TextField
+              select
+              label="Default Next Question"
+              className={classes.routeSectionInput}
+              value={defaultRoute}
+              onChange={handleRouteUpdate}
+              SelectProps={{
+                MenuProps: {
+                  className: classes.inputMenu
+                }
+              }}
+              helperText="Next question for options without custom route rules"
+              margin="normal"
+              variant="outlined"
+            >
+              {listPossibleRoutes(survey.questions, index).map(x => (
+                <MenuItem
+                  className={classes.inputMenuItem}
+                  key={x.id}
+                  value={x.id}
+                >
+                  {x.index + 1}. {x.title}
+                </MenuItem>
+              ))}
+
+              <MenuItem key="end" value="end">
+                End Survey
               </MenuItem>
-            ))}
+            </TextField>
+          </Box>
+        )}
 
-            <MenuItem key="end" value="end">
-              End Survey
-            </MenuItem>
-          </TextField>
-        </Box>
-
-        <Box className={classes.routeSection}>
-          <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-            Route Table
-          </InputLabel>
-
-          <Table
-            className={classes.table}
-            size="small"
-            aria-label="a dense table"
-          >
-            <TableBody>
-              {listIncomingRoutes(survey.questions, index).map(x => (
-                <TableRow>
-                  <TableCell
-                    width={16}
-                    className={classes.routeIconCell}
-                    component="th"
-                    scope="row"
-                  >
-                    <ArrowForwardIcon
-                      className={classes.routeIconCellIcon}
-                      style={{ fill: '#56B47C' }}
-                    />
-                  </TableCell>
-                  <TableCell
-                    width="50%"
-                    className={classes.routeCell}
-                    component="th"
-                    scope="row"
-                  >
-                    <span>{x.question.index + 1}.</span> {x.question.title}
-                  </TableCell>
-                  <TableCell
-                    width="50%"
-                    className={classes.routeCell}
-                    component="th"
-                    scope="row"
-                  >
-                    {x.option ? x.option.name : 'Default'}
-                  </TableCell>
-                </TableRow>
-              ))}
-              {listOutgoingRoutes(survey.questions, index).map(x => (
-                <TableRow>
-                  <TableCell
-                    width={16}
-                    className={classes.routeIconCell}
-                    component="th"
-                    scope="row"
-                  >
-                    <ArrowBackIcon
-                      className={classes.routeIconCellIcon}
-                      style={{ fill: '#CD5B5B' }}
-                    />
-                  </TableCell>
-                  <TableCell
-                    width="50%"
-                    className={classes.routeCell}
-                    component="th"
-                    scope="row"
-                  >
-                    {x.option ? x.option.name : 'Default'}
-                  </TableCell>
-                  <TableCell
-                    width="50%"
-                    className={classes.routeCell}
-                    component="th"
-                    scope="row"
-                  >
-                    {(x.option && x.option.route === 'end') || !x.question ? (
-                      'End Survey'
-                    ) : (
-                      <>
-                        <span>{x.question.index + 1}.</span> {x.question.title}
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
+        <QuestionRouteTable index={index} survey={survey} />
       </Box>
     </Box>
   );
