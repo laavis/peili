@@ -8,7 +8,7 @@ import React from 'react';
 import { Question } from '../components/question/Question';
 
 import Translation from '../components/question/questionLocale.json';
-import Locale from '../components/question/Locale';
+import Locale from '../components/Locale';
 
 const l = Locale(Translation, 'fi');
 

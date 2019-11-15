@@ -1,0 +1,30 @@
+{
+  "locationsHeader": {
+    "en": "Locations",
+    "fi": "Toimipisteet"
+  },
+  "countrySelectLabel": {
+    "en": "Country",
+    "fi": "Maa"
+  },
+  "citySelectLabel": {
+    "en": "City",
+    "fi": "Kaupunki"
+  },
+  "addressInputLabel": {
+    "en": "Address",
+    "fi": "Osoitteet"
+  },
+  "postalCodeInputLabel": {
+    "en": "Postal Code",
+    "fi": "Postinumero"
+  },
+  "deleteButtonText": {
+    "en": "Delete",
+    "fi": "Poista"
+  },
+  "addLocationButtonText": {
+    "en": "Add Location",
+    "fi": "Lisää Toimipiste"
+  }
+}

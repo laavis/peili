@@ -30,7 +30,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import Translation from './questionLocale.json';
-import Locale from './Locale';
+import Locale from '../Locale';
 
 const l = Locale(Translation, 'fi');
 

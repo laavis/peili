@@ -1,5 +1,9 @@
 import React from 'react';
-import { ExpansionPanelDetails, ExpansionPanelSummary } from '@material-ui/core';
+import {
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Button
+} from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +18,10 @@ import Grid from '@material-ui/core/Grid';
 // data
 import countries from '../../data/countries';
 import cities from '../../data/cities';
+import Locale from '../Locale';
+import Translation from './organizationLocale';
+
+const l = Locale(Translation, 'fi');
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -48,7 +56,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ city, country, address, editable, open, handleOpen, handleChange }) => {
+export default ({
+  city,
+  country,
+  address,
+  editable,
+  open,
+  handleOpen,
+  handleChange
+}) => {
   const classes = useStyles();
 
   // Editable
@@ -75,15 +91,18 @@ export default ({ city, country, address, editable, open, handleOpen, handleChan
   };
   return (
     <div className={classes.wrapper}>
-      <ExpansionPanel expanded={editable ? open : false} onChange={handleExpandedChange}>
+      <ExpansionPanel
+        expanded={editable ? open : false}
+        onChange={handleExpandedChange}
+      >
         <ExpansionPanelSummary
           className={classes.expansionPanel}
           expandIcon={icon}
-          aria-controls='panel1bh-content'
-          id='panel1bh-header'
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
         >
           <div className={classes.summary}>
-            <Typography className={classes.city} variant='overline'>
+            <Typography className={classes.city} variant="overline">
               {city}
             </Typography>
             <Typography className={classes.address}>{address}</Typography>
@@ -94,10 +113,12 @@ export default ({ city, country, address, editable, open, handleOpen, handleChan
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <FormControl className={classes.selectFormCtrl}>
-                  <InputLabel id='location-select-country-label'>Country</InputLabel>
+                  <InputLabel id="location-select-country-label">
+                    {l('countrySelectLabel')}
+                  </InputLabel>
                   <Select
                     className={classes.select}
-                    labelid='location-select-country-label'
+                    labelid="location-select-country-label"
                     value={country}
                     onChange={handleCountryChange}
                   >
@@ -111,10 +132,12 @@ export default ({ city, country, address, editable, open, handleOpen, handleChan
               </Grid>
               <Grid item xs={6}>
                 <FormControl className={classes.selectFormCtrl}>
-                  <InputLabel id='location-select-city-label'>City</InputLabel>
+                  <InputLabel id="location-select-city-label">
+                    {l('citySelectLabel')}
+                  </InputLabel>
                   <Select
                     className={classes.select}
-                    labelid='location-select-city-label'
+                    labelid="location-select-city-label"
                     value={city}
                     onChange={handleCityChange}
                   >
@@ -128,16 +151,27 @@ export default ({ city, country, address, editable, open, handleOpen, handleChan
               </Grid>
             </Grid>
             <FormControl>
-              <TextField label='Address' margin='normal' value={address} onChange={handleAddressChange} />
+              <TextField
+                label={l('addressInputLabel')}
+                margin="normal"
+                value={address}
+                onChange={handleAddressChange}
+              />
             </FormControl>
             <Grid container>
               <Grid item xs={6}>
                 <FormControl>
-                  <TextField label='Postal Code' margin='normal' />
+                  <TextField
+                    label={l('postalCodeInputLabel')}
+                    margin="normal"
+                  />
                 </FormControl>
               </Grid>
             </Grid>
           </FormControl>
+          <div>
+            <Button color="error">{l('deleteButtonText')}</Button>
+          </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>

@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import React from 'react';
-import Locale from './Locale';
+import Locale from '../Locale';
 import Translation from './questionLocale.json';
 import { listIncomingRoutes, listOutgoingRoutes } from './QuestionUtil';
 

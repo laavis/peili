@@ -31,7 +31,7 @@ import { QuestionText } from './QuestionText';
 import { QuestionRouteTable } from './QuestionRouteTable';
 
 import Translation from './questionLocale.json';
-import Locale from './Locale';
+import Locale from '../Locale';
 
 const l = Locale(Translation, 'fi');
 

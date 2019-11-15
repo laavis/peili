@@ -10,7 +10,12 @@ import DefaultImage from '../img/Image.png';
 import Button from '@material-ui/core/Button';
 
 // Components
-import { Feeds, Keywords, Location, TargetGroup } from '../components/organization';
+import {
+  Feeds,
+  Keywords,
+  Location,
+  TargetGroup
+} from '../components/organization';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -37,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 80
   },
   wrapper: {
-    padding: '32px 64px'
+    padding: theme.spacing(1)
   },
   grid: {
     maxWidth: 1320,
@@ -48,7 +53,10 @@ const useStyles = makeStyles(theme => ({
     padding: '32px 64px'
   },
   bottomSection: {
-    padding: '32px 64px'
+    padding: theme.spacing(0.5),
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(2)
+    }
   },
   root: {
     background: '#f3f3f3'
@@ -59,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '1rem',
     marginBottom: '0.5rem'
   },
-  locationWrapper: {
+  sectionWrapper: {
     display: 'flex',
     flexDirection: 'column'
   },
@@ -82,7 +90,9 @@ export const OrganizationPanel = () => {
   const [editable, setEditable] = React.useState(false);
 
   React.useEffect(() => {
-    const storedLocations = JSON.parse(localStorage.getItem('locations') || '[]');
+    const storedLocations = JSON.parse(
+      localStorage.getItem('locations') || '[]'
+    );
     setLocations(storedLocations);
   }, []);
 
@@ -114,6 +124,7 @@ export const OrganizationPanel = () => {
 
   const handleSaveClick = () => {
     localStorage.setItem('locations', JSON.stringify(locations));
+    setEditable(false);
   };
 
   const handleLocationChange = index => data => {
@@ -127,23 +138,24 @@ export const OrganizationPanel = () => {
       <div className={classes.topSection}>
         <Grid className={classes.grid} container spacing={4}>
           <Grid item xs={12}>
-            <Typography variant='h5'>Kohtaus Ry</Typography>
+            <Typography variant="h5">Kohtaus Ry</Typography>
           </Grid>
           <Grid item xs={6}>
             <Grid container spacing={2}>
               <Grid item xs={4}>
                 <Card className={classes.profileImage}>
-                  <img alt='Organization Logo' src={DefaultImage} />
+                  <img alt="Organization Logo" src={DefaultImage} />
                 </Card>
               </Grid>
               <Grid item xs={8}>
                 <div>
-                  <Typography variant='subtitle2' gutterBottom>
+                  <Typography variant="subtitle2" gutterBottom>
                     Short Description
                   </Typography>
-                  <Typography variant='body1'>
-                    Kohtaus ry on vuonna 2014 perustettu yhdistys, jonka tarkoituksena on vähentää nuorten aikuisten
-                    yksinäisyyttä ja syrjään jäämistä.
+                  <Typography variant="body1">
+                    Kohtaus ry on vuonna 2014 perustettu yhdistys, jonka
+                    tarkoituksena on vähentää nuorten aikuisten yksinäisyyttä ja
+                    syrjään jäämistä.
                   </Typography>
                 </div>
               </Grid>
@@ -156,9 +168,12 @@ export const OrganizationPanel = () => {
       </div>
       <div className={classes.bottomSection}>
         <Grid className={classes.grid} container spacing={4}>
-          <Grid item style={{ width: '50%' }}>
-            <div className={classes.locationWrapper}>
-              <Typography className={classes.sectionTitle}>Locations</Typography>
+          {/* Left Column */}
+          <Grid item xs={12} md={6}>
+            <div className={classes.sectionWrapper}>
+              <Typography className={classes.sectionTitle}>
+                Locations
+              </Typography>
               {locations.map((x, i) => (
                 <Location
                   {...x}
@@ -169,24 +184,31 @@ export const OrganizationPanel = () => {
                   handleOpen={handleOpen(i)}
                 />
               ))}
-              <Button className={editable ? classes.buttonAdd : classes.hide} color='primary' onClick={handleAddClick}>
+              <Button
+                className={editable ? classes.buttonAdd : classes.hide}
+                color="primary"
+                onClick={handleAddClick}
+              >
                 Add Location
               </Button>
             </div>
           </Grid>
-          <Grid item style={{ width: '50%' }}>
-            <div className={classes.locationWrapper}>
-              <Typography className={classes.sectionTitle}>Target Groups</Typography>
+          {/* Right Column */}
+          <Grid item xs={12} md={6}>
+            <div className={classes.sectionWrapper}>
+              <Typography className={classes.sectionTitle}>
+                Target Groups
+              </Typography>
               <TargetGroup editable={editable} />
-              <Button className={classes.buttonAdd} color='primary'>
+              <Button className={classes.buttonAdd} color="primary">
                 Add Target Group
               </Button>
             </div>
-            <div className={classes.locationWrapper}>
+            <div className={classes.sectionWrapper}>
               <Typography className={classes.sectionTitle}>Keywords</Typography>
               <Keywords editable={editable} />
             </div>
-            <div className={classes.locationWrapper}>
+            <div className={classes.sectionWrapper}>
               <Typography className={classes.sectionTitle}>Feeds</Typography>
               <Feeds editable={editable} />
             </div>
@@ -194,16 +216,19 @@ export const OrganizationPanel = () => {
         </Grid>
       </div>
       <div>
-        <Button onClick={handleSaveClick}>SAVE</Button>
-
-        <Fab onClick={handleEditClick} className={classes.fab} color='primary' variant='extended' aria-label='edit'>
-          <EditIcon className={classes.extendedIcon} />
-          Edit
-        </Fab>
-
-        <Fab onClick={handleSaveClick} className={classes.fab} color='primary' variant='extended' aria-label='save'>
-          <SaveIcon className={classes.extendedIcon} />
-          Save
+        <Fab
+          onClick={editable ? handleSaveClick : handleEditClick}
+          className={classes.fab}
+          color="primary"
+          variant="extended"
+          aria-label="save"
+        >
+          {editable ? (
+            <SaveIcon className={classes.extendedIcon} />
+          ) : (
+            <EditIcon className={classes.extendedIcon} />
+          )}
+          {editable ? 'SAVE' : 'EDIT'}
         </Fab>
       </div>
     </div>
