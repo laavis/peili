@@ -19,7 +19,8 @@ import {
   listIncomingRoutes,
   listOutgoingRoutes,
   getDefaultRoute,
-  handleSurveyQuestionUpdate
+  handleSurveyQuestionUpdate,
+  handleSurveyOptionRemove
 } from './QuestionUtil';
 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -83,10 +84,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const QuestionDetails = ({ index, survey, setSurvey }) => {
+export const QuestionDetails = ({ index, survey, question, setSurvey }) => {
   const classes = useStyles();
 
-  const question = survey.questions[index];
   let defaultRoute = getDefaultRoute(survey.questions, index);
   if (defaultRoute && defaultRoute !== 'end') defaultRoute = defaultRoute.id;
 
@@ -99,6 +99,7 @@ export const QuestionDetails = ({ index, survey, setSurvey }) => {
         <QuestionChooseOne
           index={index}
           survey={survey}
+          question={question}
           setSurvey={setSurvey}
         />
       );
@@ -108,6 +109,7 @@ export const QuestionDetails = ({ index, survey, setSurvey }) => {
         <QuestionChooseMultiple
           index={index}
           survey={survey}
+          question={question}
           setSurvey={setSurvey}
         />
       );

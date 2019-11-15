@@ -8,7 +8,7 @@ import React from 'react';
 import { QuestionDetails } from './QuestionDetails';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
-import { checkRouteStatus } from './QuestionUtil';
+import { checkScoreStatus, checkRouteStatus } from './QuestionUtil';
 
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
@@ -56,13 +56,12 @@ const StyledExpansionPanelSummary = withStyles({
 export const Question = ({
   index,
   survey,
+  question,
   setSurvey,
   expanded,
   handleExpandChange
 }) => {
   const classes = useStyles();
-
-  const question = survey.questions[index];
 
   const questionTypes = l('questionsType');
 
@@ -82,10 +81,12 @@ export const Question = ({
           </Typography>
 
           <Box className={classes.statusIconContainer}>
-            <SpellcheckIcon
-              style={{ fill: '#56B47C' }}
-              className={classes.statusIcon}
-            />
+            {checkScoreStatus(question) && (
+              <SpellcheckIcon
+                style={{ fill: '#56B47C' }}
+                className={classes.statusIcon}
+              />
+            )}
             {checkRouteStatus(question) && (
               <CallSplitIcon
                 style={{ fill: '#CD5B5B' }}
@@ -96,7 +97,12 @@ export const Question = ({
         </Box>
       </StyledExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <QuestionDetails index={index} survey={survey} setSurvey={setSurvey} />
+        <QuestionDetails
+          index={index}
+          survey={survey}
+          question={question}
+          setSurvey={setSurvey}
+        />
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );

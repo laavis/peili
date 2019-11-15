@@ -1,5 +1,7 @@
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
+import uuid from 'uuid/v4';
+import OptionDefaults from './QuestionOptionDefaults';
 
 const l = Locale(Translation, 'fi');
 
@@ -95,6 +97,17 @@ export const getDefaultRouteNumber = (questionList, questionIndex) => {
   return route ? `${route.index + 1}.` : null;
 };
 
+export const checkScoreStatus = question => {
+  // TODO: Add support for custom score
+
+  if (question.type === 'text') return false;
+  if (question.type === 'selectOne' || question.type === 'selectMultiple') {
+    for (let i = 0; i < question.options.length; i++) {
+      if (question.options[i].score !== i) return true;
+    }
+  }
+};
+
 export const checkRouteStatus = question => {
   if (question.defaultRoute) return true;
   for (const option of question.options) {
@@ -102,6 +115,25 @@ export const checkRouteStatus = question => {
   }
 
   return false;
+};
+
+export const generateEmptyQuestion = (index, type) => ({
+  id: uuid(),
+  index,
+  title: `${l('questionDefaultName')} #${index + 1}`,
+  type,
+  defaultRoute: null,
+  options: [...OptionDefaults[type].many]
+});
+
+export const handleSurveyQuestionCreate = (survey, type) => {
+  let surveyUpdate = { ...survey };
+  surveyUpdate.questions = [
+    ...surveyUpdate.questions,
+    { ...generateEmptyQuestion(surveyUpdate.questions.length) }
+  ];
+
+  return surveyUpdate;
 };
 
 export const handleSurveyQuestionUpdate = (survey, index, question) => {
@@ -157,6 +189,21 @@ export const handleSurveyOptionReorder = (survey, index, a, b) => {
   questionUpdate.options[b] = optionCache;
 
   surveyUpdate.questions[index] = questionUpdate;
+
+  return surveyUpdate;
+};
+
+export const handleSurveyOptionRemove = (
+  survey,
+  questionIndex,
+  optionIndex
+) => {
+  let surveyUpdate = { ...survey };
+  let questionUpdate = { ...surveyUpdate.questions[questionIndex] };
+
+  questionUpdate.options.splice(optionIndex, 1);
+
+  surveyUpdate.questions[questionIndex] = questionUpdate;
 
   return surveyUpdate;
 };

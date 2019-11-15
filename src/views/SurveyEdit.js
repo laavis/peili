@@ -6,12 +6,25 @@ import TextField from '../components/question/CachedInput';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Question } from '../components/question/Question';
+import { generateEmptyQuestion } from '../components/question/QuestionUtil';
 
 import Translation from '../components/question/questionLocale.json';
 import Locale from '../components/Locale';
 
 const l = Locale(Translation, 'fi');
 
+const data = {
+  title: 'Test Survey',
+  description: '',
+  intro: '',
+  questions: [
+    generateEmptyQuestion(0, 'selectOne'),
+    generateEmptyQuestion(1, 'selectMultiple'),
+    generateEmptyQuestion(2, 'text')
+  ]
+};
+
+/*
 const data = {
   title: 'Test Survey',
   description: '',
@@ -107,6 +120,7 @@ const data = {
     }
   ]
 };
+*/
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -253,6 +267,7 @@ export const SurveyEdit = () => {
                   key={x.id}
                   index={i}
                   survey={survey}
+                  question={x}
                   setSurvey={setSurvey}
                   expanded={expanded === i}
                   handleExpandChange={handleChange}

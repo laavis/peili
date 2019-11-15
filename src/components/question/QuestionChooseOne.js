@@ -6,16 +6,23 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
+import DeleteIcon from '@material-ui/icons/Delete';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
 
 import {
   listPossibleRoutes,
   getDefaultRouteNumber,
-  handleSurveyOptionUpdate
+  handleSurveyOptionUpdate,
+  handleSurveyOptionReorder,
+  handleSurveyOptionRemove
 } from './QuestionUtil';
 
 import { QuestionOptionRoute } from './QuestionOptionRoute';
+
+import ConfirmationDialog, { openDialog } from './ConfirmationDialog';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -115,11 +122,15 @@ const useStyles = makeStyles(theme => ({
   },
   optionMove: {
     display: 'flex',
+    position: 'relative',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     padding: theme.spacing(1),
     borderLeft: `1px solid ${theme.palette.divider}`
+  },
+  optionRemove: {
+    bottom: theme.spacing(1)
   },
   subtitle: {
     fontSize: '0.75em',
@@ -127,17 +138,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const QuestionChooseOne = ({ index, survey, setSurvey }) => {
+export const QuestionChooseOne = ({ index, survey, question, setSurvey }) => {
   const classes = useStyles();
-
-  const question = survey.questions[index];
-
-  const defaultNextQuestionNumber = getDefaultRouteNumber(
-    survey.questions,
-    index
-  );
-
-  const possibleRoutes = listPossibleRoutes(survey.questions, index);
 
   const handleNameUpdate = option => name => {
     setSurvey(
@@ -163,6 +165,27 @@ export const QuestionChooseOne = ({ index, survey, setSurvey }) => {
     );
   };
 
+  const handleOptionReorder = (option, direction) => () => {
+    if (direction !== -1 && direction !== 1) return;
+    if (option === 0 && direction === 1) return;
+    if (option === question.options.length - 1 && direction === -1) return;
+
+    setSurvey(
+      handleSurveyOptionReorder(survey, index, option, option - direction)
+    );
+  };
+
+  const handleOptionRemove = option => async () => {
+    const action = await openDialog({
+      title: 'Remove Option?',
+      description: 'This action cannot be undone, are you sure?'
+    });
+
+    if (action === 'confirm') {
+      setSurvey(handleSurveyOptionRemove(survey, index, option));
+    }
+  };
+
   return (
     <Box className={classes.section}>
       <Typography variant="h6">{l('questionOptionsText')}</Typography>
@@ -171,7 +194,7 @@ export const QuestionChooseOne = ({ index, survey, setSurvey }) => {
       </Typography>
 
       {question.options.map((x, i) => (
-        <Box key={i} className={classes.option}>
+        <Box key={x.id} className={classes.option}>
           <Box className={classes.optionContainer}>
             <RadioButtonUncheckedIcon />
             <Box className={classes.optionMain}>
@@ -223,8 +246,33 @@ export const QuestionChooseOne = ({ index, survey, setSurvey }) => {
             </Box>
           </Box>
           <Box className={classes.optionMove}>
-            <KeyboardArrowUpIcon />
-            <KeyboardArrowDownIcon />
+            <Tooltip title="Move Up" placement="right">
+              <IconButton
+                aria-label="move up"
+                onClick={handleOptionReorder(i, 1)}
+              >
+                <KeyboardArrowUpIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Move Down" placement="right">
+              <IconButton
+                aria-label="move down"
+                onClick={handleOptionReorder(i, -1)}
+              >
+                <KeyboardArrowDownIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Box style={{ flex: 1 }} />
+            <Tooltip title="Remove" placement="right">
+              <IconButton
+                aria-label="remove"
+                className={classes.optionRemove}
+                onClick={handleOptionRemove(i)}
+                size="small"
+              >
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
           </Box>
           {/*
           <Box>
@@ -262,6 +310,8 @@ export const QuestionChooseOne = ({ index, survey, setSurvey }) => {
           {l('questionOptionAddText')}
         </Button>
       </Box>
+
+      <ConfirmationDialog />
     </Box>
   );
 };
