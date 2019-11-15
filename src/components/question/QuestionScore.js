@@ -240,7 +240,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
 
                   {locked && (
                     <Tooltip
-                      title={`Every question will output the "Score" source`}
+                      title={`Every question will output the default "Score" source`}
                       placement="right"
                     >
                       <LockIcon />
@@ -253,8 +253,17 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
 
           <Chip
             icon={<AddIcon />}
-            label="Create Source or Effect"
-            onClick={handleMenuClick}
+            label="Create Custom Score"
+            onClick={handleMenuClose('variable')}
+            // onDelete={() => {}}
+            variant="outlined"
+            style={{ marginRight: 8 }}
+          />
+
+          <Chip
+            icon={<DonutLargeIcon />}
+            label="Modify User Meters"
+            onClick={handleMenuClose('meter')}
             // onDelete={() => {}}
             variant="outlined"
           />
@@ -338,7 +347,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
           <ListItemIcon>
             <AttachmentIcon />
           </ListItemIcon>
-          Create Source
+          Create Score
         </MenuItem>
         <MenuItem onClick={handleMenuClose('meter')}>
           <ListItemIcon>

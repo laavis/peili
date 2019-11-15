@@ -132,7 +132,7 @@ export const generateEmptyQuestion = (index, type) => {
         {
           id: uuid(),
           type: 'set',
-          value: 'Score',
+          value: 'Answer Score',
           locked: true
         },
         {

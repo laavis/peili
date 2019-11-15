@@ -16,9 +16,18 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import EditIcon from '@material-ui/icons/Edit';
 
 import Icon from '@mdi/react';
-import { mdiPlusBox, mdiMinusBox, mdiCloseBox, mdiDivisionBox } from '@mdi/js';
+import {
+  mdiPlusBox,
+  mdiMinusBox,
+  mdiCloseBox,
+  mdiDivisionBox,
+  mdiCalculator,
+  mdiCalculatorVariant
+} from '@mdi/js';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -74,9 +83,18 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 0
   },
   buttonItem: {
+    display: 'flex',
+    justifyContent: 'center',
     padding: 0,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2)
+  },
+  helperArrow: {
+    position: 'absolute',
+    marginTop: theme.spacing(4.5),
+    left: theme.spacing(1.5),
+    width: 16,
+    height: 16
   }
 }));
 
@@ -187,14 +205,18 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
         fullWidth
         fullHeight
       >
-        <DialogTitle id="input-dialog-title">Input</DialogTitle>
+        <DialogTitle id="input-dialog-title">Score</DialogTitle>
         <DialogContent>
           <DialogContentText id="input-dialog-description">
             <Typography variant="body2">
-              Select a value for this input. It can come from a single source,
+              Select a value for this score. It can come from a single source,
               or multiple combined with mathematical operators.
             </Typography>
           </DialogContentText>
+
+          {input.length > 1 && (
+            <ArrowDownwardIcon className={classes.helperArrow} />
+          )}
 
           <List component="nav" aria-label="main mailbox folders">
             {input.map((value, i) => {
@@ -221,14 +243,25 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                 return (
                   <ListItem button onClick={handleAddSourceClick(i)}>
                     <ListItemIcon>
-                      <InputIcon />
+                      <Icon
+                        path={mdiCalculator}
+                        size={1}
+                        color="rgba(0, 0, 0, 0.54)"
+                      />
                     </ListItemIcon>
                     <ListItemText
                       primary={`${primary}.${secondary || 0}`}
                       secondary="Static value"
                     />
-                    {i !== 0 && (
-                      <ListItemSecondaryAction>
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        aria-label="edit"
+                        onClick={handleAddSourceClick(i)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      {i !== 0 && (
                         <IconButton
                           edge="end"
                           aria-label="remove"
@@ -236,8 +269,8 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                         >
                           <DeleteIcon />
                         </IconButton>
-                      </ListItemSecondaryAction>
-                    )}
+                      )}
+                    </ListItemSecondaryAction>
                   </ListItem>
                 );
               }
@@ -258,8 +291,16 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                     primary={secondary === 'score' ? 'Score' : score[0].value}
                     secondary={`${question.index + 1}. ${question.title}`}
                   />
-                  {i !== 0 && (
-                    <ListItemSecondaryAction>
+
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      onClick={handleAddSourceClick(i)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    {i !== 0 && (
                       <IconButton
                         edge="end"
                         aria-label="remove"
@@ -267,21 +308,30 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </ListItemSecondaryAction>
-                  )}
+                    )}
+                  </ListItemSecondaryAction>
                 </ListItem>
               );
             })}
+
             <ListItem className={classes.buttonItem}>
               <Button
                 variant="contained"
                 color="primary"
                 size={input.length ? 'small' : 'large'}
                 className={classes.button}
-                startIcon={<AddIcon />}
+                startIcon={
+                  input.length ? (
+                    <Icon path={mdiCalculatorVariant} size={1} color="#FFF" />
+                  ) : (
+                    <AddIcon />
+                  )
+                }
                 onClick={handleAddSourceClick(null)}
               >
-                {input.length ? 'Add Source' : 'Set Source'}
+                {input.length
+                  ? 'Combine with another Source'
+                  : 'Select First Source'}
               </Button>
             </ListItem>
           </List>

@@ -80,24 +80,24 @@ const QuestionScoreSourceDialog = ({ survey, index, question }) => {
       fullWidth
       fullHeight
     >
-      <DialogTitle id="input-dialog-title">Create Source</DialogTitle>
+      <DialogTitle id="input-dialog-title">Create Score</DialogTitle>
       <DialogContent>
         <DialogContentText id="input-dialog-description">
           <Typography variant="body2">
-            This will add a "source" to this question with a specified or
-            calculated value. This "source" can then be used when calculating
-            final scores for this survey.
+            This will add a score to this question with a specified or
+            calculated value. This score can then be used when calculating final
+            grades for this survey.
           </Typography>
         </DialogContentText>
 
         <TextField
           autoFocus
-          margin="dense"
           id="name"
-          label="Source Name"
+          label="Score Name"
           fullWidth
           value={name}
           onChange={handleNameChange}
+          variant="outlined"
         />
       </DialogContent>
       <DialogActions>
