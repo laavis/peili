@@ -3,7 +3,7 @@ import Locale from '../Locale';
 import uuid from 'uuid/v4';
 import OptionDefaults from './QuestionOptionDefaults';
 
-const l = Locale(Translation, 'fi');
+const l = Locale(Translation);
 
 export const listPossibleRoutes = (questionList, questionIndex) => {
   return [...questionList.filter((x, i) => i > questionIndex)];
@@ -117,14 +117,33 @@ export const checkRouteStatus = question => {
   return false;
 };
 
-export const generateEmptyQuestion = (index, type) => ({
-  id: uuid(),
-  index,
-  title: `${l('questionDefaultName')} #${index + 1}`,
-  type,
-  defaultRoute: null,
-  options: [...OptionDefaults[type].many]
-});
+export const generateEmptyQuestion = (index, type) => {
+  const id = uuid();
+
+  return {
+    id,
+    index,
+    title: `${l('questionDefaultName')} #${index + 1}`,
+    type,
+    defaultRoute: null,
+    options: [...OptionDefaults[type].many],
+    source: [
+      [
+        {
+          id: uuid(),
+          type: 'set',
+          value: 'Score',
+          locked: true
+        },
+        {
+          type: 'value',
+          value: [`question.${id}.score`]
+        }
+      ]
+    ],
+    score: []
+  };
+};
 
 export const handleSurveyQuestionCreate = (survey, type) => {
   let surveyUpdate = { ...survey };

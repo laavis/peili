@@ -11,18 +11,25 @@ import { generateEmptyQuestion } from '../components/question/QuestionUtil';
 import Translation from '../components/question/questionLocale.json';
 import Locale from '../components/Locale';
 
-const l = Locale(Translation, 'fi');
+import QuestionScoreInputDialog from '../components/question/QuestionScoreInputDialog';
+import QuestionScoreDialog from '../components/question/QuestionScoreDialog';
 
-const data = {
-  title: 'Test Survey',
-  description: '',
-  intro: '',
-  questions: [
-    generateEmptyQuestion(0, 'selectOne'),
-    generateEmptyQuestion(1, 'selectMultiple'),
-    generateEmptyQuestion(2, 'text')
-  ]
-};
+const l = Locale(Translation);
+
+let data = null;
+
+(() => {
+  data = {
+    title: 'Test Survey',
+    description: '',
+    intro: '',
+    questions: [
+      generateEmptyQuestion(0, 'selectOne'),
+      generateEmptyQuestion(1, 'selectMultiple'),
+      generateEmptyQuestion(2, 'text')
+    ]
+  };
+})();
 
 /*
 const data = {
@@ -286,6 +293,9 @@ export const SurveyEdit = () => {
         </Grid>
         <Grid item md={6} sm={12} xs={12}></Grid>
       </Grid>
+
+      <QuestionScoreInputDialog survey={survey} />
+      <QuestionScoreDialog survey={survey} />
     </div>
   );
 };

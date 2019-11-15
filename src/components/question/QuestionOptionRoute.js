@@ -7,7 +7,7 @@ import Locale from '../Locale';
 import Translation from './questionLocale.json';
 import { getDefaultRouteNumber, listPossibleRoutes } from './QuestionUtil';
 
-const l = Locale(Translation, 'fi');
+const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
   optionInputMenu: {

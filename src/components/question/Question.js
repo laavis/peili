@@ -16,7 +16,7 @@ import CallSplitIcon from '@material-ui/icons/CallSplit';
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 
-const l = Locale(Translation, 'fi');
+const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
   title: {

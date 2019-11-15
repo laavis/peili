@@ -30,11 +30,12 @@ import { QuestionChooseOne } from './QuestionChooseOne';
 import { QuestionChooseMultiple } from './QuestionChooseMultiple';
 import { QuestionText } from './QuestionText';
 import { QuestionRouteTable } from './QuestionRouteTable';
+import { QuestionScore } from './QuestionScore';
 
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 
-const l = Locale(Translation, 'fi');
+const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -234,7 +235,22 @@ export const QuestionDetails = ({ index, survey, question, setSurvey }) => {
           </Box>
         )}
 
-        <QuestionRouteTable index={index} survey={survey} />
+        <QuestionRouteTable index={index} survey={survey} question={question} />
+      </Box>
+
+      {/* Scoring */}
+      <Box className={classes.section}>
+        <Typography variant="h6">{l('questionScoreText')}</Typography>
+        <Typography variant="body2" className={classes.subtitle}>
+          {l('questionScoreInfo')}
+        </Typography>
+
+        <QuestionScore
+          index={index}
+          survey={survey}
+          question={question}
+          setSurvey={setSurvey}
+        />
       </Box>
     </Box>
   );

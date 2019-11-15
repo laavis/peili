@@ -75,11 +75,19 @@
   },
   "questionRouteText": {
     "en": "Route",
-    "fi": "Reititys"
+    "fi": "Reitti"
   },
   "questionRouteInfo": {
     "en": "Preview which question is shown next to the user based on selected option",
     "fi": "Esikatsele mikä kysymys käyttäjälle näytetään seuraavaksi vastausvaihtoehtojen perusteella"
+  },
+  "questionScoreText": {
+    "en": "Score",
+    "fi": "Pisteytys"
+  },
+  "questionScoreInfo": {
+    "en": "Decide how the question will be scored, and how it will affect the user",
+    "fi": "Päätä miten kysymyksestä annetaan pisteitä, ja miten se vaikuttaa käyttäjään"
   },
   "questionOptionsText": {
     "en": "Options",
@@ -121,5 +129,19 @@
   "questionOptionAddText": {
     "en": "Add Option",
     "fi": "Lisää Vastausvaihtoehto"
+  },
+  "questionScoreOperatorText": {
+    "en": {
+      "addition": "Add",
+      "subtraction": "Subtract",
+      "multiplication": "Multiply",
+      "division": "Divide"
+    },
+    "fi": {
+      "addition": "Summaa",
+      "subtraction": "Vähennä",
+      "multiplication": "Kerro",
+      "division": "Jaa"
+    }
   }
 }

@@ -2,7 +2,7 @@ import Translation from './questionLocale.json';
 import Locale from '../Locale';
 import uuid from 'uuid/v4';
 
-const l = Locale(Translation, 'fi');
+const l = Locale(Translation);
 
 const defaults = {
   selectOne: {

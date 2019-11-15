@@ -32,7 +32,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 
-const l = Locale(Translation, 'fi');
+const l = Locale(Translation);
 
 const typeTitle = {
   chooseOne: 'Choose One',

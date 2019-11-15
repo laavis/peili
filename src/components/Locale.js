@@ -1,4 +1,6 @@
-export default (dataset, language) => option => {
+export default (dataset, language = null) => option => {
+  if (!language) language = localStorage.getItem('lang') || 'en';
+
   let section = dataset[option];
   if (!section) return 'Unknown';
 

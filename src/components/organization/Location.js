@@ -21,7 +21,7 @@ import cities from '../../data/cities';
 import Locale from '../Locale';
 import Translation from './organizationLocale';
 
-const l = Locale(Translation, 'fi');
+const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
   wrapper: {

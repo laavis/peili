@@ -6,6 +6,9 @@ import * as serviceWorker from './serviceWorker';
 
 import 'typeface-roboto';
 
+// The global language setting is saved here for now...
+localStorage.setItem('lang', 'fi');
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
