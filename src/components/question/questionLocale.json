@@ -143,5 +143,89 @@
       "multiplication": "Kerro",
       "division": "Jaa"
     }
+  },
+  "questionScoreVariable": {
+    "en": "Set SCORE as",
+    "fi": "Aseta SCORE arvoksi"
+  },
+  "questionScoreVariableCreateButton": {
+    "en": "Create Custom Score",
+    "fi": "Luo Uusi Pisteytys"
+  },
+  "questionScoreCreateTitle": {
+    "en": "Create Score",
+    "fi": "Luo Pisteytys"
+  },
+  "questionScoreCreateDescription": {
+    "en": "This will add a score to this question with a specified or calculated value. This score can then be used when calculating final grades for this survey.",
+    "fi": "Luo uusi pisteytys tälle kysymykselle. Pisteytys voi koostua ennalta määritellyistä ja/tai laskennallisista arvoista. Tätä pisteytystä voidaan käyttää myös koko kyselyn pisteytyksen laskennassa."
+  },
+  "questionScoreCreateNameLabel": {
+    "en": "Score Name",
+    "fi": "Pisteytyksen Nimi"
+  },
+  "questionScorePickValue": {
+    "en": "Pick Value",
+    "fi": "Määritä Arvo"
+  },
+  "questionScoreValueTitle": {
+    "en": "Score Value",
+    "fi": "Pisteytyksen Arvo"
+  },
+  "questionScoreValueDescription": {
+    "en": "Select a value for this score. It can come from a single source, or multiple combined with mathematical operators.",
+    "fi": "Valitse arvo tälle pisteytykselle. Arvo voi tulla yhdestä lähteestä, tai se voi koostua monen lähteen yhdistelmästä matemaattisten operaattoreiden avulla."
+  },
+  "questionScoreValueStatic": {
+    "en": "Static numeric value",
+    "fi": "Staattinen numeroarvo"
+  },
+  "questionScoreValueCreateButtonFirst": {
+    "en": "Select First Source",
+    "fi": "Valitse Ensimmäinen Lähde"
+  },
+  "questionScoreValueCreateButton": {
+    "en": "Combine With Another Source",
+    "fi": "Yhdistä Toisen Lähteen Kanssa"
+  },
+  "questionScoreSourceTitle": {
+    "en": "Select Source",
+    "fi": "Valitse Lähde"
+  },
+  "questionScoreSourceDynamicRadio": {
+    "en": "Select from existing sources",
+    "fi": "Valitse olemassa olevasta lähteestä"
+  },
+  "questionScoreSourceDynamicDefaultTitle": {
+    "en": "Answer \"Score\"",
+    "fi": "Vastauksen \"Tulos\""
+  },
+  "questionScoreSourceDynamicDefaultDescription": {
+    "en": "\"Score\" from the option picked by the user",
+    "fi": "\"Tulos\" käyttäjän valitsemasta vastausvaihtoehdosta"
+  },
+  "questionScoreSourceDynamicCustomDescription": {
+    "en": "Custom Score",
+    "fi": "Oma Pisteytys"
+  },
+  "questionScoreSourceStaticRadio": {
+    "en": "Use a static numeric value",
+    "fi": "Käytä staattista numeroarvoa"
+  },
+  "questionScoreSourceStaticLabel": {
+    "en": "Numeric Value",
+    "fi": "Numeroarvo"
+  },
+  "questionScoreSourceHelp": {
+    "en": "You can add, subtract, multiply and divide after this first source has been added.",
+    "fi": "Voit summata, vähentää, kertoa ja jakaa ensimmäisen lähteen lisäämisen jälkeen."
+  },
+  "dialogButtonConfirm": {
+    "en": "Confirm",
+    "fi": "Vahvista"
+  },
+  "dialogButtonCancel": {
+    "en": "Cancel",
+    "fi": "Peruuta"
   }
 }

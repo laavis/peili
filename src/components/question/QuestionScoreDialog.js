@@ -37,7 +37,6 @@ import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import AddIcon from '@material-ui/icons/Add';
-import InputIcon from '@material-ui/icons/Input';
 
 import * as inputDialog from './QuestionScoreInputDialog';
 
@@ -150,7 +149,8 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
 
     const value = await inputDialog.openDialog(
       currentSourceId,
-      currentQuestionId
+      currentQuestionId,
+      !input.length
     );
 
     if (value) {
@@ -173,7 +173,8 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
 
     const value = await inputDialog.openDialog(
       currentSourceId,
-      currentQuestionId
+      currentQuestionId,
+      !input.length
     );
     if (value) {
       if (index === null) {
@@ -205,12 +206,11 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
         fullWidth
         fullHeight
       >
-        <DialogTitle id="input-dialog-title">Score</DialogTitle>
+        <DialogTitle id="input-dialog-title">{l`questionScoreValueTitle`}</DialogTitle>
         <DialogContent>
           <DialogContentText id="input-dialog-description">
             <Typography variant="body2">
-              Select a value for this score. It can come from a single source,
-              or multiple combined with mathematical operators.
+              {l`questionScoreValueDescription`}
             </Typography>
           </DialogContentText>
 
@@ -251,7 +251,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                     </ListItemIcon>
                     <ListItemText
                       primary={`${primary}.${secondary || 0}`}
-                      secondary="Static value"
+                      secondary={l`questionScoreValueStatic`}
                     />
                     <ListItemSecondaryAction>
                       <IconButton
@@ -288,7 +288,11 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                     )}
                   </ListItemIcon>
                   <ListItemText
-                    primary={secondary === 'score' ? 'Score' : score[0].value}
+                    primary={
+                      secondary === 'score'
+                        ? l`questionScoreSourceDynamicDefaultTitle`
+                        : score[0].value
+                    }
                     secondary={`${question.index + 1}. ${question.title}`}
                   />
 
@@ -330,15 +334,15 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                 onClick={handleAddSourceClick(null)}
               >
                 {input.length
-                  ? 'Combine with another Source'
-                  : 'Select First Source'}
+                  ? l`questionScoreValueCreateButton`
+                  : l`questionScoreValueCreateButtonFirst`}
               </Button>
             </ListItem>
           </List>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose('cancel')} color="primary">
-            Cancel
+            {l`dialogButtonCancel`}
           </Button>
           <Button
             onClick={handleClose('confirm')}
@@ -346,7 +350,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
             color="primary"
             autoFocus
           >
-            Confirm
+            {l`dialogButtonConfirm`}
           </Button>
         </DialogActions>
       </Dialog>

@@ -29,6 +29,11 @@ import { handleSurveyQuestionUpdate } from './QuestionUtil';
 import { openDialog } from './QuestionScoreDialog';
 import QuestionScoreSourceDialog, * as sourceDialog from './QuestionScoreSourceDialog';
 
+import Translation from './questionLocale.json';
+import Locale from '../Locale';
+
+const l = Locale(Translation);
+
 const useStyles = makeStyles(theme => ({
   statement: {
     borderColor: '#565AD7',
@@ -143,11 +148,15 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
                       props.icon = (
                         <ArrowForwardIcon className={classes.value} />
                       );
+
+                      const labelParts = l`questionScoreVariable`.split(
+                        'SCORE'
+                      );
                       props.label = (
                         <>
-                          Set{' '}
-                          <span className={classes.label}>{point.value}</span>{' '}
-                          as
+                          {labelParts[0]}
+                          <span className={classes.label}>{point.value}</span>
+                          {labelParts[1]}
                         </>
                       );
                       props.color = 'primary';
@@ -164,10 +173,8 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
                         props.onClick = handleValueUpdate(p, i);
                       }
 
-                      console.log('point', point);
-
                       if (!point.value.length) {
-                        props.label = 'Pick Value';
+                        props.label = l`questionScorePickValue`;
                         props.color = 'secondary';
                       } else {
                         const parts = point.value[0].split('.');
@@ -178,13 +185,13 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
                           const position = question.index + 1;
                           const name =
                             parts[2] === 'score'
-                              ? 'Score'
+                              ? l`questionScoreSourceDynamicDefaultTitle`
                               : question.source.find(
                                   x => x[0].id === parts[2]
                                 )[0].value;
 
                           props.label = locked
-                            ? 'Answer "Score"'
+                            ? l`questionScoreSourceDynamicDefaultTitle`
                             : `${position}. ${name}`;
                         } else {
                           props.label = `${parts[1]}.${parts[2] || 0}`;
@@ -253,7 +260,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
 
           <Chip
             icon={<AddIcon />}
-            label="Create Custom Score"
+            label={l`questionScoreVariableCreateButton`}
             onClick={handleMenuClose('variable')}
             // onDelete={() => {}}
             variant="outlined"

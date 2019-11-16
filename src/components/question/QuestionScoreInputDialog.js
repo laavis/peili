@@ -12,6 +12,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import InfoIcon from '@material-ui/icons/Info';
 
 import Radio from '@material-ui/core/Radio';
 
@@ -26,7 +28,10 @@ import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import Typography from '@material-ui/core/Typography';
+import Translation from './questionLocale.json';
+import Locale from '../Locale';
+
+const l = Locale(Translation);
 
 let setOpenState = null;
 let currentSourceId = null;
@@ -36,6 +41,7 @@ let setSectionState = null;
 let setSourceState = null;
 let setValueState = null;
 let resolveDialog = null;
+let isFirst = false;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflow: 'auto',
-    height: 250
+    maxHeight: 250
   },
   listSection: {
     backgroundColor: 'inherit'
@@ -64,6 +70,17 @@ const useStyles = makeStyles(theme => ({
   sectionInput: {
     marginTop: theme.spacing(1),
     paddingLeft: theme.spacing(3.9)
+  },
+  infoSection: {
+    display: 'flex',
+    marginTop: theme.spacing(2),
+    color: theme.palette.text.secondary
+  },
+  infoIcon: {
+    width: 16,
+    height: 16,
+    marginRight: theme.spacing(1),
+    fill: theme.palette.primary.main
   }
 }));
 
@@ -82,13 +99,14 @@ const closeDialog = action => {
   }
 };
 
-const openDialog = (id = null, questionId = null) =>
+const openDialog = (id = null, questionId = null, first = false) =>
   new Promise(resolve => {
     setContentState(questionId ? [questionId] : []);
     setSectionState(null);
     setSourceState(null);
     setValueState(null);
 
+    isFirst = first;
     currentSourceId = id;
     currentQuestionId = questionId;
     resolveDialog = resolve;
@@ -107,7 +125,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
   const [value, setValue] = React.useState(null);
 
   const handleValueChange = event => {
-    setValue(Number(event.target.value));
+    setValue(!event.target.value ? null : Number(event.target.value));
 
     if (selectedSection !== 'static') {
       setSelectedSection('static');
@@ -185,7 +203,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
       fullWidth
       fullHeight
     >
-      <DialogTitle id="input-dialog-title">Select Source</DialogTitle>
+      <DialogTitle id="input-dialog-title">{l`questionScoreSourceTitle`}</DialogTitle>
       <DialogContent>
         <FormControlLabel
           value="source"
@@ -195,7 +213,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
               onChange={handleRadioButtonToggle('source')}
             />
           }
-          label="Select from existing sources"
+          label={l`questionScoreSourceDynamicRadio`}
         />
 
         <Box
@@ -254,8 +272,8 @@ const QuestionScoreInputDialog = ({ survey }) => {
                       </ListItemIcon>
                       <ListItemText
                         id={`question-${question.id}-score-text`}
-                        primary="Answer Score"
-                        secondary="Default score from answers"
+                        primary={l`questionScoreSourceDynamicDefaultTitle`}
+                        secondary={l`questionScoreSourceDynamicDefaultDescription`}
                       />
                       <ListItemSecondaryAction>
                         <Checkbox
@@ -296,7 +314,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
                           <ListItemText
                             id={`question-${question.id}-${source[0].id}-text`}
                             primary={source[0].value}
-                            secondary="Custom Score"
+                            secondary={l`questionScoreSourceDynamicCustomDescription`}
                           />
                           <ListItemSecondaryAction>
                             <Checkbox
@@ -336,7 +354,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
               onChange={handleRadioButtonToggle('static')}
             />
           }
-          label="Use a static value"
+          label={l`questionScoreSourceStaticRadio`}
         />
 
         <Box
@@ -346,7 +364,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
           <TextField
             autoFocus
             id="value"
-            label="Numeric Value"
+            label={l`questionScoreSourceStaticLabel`}
             fullWidth
             value={value}
             onChange={handleValueChange}
@@ -354,10 +372,19 @@ const QuestionScoreInputDialog = ({ survey }) => {
             type="number"
           />
         </Box>
+
+        {isFirst && (
+          <Box className={classes.infoSection}>
+            <InfoIcon className={classes.infoIcon} />
+            <Typography variant="body2">
+              {l`questionScoreSourceHelp`}
+            </Typography>
+          </Box>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose('cancel')} color="primary">
-          Cancel
+          {l`dialogButtonCancel`}
         </Button>
         <Button
           onClick={handleClose('confirm')}
@@ -365,7 +392,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
           color="primary"
           disabled={!isConfirmEnabled}
         >
-          Confirm
+          {l`dialogButtonConfirm`}
         </Button>
       </DialogActions>
     </Dialog>

@@ -9,6 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Translation from './questionLocale.json';
+import Locale from '../Locale';
+
+const l = Locale(Translation);
+
 let setOpenState = null;
 let setInputState = null;
 let resolveDialog = null;
@@ -80,20 +85,18 @@ const QuestionScoreSourceDialog = ({ survey, index, question }) => {
       fullWidth
       fullHeight
     >
-      <DialogTitle id="input-dialog-title">Create Score</DialogTitle>
+      <DialogTitle id="input-dialog-title">{l`questionScoreCreateTitle`}</DialogTitle>
       <DialogContent>
         <DialogContentText id="input-dialog-description">
           <Typography variant="body2">
-            This will add a score to this question with a specified or
-            calculated value. This score can then be used when calculating final
-            grades for this survey.
+            {l`questionScoreCreateDescription`}
           </Typography>
         </DialogContentText>
 
         <TextField
           autoFocus
           id="name"
-          label="Score Name"
+          label={l`questionScoreCreateNameLabel`}
           fullWidth
           value={name}
           onChange={handleNameChange}
@@ -102,7 +105,7 @@ const QuestionScoreSourceDialog = ({ survey, index, question }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose('cancel')} color="primary">
-          Cancel
+          {l`dialogButtonCancel`}
         </Button>
         <Button
           onClick={handleClose('confirm')}
@@ -110,7 +113,7 @@ const QuestionScoreSourceDialog = ({ survey, index, question }) => {
           color="primary"
           autoFocus
         >
-          Confirm
+          {l`dialogButtonConfirm`}
         </Button>
       </DialogActions>
     </Dialog>
