@@ -13,6 +13,13 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { openDialog } from './ConfirmationDialog';
+
+import Translation from './headerLocale.json';
+import Locale from './Locale';
+
+const l = Locale(Translation);
+
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1
@@ -65,6 +72,25 @@ export const Header = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLanguageChange = async () => {
+    const action = await openDialog({
+      description: l`languageDialogConfirm`
+    });
+
+    if (action === 'confirm') {
+      let lang = 'en';
+      if ((localStorage.getItem('lang') || 'en') === 'en') lang = 'fi';
+
+      localStorage.setItem('lang', lang);
+
+      window.location.reload();
+    }
+  };
+
+  const language = localStorage.getItem('lang') || 'en';
+  let languageIcon = '/english.png';
+  if (language === 'fi') languageIcon = '/finnish.png';
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -76,8 +102,8 @@ export const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Sign Out</MenuItem>
+      <MenuItem onClick={handleMenuClose}>{l`profileTitle`}</MenuItem>
+      <MenuItem onClick={handleMenuClose}>{l`signOutTitle`}</MenuItem>
     </Menu>
   );
 
@@ -92,6 +118,17 @@ export const Header = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem onClick={handleLanguageChange}>
+        <IconButton aria-label="language" color="inherit">
+          <img
+            src={languageIcon}
+            alt={l`languageName`}
+            width={24}
+            height={24}
+          />
+        </IconButton>
+        <p>{l`languageTitle`}</p>
+      </MenuItem>
       <Link to="/test" style={{ color: 'inherit', textDecoration: 'none' }}>
         <MenuItem>
           <IconButton aria-label="show 11 new notifications" color="inherit">
@@ -99,7 +136,7 @@ export const Header = () => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <p>Notifications</p>
+          <p>{l`notificationsTitle`}</p>
         </MenuItem>
       </Link>
       <MenuItem onClick={handleProfileMenuOpen}>
@@ -111,7 +148,7 @@ export const Header = () => {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>{l`profileTitle`}</p>
       </MenuItem>
     </Menu>
   );
@@ -130,6 +167,19 @@ export const Header = () => {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <IconButton
+              aria-label="language"
+              color="inherit"
+              onClick={handleLanguageChange}
+            >
+              <img
+                src={languageIcon}
+                alt={l`languageName`}
+                width={24}
+                height={24}
+              />
+            </IconButton>
+
             <Link to="/test" style={{ color: 'inherit' }}>
               <IconButton
                 aria-label="show 17 new notifications"

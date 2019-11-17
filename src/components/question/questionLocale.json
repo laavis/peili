@@ -7,6 +7,10 @@
     "en": "Question(s)",
     "fi": "Kysymys(tä)"
   },
+  "infoStateDraft": {
+    "en": "Draft",
+    "fi": "Luonnos"
+  },
   "infoStatePublished": {
     "en": "Published",
     "fi": "Julkaistu"
@@ -49,12 +53,12 @@
   },
   "questionsType": {
     "en": {
-      "selectOne": "Select One",
+      "selectOne": "Multiple Choice",
       "selectMultiple": "Select Multiple",
       "text": "Freetext"
     },
     "fi": {
-      "selectOne": "Valitse Yksi",
+      "selectOne": "Monivalinta",
       "selectMultiple": "Valitse Monta",
       "text": "Tekstikenttä"
     }
@@ -63,6 +67,14 @@
   "questionDetailsInfo": {
     "en": "Edit the title and type of the question",
     "fi": "Muokkaa kysymyksen tekstiä ja tyyppiä"
+  },
+  "questionCreateButtonFirst": {
+    "en": "Add First Question",
+    "fi": "Lisää Ensimmäinen Kysymys"
+  },
+  "questionCreateButton": {
+    "en": "Add Question",
+    "fi": "Lisää Kysymys"
   },
   "questionDetailsTitleLabel": "detailsTitleLabel",
   "questionDetailsTypeLabel": {
@@ -247,6 +259,10 @@
   "questionRouteTableEndSurvey": {
     "en": "End Survey",
     "fi": "Lopeta Kysely"
+  },
+  "dialogTitleDefault": {
+    "en": "Are you sure?",
+    "fi": "Oletko varma?"
   },
   "dialogButtonConfirm": {
     "en": "Confirm",

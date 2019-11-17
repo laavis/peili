@@ -6,8 +6,9 @@ import * as serviceWorker from './serviceWorker';
 
 import 'typeface-roboto';
 
-// The global language setting is saved here for now...
-localStorage.setItem('lang', 'fi');
+if (!localStorage.getItem('lang')) {
+  localStorage.setItem('lang', 'en');
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

@@ -20,7 +20,7 @@ import {
 
 import { QuestionOptionRoute } from './QuestionOptionRoute';
 
-import ConfirmationDialog, { openDialog } from './ConfirmationDialog';
+import { openDialog } from '../ConfirmationDialog';
 
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -279,8 +279,6 @@ export const QuestionChooseOne = ({ index, survey, question, setSurvey }) => {
           {l('questionOptionAddText')}
         </Button>
       </Box>
-
-      <ConfirmationDialog />
     </Box>
   );
 };

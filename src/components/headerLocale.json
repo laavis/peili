@@ -1,0 +1,26 @@
+{
+  "languageTitle": {
+    "en": "Language",
+    "fi": "Kieli"
+  },
+  "languageDialogConfirm": {
+    "en": "This will refresh the page. All unsaved work will be lost. Do you want to proceed?",
+    "fi": "Sivu päivitetään. Kaikki tallentamaton tieto tullaan poistamaan. Haluatko jatkaa?"
+  },
+  "profileTitle": {
+    "en": "Profile",
+    "fi": "Profiili"
+  },
+  "signOutTitle": {
+    "en": "Sign Out",
+    "fi": "Kirjaudu Ulos"
+  },
+  "notificationsTitle": {
+    "en": "Notifications",
+    "fi": "Ilmoitukset"
+  },
+  "languageName": {
+    "en": "English",
+    "fi": "Finnish"
+  }
+}

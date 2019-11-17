@@ -31,7 +31,7 @@ let data = null;
 
 (() => {
   data = {
-    title: 'Test Survey',
+    title: '',
     description: '',
     intro: '',
     questions: []
@@ -42,104 +42,6 @@ const enabledQuestionTypes = {
   selectOne: <RadioButtonCheckedIcon fontSize="small" />,
   text: <SubjectIcon fontSize="small" />
 };
-
-/*
-const data = {
-  title: 'Test Survey',
-  description: '',
-  intro: '',
-  questions: [
-    {
-      id: 'q1',
-      index: 0,
-      title: 'Tupakoitko tai käytätkö nuuskaa?',
-      type: 'selectOne',
-      defaultRoute: null,
-      options: [
-        {
-          name: 'En',
-          score: 0,
-          route: 'q3'
-        },
-        {
-          name: 'Tupakoin (käytän nuuskaa) satunnaisesti',
-          score: 1,
-          route: null
-        },
-        {
-          name: 'Tupakoin (käytän nuuskaa) päivittäin ',
-          score: 2,
-          route: null
-        }
-      ]
-    },
-    {
-      id: 'q2',
-      index: 1,
-      title: 'Minkä ikäisenä aloitit tupakoinnin?',
-      type: 'text',
-      defaultRoute: null,
-      options: [
-        {
-          name: 'Text',
-          score: 0,
-          route: null
-        }
-      ]
-    },
-    {
-      id: 'q3',
-      index: 2,
-      title:
-        'Oletko kokeillut tai käyttänyt päihteitä viimeisen vuoden aikana?',
-      type: 'selectMultiple',
-      defaultRoute: null,
-      options: [
-        {
-          name: 'En',
-          score: 0,
-          route: null
-        },
-        {
-          name:
-            'Alkoholia (ei huomioida maistamista esim. lusikallisen verran)',
-          score: 1,
-          route: null
-        },
-        {
-          name: 'Lääkkeitä, että saisin "pään sekaisin"',
-          score: 4,
-          route: null
-        },
-        {
-          name: 'Liuotinaineita (imppaaminen)',
-          score: 4,
-          route: null
-        },
-        {
-          name: 'Huumausaineita',
-          score: 4,
-          route: null,
-          other: true
-        },
-        {
-          name: 'Jotain muita päihteitä',
-          score: 4,
-          route: null,
-          other: true
-        },
-        {
-          name:
-            'Alkoholia ja edellä mainittuja aineita samaan aikaan (sekakäyttö)',
-          score: 4,
-          route: null,
-          other: true
-        }
-      ]
-    }
-  ]
-};
-*/
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -244,15 +146,14 @@ export const SurveyEdit = () => {
       <Grid container spacing={0}>
         <Grid item md={6} sm={12} xs={12}>
           <Typography variant="h3" className={classes.title}>
-            {survey.title}
+            {survey.title ? survey.title : l`infoText`}
           </Typography>
           <Typography
             variant="subtitle1"
             color="textSecondary"
             className={classes.subtitle}
           >
-            {survey.questions.length} {l('infoQuestions')} –{' '}
-            {l('infoStatePublished')}
+            {survey.questions.length} {l`infoQuestions`} – {l`infoStateDraft`}
           </Typography>
 
           <Box className={classes.section}>
@@ -330,10 +231,12 @@ export const SurveyEdit = () => {
                   color="primary"
                   className={classes.questionButton}
                   startIcon={<AddIcon />}
-                  size={isFirstQuestion ? 'large' : 'medium'}
+                  size="large"
                   onClick={handleQuestionCreate}
                 >
-                  {isFirstQuestion ? 'Add First Question' : 'Add Question'}
+                  {isFirstQuestion
+                    ? l`questionCreateButtonFirst`
+                    : l`questionCreateButton`}
                 </Button>
               </Box>
             </Box>

@@ -8,6 +8,8 @@ import { SurveyEdit } from './views/SurveyEdit';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 
+import ConfirmationDialog from './components/ConfirmationDialog';
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -23,21 +25,23 @@ const App = () => (
         <Header />
 
         <Switch>
-          <Route path='/test'>
+          <Route path="/test">
             <div>This is a test page.</div>
           </Route>
-          <Route path='/survey'>
+          <Route path="/survey">
             <SurveyEdit />
           </Route>
-          <Route path='/specialist'>
+          <Route path="/specialist">
             <SpecialistDashboard />
           </Route>
-          <Route path='/organization'>
+          <Route path="/organization">
             <OrganizationPanel />
           </Route>
         </Switch>
       </div>
     </Router>
+
+    <ConfirmationDialog />
   </ThemeProvider>
 );
 

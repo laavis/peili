@@ -6,6 +6,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import Translation from './question/questionLocale.json';
+import Locale from './Locale';
+
+const l = Locale(Translation);
+
 let setOpenState = null;
 let setContentState = null;
 let resolveDialog = null;
@@ -19,7 +24,7 @@ const closeDialog = action => {
   }
 };
 
-const openDialog = ({ title = 'Are you sure?', description }) =>
+const openDialog = ({ title = l`dialogTitleDefault`, description }) =>
   new Promise(resolve => {
     data = { title, description };
     setContentState(data);
@@ -53,7 +58,7 @@ const ConfirmationDialog = () => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose('cancel')} color="primary">
-          Cancel
+          {l`dialogButtonCancel`}
         </Button>
         <Button
           onClick={handleClose('confirm')}
@@ -61,7 +66,7 @@ const ConfirmationDialog = () => {
           color="primary"
           autoFocus
         >
-          Confirm
+          {l`dialogButtonConfirm`}
         </Button>
       </DialogActions>
     </Dialog>
