@@ -1,5 +1,4 @@
 import Box from '@material-ui/core/Box';
-import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -42,19 +41,15 @@ export const QuestionRouteTable = ({ index, survey }) => {
 
   return (
     <Box className={classes.routeSection}>
-      {/*
-      <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-        Route Table
-      </InputLabel>
-      */}
-
       <Table className={classes.table} size="small" aria-label="a dense table">
         {!!incomingRoutes.length && (
           <TableHead>
             <TableRow>
-              <TableCell width={16}>In</TableCell>
-              <TableCell width="50%">Question</TableCell>
-              <TableCell width="50%">Option</TableCell>
+              <TableCell
+                width={16}
+              >{l`questionRouteTableDirectionIn`}</TableCell>
+              <TableCell width="50%">{l`questionRouteTableSource`}</TableCell>
+              <TableCell width="50%">{l`questionRouteTableOption`}</TableCell>
             </TableRow>
           </TableHead>
         )}
@@ -81,12 +76,13 @@ export const QuestionRouteTable = ({ index, survey }) => {
                 <span>{x.question.index + 1}.</span> {x.question.title}
               </TableCell>
               <TableCell
+                style={{ color: x.option ? 'inherit' : 'rgba(0, 0, 0, 0.54)' }}
                 width="50%"
                 className={classes.routeCell}
                 component="th"
                 scope="row"
               >
-                {x.option ? x.option.name : 'Default'}
+                {x.option ? x.option.name : l`questionRouteTableDefault`}
               </TableCell>
             </TableRow>
           ))}
@@ -94,9 +90,11 @@ export const QuestionRouteTable = ({ index, survey }) => {
         {!!outgoingRoutes.length && (
           <TableHead>
             <TableRow>
-              <TableCell width={16}>Out</TableCell>
-              <TableCell width="50%">Option</TableCell>
-              <TableCell width="50%">Question</TableCell>
+              <TableCell
+                width={16}
+              >{l`questionRouteTableDirectionOut`}</TableCell>
+              <TableCell width="50%">{l`questionRouteTableOption`}</TableCell>
+              <TableCell width="50%">{l`questionRouteTableDestination`}</TableCell>
             </TableRow>
           </TableHead>
         )}
@@ -115,12 +113,13 @@ export const QuestionRouteTable = ({ index, survey }) => {
                 />
               </TableCell>
               <TableCell
+                style={{ color: x.option ? 'inherit' : 'rgba(0, 0, 0, 0.54)' }}
                 width="50%"
                 className={classes.routeCell}
                 component="th"
                 scope="row"
               >
-                {x.option ? x.option.name : 'Default'}
+                {x.option ? x.option.name : l`questionRouteTableDefault`}
               </TableCell>
               <TableCell
                 width="50%"
@@ -129,7 +128,7 @@ export const QuestionRouteTable = ({ index, survey }) => {
                 scope="row"
               >
                 {(x.option && x.option.route === 'end') || !x.question ? (
-                  'End Survey'
+                  l`questionRouteTableEndSurvey`
                 ) : (
                   <>
                     <span>{x.question.index + 1}.</span> {x.question.title}

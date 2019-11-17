@@ -220,6 +220,34 @@
     "en": "You can add, subtract, multiply and divide after this first source has been added.",
     "fi": "Voit summata, vähentää, kertoa ja jakaa ensimmäisen lähteen lisäämisen jälkeen."
   },
+  "questionRouteTableDirectionIn": {
+    "en": "In",
+    "fi": "Sisään"
+  },
+  "questionRouteTableDirectionOut": {
+    "en": "Out",
+    "fi": "Ulos"
+  },
+  "questionRouteTableDestination": {
+    "en": "Destination",
+    "fi": "Määränpää"
+  },
+  "questionRouteTableSource": {
+    "en": "Source",
+    "fi": "Lähde"
+  },
+  "questionRouteTableOption": {
+    "en": "Option",
+    "fi": "Vastausvaihtoehto"
+  },
+  "questionRouteTableDefault": {
+    "en": "Default",
+    "fi": "Oletusarvo"
+  },
+  "questionRouteTableEndSurvey": {
+    "en": "End Survey",
+    "fi": "Lopeta Kysely"
+  },
   "dialogButtonConfirm": {
     "en": "Confirm",
     "fi": "Vahvista"

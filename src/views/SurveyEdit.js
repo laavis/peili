@@ -1,18 +1,29 @@
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '../components/question/CachedInput';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Question } from '../components/question/Question';
-import { generateEmptyQuestion } from '../components/question/QuestionUtil';
+import { handleSurveyQuestionCreate } from '../components/question/QuestionUtil';
+import { SurveyScoreTable } from '../components/question/SurveyScoreTable';
+import AddIcon from '@material-ui/icons/Add';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import SubjectIcon from '@material-ui/icons/Subject';
 
 import Translation from '../components/question/questionLocale.json';
 import Locale from '../components/Locale';
 
 import QuestionScoreInputDialog from '../components/question/QuestionScoreInputDialog';
 import QuestionScoreDialog from '../components/question/QuestionScoreDialog';
+
+import { HelpBox } from '../components/question/HelpBox';
 
 const l = Locale(Translation);
 
@@ -23,13 +34,14 @@ let data = null;
     title: 'Test Survey',
     description: '',
     intro: '',
-    questions: [
-      generateEmptyQuestion(0, 'selectOne'),
-      generateEmptyQuestion(1, 'selectMultiple'),
-      generateEmptyQuestion(2, 'text')
-    ]
+    questions: []
   };
 })();
+
+const enabledQuestionTypes = {
+  selectOne: <RadioButtonCheckedIcon fontSize="small" />,
+  text: <SubjectIcon fontSize="small" />
+};
 
 /*
 const data = {
@@ -173,8 +185,18 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 16,
     marginBottom: 10
   },
+  sectionSubtitle: {
+    fontSize: '0.75em',
+    marginBottom: theme.spacing(1.5)
+  },
   sectionPaper: {
     padding: '0 16px 16px 16px'
+  },
+  sectionPaperScore: {
+    padding: theme.spacing(3)
+  },
+  questionButton: {
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -184,6 +206,8 @@ export const SurveyEdit = () => {
   const [survey, setSurvey] = React.useState(data);
 
   const [expanded, setExpanded] = React.useState(false);
+
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
 
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -200,6 +224,20 @@ export const SurveyEdit = () => {
   const handleIntroUpdate = intro => {
     setSurvey({ ...survey, intro });
   };
+
+  const handleQuestionCreate = event => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleQuestionTypeClose = type => () => {
+    setMenuAnchorEl(null);
+
+    if (type) {
+      setSurvey(handleSurveyQuestionCreate(survey, type));
+    }
+  };
+
+  const isFirstQuestion = !survey.questions.length;
 
   return (
     <div className={classes.root}>
@@ -280,6 +318,24 @@ export const SurveyEdit = () => {
                   handleExpandChange={handleChange}
                 />
               ))}
+
+              <Box
+                style={{
+                  display: 'flex',
+                  flexDirection: isFirstQuestion ? 'row' : 'row-reverse'
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.questionButton}
+                  startIcon={<AddIcon />}
+                  size={isFirstQuestion ? 'large' : 'medium'}
+                  onClick={handleQuestionCreate}
+                >
+                  {isFirstQuestion ? 'Add First Question' : 'Add Question'}
+                </Button>
+              </Box>
             </Box>
           </Box>
 
@@ -288,7 +344,27 @@ export const SurveyEdit = () => {
               Scoring & Grading
             </Typography>
 
-            <Paper className={classes.sectionPaper}>Coming soon...</Paper>
+            <Paper className={classes.sectionPaperScore}>
+              <Typography variant="h6">Defined Scores</Typography>
+              <Typography variant="body2" className={classes.sectionSubtitle}>
+                See all defined scores from all questions in this survey
+              </Typography>
+
+              <SurveyScoreTable survey={survey} />
+
+              <HelpBox>
+                The values from scores with the "Saved" checkbox ticked will be
+                saved to the system after a user completes this survey. All
+                other values will be lost. The unsaved score values, however,
+                can still be used while calculating other score values.
+              </HelpBox>
+
+              <Typography variant="h6">Custom Scores</Typography>
+              <Typography variant="body2" className={classes.sectionSubtitle}>
+                Combine scores from questions into new custom scores with
+                logical and mathematical statements.
+              </Typography>
+            </Paper>
           </Box>
         </Grid>
         <Grid item md={6} sm={12} xs={12}></Grid>
@@ -296,6 +372,21 @@ export const SurveyEdit = () => {
 
       <QuestionScoreInputDialog survey={survey} />
       <QuestionScoreDialog survey={survey} />
+
+      <Menu
+        id="question-type-menu"
+        anchorEl={menuAnchorEl}
+        keepMounted
+        open={Boolean(menuAnchorEl)}
+        onClose={handleQuestionTypeClose(null)}
+      >
+        {Object.keys(enabledQuestionTypes).map(x => (
+          <MenuItem onClick={handleQuestionTypeClose(x)} key={x}>
+            <ListItemIcon>{enabledQuestionTypes[x]}</ListItemIcon>
+            <Typography variant="inherit">{l`questionsType`[x]}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
     </div>
   );
 };

@@ -1,21 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import FaceIcon from '@material-ui/icons/Face';
-import DoneIcon from '@material-ui/icons/Done';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import uuid from 'uuid/v4';
 
 import TrafficIcon from '@material-ui/icons/Traffic';
 import AttachmentIcon from '@material-ui/icons/Attachment';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AddIcon from '@material-ui/icons/Add';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
 import LockIcon from '@material-ui/icons/Lock';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
@@ -126,9 +119,9 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
               const locked = !!line[0].locked;
 
               return (
-                <Box className={classes.row}>
+                <Box className={classes.row} key={`line-${p}`}>
                   {line.map((point, i) => {
-                    const props = {};
+                    const props = { key: `point-${i}` };
                     const corner = {
                       left: !trailing,
                       right: true
@@ -229,6 +222,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
                     if (point.type === 'value' && point.value.length > 1) {
                       return (
                         <Badge
+                          key={`point-${i}-badge`}
                           badgeContent={
                             point.value.filter(
                               x => x.split('.')[0] !== 'operator'
@@ -275,71 +269,6 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
             variant="outlined"
           />
         </Box>
-
-        {/*
-        <Chip
-          icon={<ArrowForwardIcon className={classes.value} />}
-          label="Return"
-          onClick={() => {}}
-          style={{ borderRadius: '16px 0 0 16px' }}
-          // onDelete={() => {}}
-          className={classes.value}
-          color="primary"
-          // variant="outlined"
-        />
-        <Chip
-          icon={<AttachmentIcon className={classes.variable} />}
-          label="Score"
-          onClick={() => {}}
-          style={{ borderRadius: '0 16px 16px 0' }}
-          onDelete={() => {}}
-          className={classes.variable}
-          variant="outlined"
-        />
-      </Box>
-      {/*
-      <Box>
-        <Chip
-          icon={<TrafficIcon className={classes.statement} />}
-          label="If"
-          onClick={() => {}}
-          // onDelete={() => {}}
-          className={classes.statement}
-          variant="outlined"
-        />
-        <Chip
-          icon={<AttachmentIcon className={classes.variable} />}
-          label="Score"
-          onClick={() => {}}
-          // onDelete={() => {}}
-          className={classes.variable}
-          variant="outlined"
-        />
-        <Chip
-          icon={<TrafficIcon className={classes.statement} />}
-          label="Then"
-          onClick={() => {}}
-          // onDelete={() => {}}
-          className={classes.statement}
-          variant="outlined"
-        />
-        <Chip
-          icon={<CheckCircleOutlineIcon className={classes.value} />}
-          label="Return"
-          onClick={() => {}}
-          // onDelete={() => {}}
-          className={classes.value}
-          variant="outlined"
-        />
-      </Box>
-      <Chip
-        icon={<AddIcon />}
-        label="Add"
-        onClick={() => {}}
-        // onDelete={() => {}}
-        variant="outlined"
-      />
-      */}
       </Box>
 
       <Menu

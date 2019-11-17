@@ -6,7 +6,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
@@ -14,7 +13,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import EditIcon from '@material-ui/icons/Edit';
@@ -218,7 +216,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
             <ArrowDownwardIcon className={classes.helperArrow} />
           )}
 
-          <List component="nav" aria-label="main mailbox folders">
+          <List component="nav" aria-label="source">
             {input.map((value, i) => {
               const parts = value.split('.');
               const type = parts[0];
@@ -230,7 +228,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                 const icon = mathIconList[primary];
 
                 return (
-                  <ListItem button onClick={handleMenuClick(i)}>
+                  <ListItem button onClick={handleMenuClick(i)} key={i}>
                     <ListItemIcon>
                       <Icon path={icon} size={1} className={classes.mdi} />
                     </ListItemIcon>
@@ -241,7 +239,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
 
               if (type === 'static') {
                 return (
-                  <ListItem button onClick={handleAddSourceClick(i)}>
+                  <ListItem button onClick={handleAddSourceClick(i)} key={i}>
                     <ListItemIcon>
                       <Icon
                         path={mdiCalculator}
@@ -279,7 +277,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
               const score = question.source.find(x => x[0].id === secondary);
 
               return (
-                <ListItem button onClick={handleAddSourceClick(i)}>
+                <ListItem button onClick={handleAddSourceClick(i)} key={i}>
                   <ListItemIcon>
                     {secondary === 'score' ? (
                       <StarRoundedIcon />
@@ -356,7 +354,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
       </Dialog>
 
       <Menu
-        id="simple-menu"
+        id="operator-menu"
         anchorEl={menuAnchorEl}
         keepMounted
         open={Boolean(menuAnchorEl)}
@@ -364,7 +362,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
         style={{ zIndex: 2000 }}
       >
         {Object.keys(mathIconList).map(x => (
-          <MenuItem onClick={handleMenuClose(x)}>
+          <MenuItem onClick={handleMenuClose(x)} key={x}>
             <ListItemIcon>
               <Icon path={mathIconList[x]} size={1} className={classes.mdi} />
             </ListItemIcon>

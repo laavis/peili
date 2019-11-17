@@ -7,14 +7,12 @@ import AddIcon from '@material-ui/icons/Add';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
 
 import {
-  listPossibleRoutes,
-  getDefaultRouteNumber,
+  handleSurveyOptionCreate,
   handleSurveyOptionUpdate,
   handleSurveyOptionReorder,
   handleSurveyOptionRemove
@@ -24,12 +22,6 @@ import { QuestionOptionRoute } from './QuestionOptionRoute';
 
 import ConfirmationDialog, { openDialog } from './ConfirmationDialog';
 
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Select from '@material-ui/core/Select';
-
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
@@ -37,11 +29,6 @@ import Translation from './questionLocale.json';
 import Locale from '../Locale';
 
 const l = Locale(Translation);
-
-const typeTitle = {
-  chooseOne: 'Choose One',
-  chooseMultiple: 'Choose Multiple'
-};
 
 const useStyles = makeStyles(theme => ({
   section: {
@@ -165,6 +152,10 @@ export const QuestionChooseOne = ({ index, survey, question, setSurvey }) => {
     );
   };
 
+  const handleOptionCreate = () => {
+    setSurvey(handleSurveyOptionCreate(survey, index, question.type));
+  };
+
   const handleOptionReorder = (option, direction) => () => {
     if (direction !== -1 && direction !== 1) return;
     if (option === 0 && direction === 1) return;
@@ -274,29 +265,6 @@ export const QuestionChooseOne = ({ index, survey, question, setSurvey }) => {
               </IconButton>
             </Tooltip>
           </Box>
-          {/*
-          <Box>
-            <Button
-              color="primary"
-              size="small"
-              className={classes.optionButton}
-              startIcon={<SpellcheckIcon />}
-              onClick={handleOpen}
-            >
-              Score
-              <span className={classes.badge} />
-            </Button>
-            <Button
-              color="primary"
-              size="small"
-              className={classes.optionButton}
-              startIcon={<CallSplitIcon />}
-              onClick={handleOpen}
-            >
-              Route
-            </Button>
-          </Box>
-          */}
         </Box>
       ))}
 
@@ -306,6 +274,7 @@ export const QuestionChooseOne = ({ index, survey, question, setSurvey }) => {
           color="primary"
           className={classes.optionButton}
           startIcon={<AddIcon />}
+          onClick={handleOptionCreate}
         >
           {l('questionOptionAddText')}
         </Button>

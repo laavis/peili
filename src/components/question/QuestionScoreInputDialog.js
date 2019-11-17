@@ -28,6 +28,8 @@ import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
+import { HelpBox } from './HelpBox';
+
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 
@@ -70,17 +72,6 @@ const useStyles = makeStyles(theme => ({
   sectionInput: {
     marginTop: theme.spacing(1),
     paddingLeft: theme.spacing(3.9)
-  },
-  infoSection: {
-    display: 'flex',
-    marginTop: theme.spacing(2),
-    color: theme.palette.text.secondary
-  },
-  infoIcon: {
-    width: 16,
-    height: 16,
-    marginRight: theme.spacing(1),
-    fill: theme.palette.primary.main
   }
 }));
 
@@ -228,7 +219,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
           */}
 
             {questionList.map(question => (
-              <>
+              <Box key={`question-${question.id}`}>
                 <ListItem
                   button
                   onClick={toggleListOpen(question)}
@@ -337,7 +328,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
                       ))}
                   </List>
                 </Collapse>
-              </>
+              </Box>
             ))}
             {/*
             </ul>
@@ -373,14 +364,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
           />
         </Box>
 
-        {isFirst && (
-          <Box className={classes.infoSection}>
-            <InfoIcon className={classes.infoIcon} />
-            <Typography variant="body2">
-              {l`questionScoreSourceHelp`}
-            </Typography>
-          </Box>
-        )}
+        {isFirst && <HelpBox>{l`questionScoreSourceHelp`}</HelpBox>}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose('cancel')} color="primary">

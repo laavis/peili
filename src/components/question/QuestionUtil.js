@@ -149,7 +149,7 @@ export const handleSurveyQuestionCreate = (survey, type) => {
   let surveyUpdate = { ...survey };
   surveyUpdate.questions = [
     ...surveyUpdate.questions,
-    { ...generateEmptyQuestion(surveyUpdate.questions.length) }
+    { ...generateEmptyQuestion(surveyUpdate.questions.length, type) }
   ];
 
   return surveyUpdate;
@@ -176,6 +176,19 @@ export const handleSurveyQuestionReorder = (survey, a, b) => {
     ...x,
     index: i
   }));
+
+  return surveyUpdate;
+};
+
+export const handleSurveyOptionCreate = (survey, questionIndex, type) => {
+  let surveyUpdate = { ...survey };
+  let questionUpdate = { ...surveyUpdate.questions[questionIndex] };
+
+  questionUpdate.options.push(
+    OptionDefaults[type].one(questionUpdate.options.length)
+  );
+
+  surveyUpdate.questions[questionIndex] = questionUpdate;
 
   return surveyUpdate;
 };

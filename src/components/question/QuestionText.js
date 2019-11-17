@@ -1,43 +1,19 @@
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from './CachedInput';
 import Typography from '@material-ui/core/Typography';
-import AddIcon from '@material-ui/icons/Add';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 import SubjectIcon from '@material-ui/icons/Subject';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react';
 
-import {
-  listPossibleRoutes,
-  getDefaultRouteNumber,
-  handleSurveyOptionUpdate
-} from './QuestionUtil';
+import { handleSurveyOptionUpdate } from './QuestionUtil';
 
 import { QuestionOptionRoute } from './QuestionOptionRoute';
-
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Select from '@material-ui/core/Select';
-
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 
 const l = Locale(Translation);
-
-const typeTitle = {
-  chooseOne: 'Choose One',
-  chooseMultiple: 'Choose Multiple'
-};
 
 const useStyles = makeStyles(theme => ({
   section: {
