@@ -24,6 +24,9 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden'
   },
+  panel: {
+    width: '100%'
+  },
   header: {
     maxWidth: 'calc(100% - 70px)'
   },
@@ -43,6 +46,28 @@ const useStyles = makeStyles(theme => ({
     height: 20
     // backgroundColor: '#eee'
     //fill: '#fff'
+  },
+  list: {
+    margin: 0,
+    paddingLeft: 19,
+    paddingTop: 0,
+    paddingBottom: 0,
+    fontSize: '0.8em'
+  },
+  number: {
+    position: 'absolute',
+    left: -16,
+    backgroundColor: theme.palette.primary.main,
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    boxShadow:
+      '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
+    textAlign: 'center',
+    lineHeight: '32px',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff'
   }
 }));
 
@@ -72,37 +97,51 @@ export const Question = ({
         aria-controls="panel1bh-content"
         id="panel1bh-header"
       >
-        <Box className={classes.header}>
-          <Typography variant="h6" display="block" className={classes.title}>
-            {question.title}
-          </Typography>
-          <Typography variant="caption" display="block">
-            {questionTypes[question.type]}
-          </Typography>
+        <Box className={classes.number}>{index + 1}</Box>
+        <Box className={classes.panel}>
+          <Box className={classes.header}>
+            <Typography variant="h6" display="block" className={classes.title}>
+              {question.title}
+            </Typography>
+            <Typography variant="caption" display="block">
+              {questionTypes[question.type]}
+            </Typography>
 
-          <Box className={classes.statusIconContainer}>
-            {checkScoreStatus(question) && (
-              <SpellcheckIcon
-                style={{ fill: '#56B47C' }}
-                className={classes.statusIcon}
-              />
-            )}
-            {checkRouteStatus(question) && (
-              <CallSplitIcon
-                style={{ fill: '#CD5B5B' }}
-                className={classes.statusIcon}
-              />
-            )}
+            <Box className={classes.statusIconContainer}>
+              {checkScoreStatus(question) && (
+                <SpellcheckIcon
+                  style={{ fill: '#56B47C' }}
+                  className={classes.statusIcon}
+                />
+              )}
+              {checkRouteStatus(question) && (
+                <CallSplitIcon
+                  style={{ fill: '#CD5B5B' }}
+                  className={classes.statusIcon}
+                />
+              )}
+            </Box>
           </Box>
+          {!expanded && question.type === 'selectOne' && (
+            <Box>
+              <ul className={classes.list}>
+                {question.options.map(x => (
+                  <li>{x.name}</li>
+                ))}
+              </ul>
+            </Box>
+          )}
         </Box>
       </StyledExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <QuestionDetails
-          index={index}
-          survey={survey}
-          question={question}
-          setSurvey={setSurvey}
-        />
+        {expanded && (
+          <QuestionDetails
+            index={index}
+            survey={survey}
+            question={question}
+            setSurvey={setSurvey}
+          />
+        )}
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );

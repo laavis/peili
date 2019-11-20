@@ -9,6 +9,7 @@ import React from 'react';
 import Locale from '../Locale';
 import Translation from './questionLocale.json';
 import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
 import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
@@ -110,12 +111,18 @@ export const SurveyScoreTable = ({ survey }) => {
               </TableCell>
               <TableCell
                 width="10%"
+                defaultChecked={true}
                 className={classes.routeCell}
                 component="th"
                 scope="row"
                 align="right"
               >
-                [x]
+                <Checkbox
+                  value={x.source[0].id}
+                  inputProps={{
+                    'aria-label': 'save score'
+                  }}
+                />
               </TableCell>
             </TableRow>
           ))}

@@ -28,9 +28,8 @@ const App = () => (
           <Route path="/test">
             <div>This is a test page.</div>
           </Route>
-          <Route path="/survey">
-            <SurveyEdit />
-          </Route>
+          <Route path="/survey/:id" component={SurveyEdit} />
+          <Route path="/survey" component={SurveyEdit} />
           <Route path="/specialist">
             <SpecialistDashboard />
           </Route>

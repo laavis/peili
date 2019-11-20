@@ -10,26 +10,30 @@ const defaults = {
       id: uuid(),
       name: `${l('questionOptionDefaultName')} #${index + 1}`,
       score: index,
-      route: null
+      route: null,
+      isOther: false
     }),
     many: [
       {
         id: uuid(),
         name: `${l('questionOptionDefaultName')} #1`,
         score: 0,
-        route: null
+        route: null,
+        isOther: false
       },
       {
         id: uuid(),
         name: `${l('questionOptionDefaultName')} #2`,
         score: 1,
-        route: null
+        route: null,
+        isOther: false
       },
       {
         id: uuid(),
         name: `${l('questionOptionDefaultName')} #3`,
         score: 2,
-        route: null
+        route: null,
+        isOther: true
       }
     ]
   },

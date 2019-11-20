@@ -4,6 +4,10 @@ import React from 'react';
 export default ({ value, onChange, ...props }) => {
   const [cache, setCache] = React.useState(value);
 
+  React.useEffect(() => {
+    setCache(value);
+  }, [value]);
+
   const handleCacheUpdate = event => {
     setCache(event.target.value);
     if (props.select) onChange(event.target.value);

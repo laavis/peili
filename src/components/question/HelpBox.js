@@ -18,11 +18,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const HelpBox = ({ children }) => {
+export const HelpBox = ({ className = '', children }) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.infoSection}>
+    <Box className={`${classes.infoSection} ${className}`}>
       <InfoIcon className={classes.infoIcon} />
       <Typography variant="body2">{children}</Typography>
     </Box>

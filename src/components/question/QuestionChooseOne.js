@@ -10,6 +10,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import {
   handleSurveyOptionCreate,
@@ -70,6 +72,10 @@ const useStyles = makeStyles(theme => ({
   },
   optionAdvanced: {
     display: 'flex'
+  },
+  optionSecondary: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(0)
   },
   optionInput: {
     flex: 1,
@@ -132,6 +138,14 @@ export const QuestionChooseOne = ({ index, survey, question, setSurvey }) => {
     setSurvey(
       handleSurveyOptionUpdate(survey, index, option, {
         name
+      })
+    );
+  };
+
+  const handleOtherUpdate = option => event => {
+    setSurvey(
+      handleSurveyOptionUpdate(survey, index, option, {
+        isOther: event.target.checked
       })
     );
   };
@@ -232,6 +246,26 @@ export const QuestionChooseOne = ({ index, survey, question, setSurvey }) => {
                   value={x.route}
                   onChange={handleRouteUpdate(i)}
                   className={classes.optionInputSecondary}
+                />
+              </Box>
+              <Box className={classes.optionSecondary}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={x.isOther}
+                      onChange={handleOtherUpdate(i)}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                  label={
+                    <Typography variant="body2">
+                      Allow Explanation
+                      <Typography variant="caption" display="block">
+                        Show an optional text field when this option is picked
+                      </Typography>
+                    </Typography>
+                  }
                 />
               </Box>
             </Box>
