@@ -128,7 +128,7 @@ export const SurveyEdit = ({ match, history }) => {
   const classes = useStyles();
 
   const [survey, setSurvey] = React.useState({ ...data, id });
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState([]);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [presetMenuAnchorEl, setPresetMenuAnchorEl] = React.useState(null);
 
@@ -149,7 +149,18 @@ export const SurveyEdit = ({ match, history }) => {
   }
 
   const handleChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+    let expandedCache = [...expanded];
+    if (expandedCache.includes(panel)) {
+      if (!isExpanded) {
+        expandedCache.splice(expandedCache.indexOf(expandedCache), 1);
+      }
+    } else {
+      if (isExpanded) {
+        expandedCache.push(panel);
+      }
+    }
+
+    setExpanded([...expandedCache]);
   };
 
   const handleTitleUpdate = title => {
@@ -309,7 +320,7 @@ export const SurveyEdit = ({ match, history }) => {
                   survey={survey}
                   question={x}
                   setSurvey={setSurvey}
-                  expanded={expanded === i}
+                  expanded={expanded.includes(i)}
                   handleExpandChange={handleChange}
                 />
               ))}
@@ -343,7 +354,7 @@ export const SurveyEdit = ({ match, history }) => {
 
             <Box>
               <ExpansionPanel
-                expanded={expanded === 'definedScores'}
+                expanded={expanded.includes('definedScores')}
                 onChange={handleChange('definedScores')}
               >
                 <ExpansionPanelSummary
@@ -378,7 +389,7 @@ export const SurveyEdit = ({ match, history }) => {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
               <ExpansionPanel
-                expanded={expanded === 'customScores'}
+                expanded={expanded.includes('customScores')}
                 onChange={handleChange('customScores')}
               >
                 <ExpansionPanelSummary

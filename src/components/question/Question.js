@@ -52,7 +52,8 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 19,
     paddingTop: 0,
     paddingBottom: 0,
-    fontSize: '0.8em'
+    fontSize: '0.8em',
+    color: theme.palette.text.secondary
   },
   number: {
     position: 'absolute',
