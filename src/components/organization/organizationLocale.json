@@ -19,12 +19,24 @@
     "en": "Postal Code",
     "fi": "Postinumero"
   },
-  "deleteButtonText": {
-    "en": "Delete",
+  "removeText": {
+    "en": "Remove",
     "fi": "Poista"
   },
   "addLocationButtonText": {
     "en": "Add Location",
     "fi": "Lisää Toimipiste"
+  },
+  "removeLocationConfirmationTitle": {
+    "en": "Remove Location?",
+    "fi": "Poista toimipiste?"
+  },
+  "confirmationWarning": {
+    "en": "This action cannot be undone, are you sure?",
+    "fi": "Tätä toimintoa ei voi peruuttaa, oletko varma?"
+  },
+  "contactsHeader": {
+    "en": "Contacts",
+    "fi": "Yhteystiedot"
   }
 }

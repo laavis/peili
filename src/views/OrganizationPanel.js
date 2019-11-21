@@ -10,12 +10,16 @@ import DefaultImage from '../img/Image.png';
 import Button from '@material-ui/core/Button';
 
 // Components
-import {
-  Feeds,
-  Keywords,
-  Location,
-  TargetGroup
-} from '../components/organization';
+import { Feeds, Keywords, TargetGroup } from '../components/organization';
+
+import Locations from '../components/organization/Locations';
+import Contacts from '../components/organization/Contacts';
+
+// Localization
+import Locale from '../components/Locale';
+import Translation from '../components/organization/organizationLocale';
+
+const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -70,67 +74,25 @@ const useStyles = makeStyles(theme => ({
   sectionWrapper: {
     display: 'flex',
     flexDirection: 'column'
-  },
-  buttonAdd: {
-    width: 'fit-content',
-    alignSelf: 'flex-end'
-  },
-  hide: {
-    display: 'none'
   }
 }));
 
 export const OrganizationPanel = () => {
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(null);
-
   const [locations, setLocations] = React.useState([]);
 
   const [editable, setEditable] = React.useState(false);
 
-  React.useEffect(() => {
-    const storedLocations = JSON.parse(
-      localStorage.getItem('locations') || '[]'
-    );
-    setLocations(storedLocations);
-  }, []);
-
+  // Enables editing
   const handleEditClick = () => {
     setEditable(true);
   };
 
-  const handleOpen = index => isOpen => {
-    setOpen(isOpen ? index : null);
-  };
-
-  const handleAddClick = () => {
-    let lastIndex = locations.length;
-
-    setLocations([
-      ...locations,
-      {
-        country: 'FI',
-        city: '',
-        postalCode: '',
-        address: ''
-      }
-    ]);
-
-    setOpen(lastIndex);
-
-    console.log(locations);
-  };
-
+  // Save
   const handleSaveClick = () => {
     localStorage.setItem('locations', JSON.stringify(locations));
     setEditable(false);
-  };
-
-  const handleLocationChange = index => data => {
-    let newLocations = [...locations];
-    newLocations[index] = { ...newLocations[index], ...data };
-    setLocations(newLocations);
   };
 
   return (
@@ -138,24 +100,23 @@ export const OrganizationPanel = () => {
       <div className={classes.topSection}>
         <Grid className={classes.grid} container spacing={4}>
           <Grid item xs={12}>
-            <Typography variant="h5">Kohtaus Ry</Typography>
+            <Typography variant='h5'>Kohtaus Ry</Typography>
           </Grid>
           <Grid item xs={6}>
             <Grid container spacing={2}>
               <Grid item xs={4}>
                 <Card className={classes.profileImage}>
-                  <img alt="Organization Logo" src={DefaultImage} />
+                  <img alt='Organization Logo' src={DefaultImage} />
                 </Card>
               </Grid>
               <Grid item xs={8}>
                 <div>
-                  <Typography variant="subtitle2" gutterBottom>
+                  <Typography variant='subtitle2' gutterBottom>
                     Short Description
                   </Typography>
-                  <Typography variant="body1">
-                    Kohtaus ry on vuonna 2014 perustettu yhdistys, jonka
-                    tarkoituksena on vähentää nuorten aikuisten yksinäisyyttä ja
-                    syrjään jäämistä.
+                  <Typography variant='body1'>
+                    Kohtaus ry on vuonna 2014 perustettu yhdistys, jonka tarkoituksena on vähentää nuorten aikuisten
+                    yksinäisyyttä ja syrjään jäämistä.
                   </Typography>
                 </div>
               </Grid>
@@ -170,37 +131,15 @@ export const OrganizationPanel = () => {
         <Grid className={classes.grid} container spacing={4}>
           {/* Left Column */}
           <Grid item xs={12} md={6}>
-            <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>
-                Locations
-              </Typography>
-              {locations.map((x, i) => (
-                <Location
-                  {...x}
-                  key={i}
-                  open={open === i}
-                  editable={editable}
-                  handleChange={handleLocationChange(i)}
-                  handleOpen={handleOpen(i)}
-                />
-              ))}
-              <Button
-                className={editable ? classes.buttonAdd : classes.hide}
-                color="primary"
-                onClick={handleAddClick}
-              >
-                Add Location
-              </Button>
-            </div>
+            <Locations editable={editable} locations={locations} setLocations={setLocations} />
+            <Contacts />
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
             <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>
-                Target Groups
-              </Typography>
+              <Typography className={classes.sectionTitle}>Target Groups</Typography>
               <TargetGroup editable={editable} />
-              <Button className={classes.buttonAdd} color="primary">
+              <Button className={classes.buttonAdd} color='primary'>
                 Add Target Group
               </Button>
             </div>
@@ -219,15 +158,11 @@ export const OrganizationPanel = () => {
         <Fab
           onClick={editable ? handleSaveClick : handleEditClick}
           className={classes.fab}
-          color="primary"
-          variant="extended"
-          aria-label="save"
+          color='primary'
+          variant='extended'
+          aria-label='save'
         >
-          {editable ? (
-            <SaveIcon className={classes.extendedIcon} />
-          ) : (
-            <EditIcon className={classes.extendedIcon} />
-          )}
+          {editable ? <SaveIcon className={classes.extendedIcon} /> : <EditIcon className={classes.extendedIcon} />}
           {editable ? 'SAVE' : 'EDIT'}
         </Fab>
       </div>

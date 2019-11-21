@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Button
-} from '@material-ui/core';
+import { ExpansionPanelDetails, ExpansionPanelSummary, Button } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +10,11 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+
+import { openDialog } from '../ConfirmationDialog';
 
 // data
 import countries from '../../data/countries';
@@ -21,6 +22,9 @@ import cities from '../../data/cities';
 import Locale from '../Locale';
 import Translation from './organizationLocale';
 
+// Handles translation
+// usage: l('locationsHeader')
+// translation json objects can be found in the organizationLocale.json
 const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
@@ -29,6 +33,9 @@ const useStyles = makeStyles(theme => ({
   },
   expansionPanel: {
     padding: '0 1rem 0 1rem'
+  },
+  panelDetails: {
+    justifyContent: 'space-between'
   },
   summary: {
     display: 'flex',
@@ -53,18 +60,15 @@ const useStyles = makeStyles(theme => ({
   },
   selectFormCtrl: {
     width: '100%'
+  },
+  removeIconButton: {
+    width: 'fit-content',
+    height: 'fit-content',
+    alignSelf: 'flex-end'
   }
 }));
 
-export default ({
-  city,
-  country,
-  address,
-  editable,
-  open,
-  handleOpen,
-  handleChange
-}) => {
+export default ({ city, country, address, postalCode, editable, open, handleOpen, handleEdit, handleRemove }) => {
   const classes = useStyles();
 
   // Editable
@@ -77,48 +81,59 @@ export default ({
 
   // Country select
   const handleCountryChange = event => {
-    handleChange({ country: event.target.value });
+    handleEdit({ country: event.target.value });
   };
 
   // City select
   const handleCityChange = event => {
-    handleChange({ city: event.target.value });
+    handleEdit({ city: event.target.value });
   };
 
   // Address
   const handleAddressChange = event => {
-    handleChange({ address: event.target.value });
+    handleEdit({ address: event.target.value });
+  };
+
+  const handlePostalCodeChange = event => {
+    handleEdit({ postalCode: event.target.value });
+  };
+
+  // Opens the location remove confirmation panel
+  const handleRemoveDialog = async () => {
+    const action = await openDialog({
+      title: l('removeLocationConfirmationTitle'),
+      description: l('confirmationWarning')
+    });
+
+    if (action === 'confirm') {
+      handleRemove();
+    }
   };
   return (
     <div className={classes.wrapper}>
-      <ExpansionPanel
-        expanded={editable ? open : false}
-        onChange={handleExpandedChange}
-      >
+      <ExpansionPanel expanded={editable ? open : false} onChange={handleExpandedChange}>
         <ExpansionPanelSummary
           className={classes.expansionPanel}
           expandIcon={icon}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
+          aria-controls='panel1bh-content'
+          id='panel1bh-header'
         >
           <div className={classes.summary}>
-            <Typography className={classes.city} variant="overline">
+            <Typography className={classes.city} variant='overline'>
               {city}
             </Typography>
             <Typography className={classes.address}>{address}</Typography>
           </div>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={classes.panelDetails}>
           <FormControl className={classes.formControl}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <FormControl className={classes.selectFormCtrl}>
-                  <InputLabel id="location-select-country-label">
-                    {l('countrySelectLabel')}
-                  </InputLabel>
+                  <InputLabel id='location-select-country-label'>{l('countrySelectLabel')}</InputLabel>
                   <Select
                     className={classes.select}
-                    labelid="location-select-country-label"
+                    labelid='location-select-country-label'
                     value={country}
                     onChange={handleCountryChange}
                   >
@@ -132,12 +147,10 @@ export default ({
               </Grid>
               <Grid item xs={6}>
                 <FormControl className={classes.selectFormCtrl}>
-                  <InputLabel id="location-select-city-label">
-                    {l('citySelectLabel')}
-                  </InputLabel>
+                  <InputLabel id='location-select-city-label'>{l('citySelectLabel')}</InputLabel>
                   <Select
                     className={classes.select}
-                    labelid="location-select-city-label"
+                    labelid='location-select-city-label'
                     value={city}
                     onChange={handleCityChange}
                   >
@@ -153,7 +166,7 @@ export default ({
             <FormControl>
               <TextField
                 label={l('addressInputLabel')}
-                margin="normal"
+                margin='normal'
                 value={address}
                 onChange={handleAddressChange}
               />
@@ -163,15 +176,24 @@ export default ({
                 <FormControl>
                   <TextField
                     label={l('postalCodeInputLabel')}
-                    margin="normal"
+                    margin='normal'
+                    value={postalCode}
+                    onChange={handlePostalCodeChange}
                   />
                 </FormControl>
               </Grid>
             </Grid>
           </FormControl>
-          <div>
-            <Button color="error">{l('deleteButtonText')}</Button>
-          </div>
+          <Tooltip title={l('removeText')}>
+            <IconButton
+              className={classes.removeIconButton}
+              onClick={handleRemoveDialog}
+              aria-label={l('removeText')}
+              size='small'
+            >
+              <DeleteIcon fontSize='inherit' />
+            </IconButton>
+          </Tooltip>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
