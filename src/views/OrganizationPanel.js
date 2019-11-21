@@ -81,6 +81,7 @@ export const OrganizationPanel = () => {
   const classes = useStyles();
 
   const [locations, setLocations] = React.useState([]);
+  const [contacts, setContacts] = React.useState([]);
 
   const [editable, setEditable] = React.useState(false);
 
@@ -100,23 +101,24 @@ export const OrganizationPanel = () => {
       <div className={classes.topSection}>
         <Grid className={classes.grid} container spacing={4}>
           <Grid item xs={12}>
-            <Typography variant='h5'>Kohtaus Ry</Typography>
+            <Typography variant="h5">Kohtaus Ry</Typography>
           </Grid>
           <Grid item xs={6}>
             <Grid container spacing={2}>
               <Grid item xs={4}>
                 <Card className={classes.profileImage}>
-                  <img alt='Organization Logo' src={DefaultImage} />
+                  <img alt="Organization Logo" src={DefaultImage} />
                 </Card>
               </Grid>
               <Grid item xs={8}>
                 <div>
-                  <Typography variant='subtitle2' gutterBottom>
+                  <Typography variant="subtitle2" gutterBottom>
                     Short Description
                   </Typography>
-                  <Typography variant='body1'>
-                    Kohtaus ry on vuonna 2014 perustettu yhdistys, jonka tarkoituksena on vähentää nuorten aikuisten
-                    yksinäisyyttä ja syrjään jäämistä.
+                  <Typography variant="body1">
+                    Kohtaus ry on vuonna 2014 perustettu yhdistys, jonka
+                    tarkoituksena on vähentää nuorten aikuisten yksinäisyyttä ja
+                    syrjään jäämistä.
                   </Typography>
                 </div>
               </Grid>
@@ -131,15 +133,25 @@ export const OrganizationPanel = () => {
         <Grid className={classes.grid} container spacing={4}>
           {/* Left Column */}
           <Grid item xs={12} md={6}>
-            <Locations editable={editable} locations={locations} setLocations={setLocations} />
-            <Contacts />
+            <Locations
+              editable={editable}
+              locations={locations}
+              setLocations={setLocations}
+            />
+            <Contacts
+              editable={editable}
+              contacts={contacts}
+              setContacts={setContacts}
+            />
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
             <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>Target Groups</Typography>
+              <Typography className={classes.sectionTitle}>
+                Target Groups
+              </Typography>
               <TargetGroup editable={editable} />
-              <Button className={classes.buttonAdd} color='primary'>
+              <Button className={classes.buttonAdd} color="primary">
                 Add Target Group
               </Button>
             </div>
@@ -158,11 +170,15 @@ export const OrganizationPanel = () => {
         <Fab
           onClick={editable ? handleSaveClick : handleEditClick}
           className={classes.fab}
-          color='primary'
-          variant='extended'
-          aria-label='save'
+          color="primary"
+          variant="extended"
+          aria-label="save"
         >
-          {editable ? <SaveIcon className={classes.extendedIcon} /> : <EditIcon className={classes.extendedIcon} />}
+          {editable ? (
+            <SaveIcon className={classes.extendedIcon} />
+          ) : (
+            <EditIcon className={classes.extendedIcon} />
+          )}
           {editable ? 'SAVE' : 'EDIT'}
         </Fab>
       </div>

@@ -24,6 +24,11 @@ const styles = makeStyles(theme => ({
     fontWeight: 600,
     letterSpacing: '1.5px',
     lineHeight: 2
+  },
+  removeIconButton: {
+    width: 'fit-content',
+    height: 'fit-content',
+    alignSelf: 'flex-end'
   }
 }));
 

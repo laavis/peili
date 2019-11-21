@@ -16,10 +16,12 @@ export default ({ editable, locations, setLocations }) => {
 
   React.useEffect(() => {
     // get locations (or empty array if there are no locations) from local storage
-    const storedLocations = JSON.parse(localStorage.getItem('locations') || '[]');
+    const storedLocations = JSON.parse(
+      localStorage.getItem('locations') || '[]'
+    );
     // display retrieved locations on the screen
     setLocations(storedLocations);
-  }, []);
+  }, [setLocations]);
 
   // Handles opening of expandable cards
   const handleOpen = index => isOpen => {
@@ -60,7 +62,9 @@ export default ({ editable, locations, setLocations }) => {
 
   return (
     <Box className={classes.section}>
-      <Typography className={classes.sectionTitle}>{l('locationsHeader')}</Typography>
+      <Typography className={classes.sectionTitle}>
+        {l('locationsHeader')}
+      </Typography>
       {locations.map((location, index) => (
         <Location
           {...location}
@@ -72,7 +76,11 @@ export default ({ editable, locations, setLocations }) => {
           handleRemove={handleLocationRemove(index)}
         />
       ))}
-      <Button className={editable ? classes.buttonAdd : classes.hide} color='primary' onClick={handleAddLocation}>
+      <Button
+        className={editable ? classes.buttonAdd : classes.hide}
+        color="primary"
+        onClick={handleAddLocation}
+      >
         {l('addLocationButtonText')}
       </Button>
     </Box>

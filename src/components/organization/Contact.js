@@ -27,7 +27,7 @@ export default () => {
   return (
     <Box className={classes.wrapper}>
       <ExpansionPanel>
-        <ExpansionPanelSummary></ExpansionPanelSummary>
+        <ExpansionPanelSummary>:D</ExpansionPanelSummary>
       </ExpansionPanel>
     </Box>
   );
