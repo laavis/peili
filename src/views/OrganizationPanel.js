@@ -85,6 +85,8 @@ export const OrganizationPanel = () => {
 
   const [editable, setEditable] = React.useState(false);
 
+  const [changed, setChanged] = React.useState(false);
+
   // Enables editing
   const handleEditClick = () => {
     setEditable(true);
@@ -93,6 +95,8 @@ export const OrganizationPanel = () => {
   // Save
   const handleSaveClick = () => {
     localStorage.setItem('locations', JSON.stringify(locations));
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+    setChanged(false);
     setEditable(false);
   };
 
@@ -142,6 +146,8 @@ export const OrganizationPanel = () => {
               editable={editable}
               contacts={contacts}
               setContacts={setContacts}
+              changed={changed}
+              setChanged={setChanged}
             />
           </Grid>
           {/* Right Column */}

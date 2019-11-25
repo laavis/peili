@@ -1,5 +1,9 @@
 import React from 'react';
-import { ExpansionPanelDetails, ExpansionPanelSummary, Button } from '@material-ui/core';
+import {
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Button
+} from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +19,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 
 import { openDialog } from '../ConfirmationDialog';
+
+import globalStyles from './styles';
 
 // data
 import countries from '../../data/countries';
@@ -41,18 +47,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column'
   },
-  city: {
-    fontSize: '0.625rem', // 10px
-    fontWeight: 600,
-    letterSpacing: '1.5px',
-    lineHeight: 2
-  },
-  address: {
-    fontWeight: 600,
-    fontSize: '1.25rem', // 20px
-    letterSpacing: '0.15px',
-    lineHeight: 1
-  },
   formControl: {
     width: '80%',
     display: 'flex',
@@ -68,8 +62,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ city, country, address, postalCode, editable, open, handleOpen, handleEdit, handleRemove }) => {
+export default ({
+  city,
+  country,
+  address,
+  postalCode,
+  editable,
+  open,
+  handleOpen,
+  handleEdit,
+  handleRemove
+}) => {
   const classes = useStyles();
+  const globalClasses = globalStyles();
 
   // Editable
   const icon = editable ? <ExpandMoreIcon /> : null;
@@ -111,18 +116,23 @@ export default ({ city, country, address, postalCode, editable, open, handleOpen
   };
   return (
     <div className={classes.wrapper}>
-      <ExpansionPanel expanded={editable ? open : false} onChange={handleExpandedChange}>
+      <ExpansionPanel
+        expanded={editable ? open : false}
+        onChange={handleExpandedChange}
+      >
         <ExpansionPanelSummary
           className={classes.expansionPanel}
           expandIcon={icon}
-          aria-controls='panel1bh-content'
-          id='panel1bh-header'
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
         >
           <div className={classes.summary}>
-            <Typography className={classes.city} variant='overline'>
+            <Typography className={globalClasses.textCapitalizedSmall}>
               {city}
             </Typography>
-            <Typography className={classes.address}>{address}</Typography>
+            <Typography className={globalClasses.textEmphasis}>
+              {address}
+            </Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.panelDetails}>
@@ -130,10 +140,12 @@ export default ({ city, country, address, postalCode, editable, open, handleOpen
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <FormControl className={classes.selectFormCtrl}>
-                  <InputLabel id='location-select-country-label'>{l('countrySelectLabel')}</InputLabel>
+                  <InputLabel id="location-select-country-label">
+                    {l('countrySelectLabel')}
+                  </InputLabel>
                   <Select
                     className={classes.select}
-                    labelid='location-select-country-label'
+                    labelid="location-select-country-label"
                     value={country}
                     onChange={handleCountryChange}
                   >
@@ -147,10 +159,12 @@ export default ({ city, country, address, postalCode, editable, open, handleOpen
               </Grid>
               <Grid item xs={6}>
                 <FormControl className={classes.selectFormCtrl}>
-                  <InputLabel id='location-select-city-label'>{l('citySelectLabel')}</InputLabel>
+                  <InputLabel id="location-select-city-label">
+                    {l('citySelectLabel')}
+                  </InputLabel>
                   <Select
                     className={classes.select}
-                    labelid='location-select-city-label'
+                    labelid="location-select-city-label"
                     value={city}
                     onChange={handleCityChange}
                   >
@@ -166,7 +180,7 @@ export default ({ city, country, address, postalCode, editable, open, handleOpen
             <FormControl>
               <TextField
                 label={l('addressInputLabel')}
-                margin='normal'
+                margin="normal"
                 value={address}
                 onChange={handleAddressChange}
               />
@@ -176,7 +190,7 @@ export default ({ city, country, address, postalCode, editable, open, handleOpen
                 <FormControl>
                   <TextField
                     label={l('postalCodeInputLabel')}
-                    margin='normal'
+                    margin="normal"
                     value={postalCode}
                     onChange={handlePostalCodeChange}
                   />
@@ -189,9 +203,9 @@ export default ({ city, country, address, postalCode, editable, open, handleOpen
               className={classes.removeIconButton}
               onClick={handleRemoveDialog}
               aria-label={l('removeText')}
-              size='small'
+              size="small"
             >
-              <DeleteIcon fontSize='inherit' />
+              <DeleteIcon fontSize="inherit" />
             </IconButton>
           </Tooltip>
         </ExpansionPanelDetails>
