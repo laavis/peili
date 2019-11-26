@@ -18,7 +18,8 @@ import {
   Switch,
   RadioGroup,
   Radio,
-  Slider
+  Slider,
+  Checkbox
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
@@ -63,17 +64,12 @@ export default ({
 
   const [openState, setOpenState] = React.useState(false);
   const [criteriaMenuAnchorEl, setCriteriaMenuAnchorEl] = React.useState(null);
-  const [genderValue, setGenderValue] = React.useState('male');
-
-  const [criteriaType, setCriteriaType] = React.useState(null);
 
   const icon = editable ? <ExpandMoreIcon /> : null;
-  console.log(openState);
 
   const handleCheckedChange = event => {
     setOpenState({ openState: event.target.checked });
     handleEdit({ openService: openState });
-    console.log(openState);
   };
 
   const enabledCriterias = {
@@ -95,38 +91,79 @@ export default ({
   };
 
   const handleGenderChange = event => {
-    setGenderValue(event.target.value);
-    if (event.target.value === 'male') {
-      handleEdit({ requirements: { gender: { isMale: true } } });
+    setGenderValue(event.target.value === 'male');
+  };
+
+  const setGenderValue = isMale => {
+    const requirementsCache = requirements;
+    const genderIndex = requirementsCache.findIndex(x => x.type === 'gender');
+    if (genderIndex < 0) {
+      requirementsCache.push({ type: 'gender', isMale });
     } else {
-      handleEdit({ requirements: { gender: { isMale: false } } });
+      requirementsCache[genderIndex].isMale = isMale;
+    }
+
+    handleEdit({ requirements: requirementsCache });
+  };
+
+  const [ageValue, setAgeValue] = React.useState([18, 30]);
+
+  const setAgeValues = (min, max) => {
+    const requirementsCache = requirements;
+    const ageIndex = requirementsCache.findIndex(x => x.type === 'age');
+    if (ageIndex < 0) {
+      requirementsCache.push({ type: 'age', min, max });
+    } else {
+      requirementsCache[ageIndex].min = min;
+      requirementsCache[ageIndex].max = max;
     }
   };
 
-  const gender = () => {
+  const handleAgeChange = (event, newValue) => {
+    setAgeValue(newValue);
+    setAgeValues(newValue[0], newValue[1]);
+  };
+
+  const setKelaValue = isRequired => {
+    const requirementsCache = requirements;
+    const kelaIndex = requirementsCache.findIndex(x => x.type === 'kela');
+
+    console.log(requirementsCache);
+
+    if (kelaIndex < 0) {
+      requirementsCache.push({ type: 'kela', isRequired });
+    } else {
+      requirementsCache[kelaIndex].isRequired = isRequired;
+    }
+
+    handleEdit({ requirements: requirementsCache });
+  };
+
+  const gender = value => {
     return (
       <Box>
         <Typography className={globalClasses.textCapitalizedSmall}>
           {l('gender')}
         </Typography>
         <FormControl>
-          <RadioGroup value={genderValue} onChange={handleGenderChange}>
+          <RadioGroup
+            value={value ? 'male' : 'female'}
+            onChange={handleGenderChange}
+          >
             <FormControlLabel
               value="female"
               label="female"
-              control={<Radio />}
+              control={<Radio color="primary" />}
             />
-            <FormControlLabel value="male" label="male" control={<Radio />} />
+            <FormControlLabel
+              value="male"
+              label="male"
+              control={<Radio color="primary" />}
+            />
           </RadioGroup>
         </FormControl>
       </Box>
     );
-  };
-
-  const [ageValue, setAgeValue] = React.useState([18, 30]);
-
-  const handleAgeChange = (event, newValue) => {
-    setAgeValue(newValue);
   };
 
   const age = () => {
@@ -144,15 +181,43 @@ export default ({
     );
   };
 
+  const kela = value => {
+    return (
+      <Box>
+        <Typography className={globalClasses.textCapitalizedSmall}>
+          {l('serviceCriteriaKelaRehabilitee')}
+        </Typography>
+        <FormControl>
+          <FormControlLabel
+            label={l('serviceCriteriaKelaRehabilitee')}
+            control={
+              <Checkbox
+                checked={value}
+                onChange={setKelaValue}
+                value={value}
+                color="primary"
+              />
+            }
+          />
+        </FormControl>
+      </Box>
+    );
+  };
+
   const handleCloseAddCriteriaMenu = type => () => {
     setCriteriaMenuAnchorEl(null);
 
+    console.log(type);
+
     switch (type) {
       case 'gender':
-        setCriteriaType('gender');
+        setGenderValue(true);
         break;
       case 'age':
-        setCriteriaType('age');
+        setAgeValues(0, 1);
+        break;
+      case 'kelaRehabilitee':
+        setKelaValue(true);
         break;
       default:
         return;
@@ -166,18 +231,6 @@ export default ({
     });
 
     if (action === 'confirm') handleRemove();
-  };
-
-  const [kelaState, setKelaState] = React.useState(true);
-
-  const kela = () => {
-    return (
-      <Box>
-        <Typography className={globalClasses.textCapitalizedSmall}>
-          {l('serviceCriteriaKelaRehabilitee')}
-        </Typography>
-      </Box>
-    );
   };
 
   const isFirstRequirement = !requirements.length;
@@ -236,11 +289,11 @@ export default ({
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  {requirements.gender ? gender() : null}
-                  {criteriaType === 'gender' && !requirements.gender
-                    ? gender()
-                    : null}
-                  {criteriaType === 'age' && !requirements.age ? age() : null}
+                  {requirements.map(x => {
+                    if (x.type === 'gender') return gender(x.isMale);
+                    if (x.type === 'age') return age();
+                    if (x.type === 'kela') return kela(x.isRequired);
+                  })}
                   <Button
                     variant="contained"
                     color="primary"
