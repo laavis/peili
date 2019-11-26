@@ -5,17 +5,19 @@
 
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
 import { ExpansionPanelDetails, ExpansionPanelSummary } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Chip from '@material-ui/core/Chip';
 
-import { Targets } from './';
+import Translation from './organizationLocale';
+import Locale from '../Locale';
+const l = Locale(Translation);
+
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -23,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
     summary: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'row'
     },
     formControl: {
         margin: theme.spacing(1),
@@ -38,13 +40,49 @@ const useStyles = makeStyles(theme => ({
     },
     buttonAdd: {
         marginLeft: theme.spacing(2)
+    },
+    chip: {
+        margin: theme.spacing(0.5),
     }
 }));
 
 export default ({ editable }) => {
     const classes = useStyles();
-    const [age, setAge] = React.useState('');  
-    
+    const [keywords, setKeywords] = React.useState([]);
+
+    React.useEffect(() => {
+        // get keywords (or empty array if there are no keywords) from local storage
+        const storedKeywords = JSON.parse(
+            localStorage.getItem('keywords') || '[]'
+        );
+        // display retrieved keywords on the screen
+        setKeywords(storedKeywords);
+    }, [setKeywords]);
+
+    // Handle creating a keyword and adding it
+    const [text, setText] = React.useState('')
+    const handleKeywordChange = e => setText(e.target.value);
+    const handleAddKeyword = e => {
+        if(text === ''){
+            console.log('A keyword is required')
+        } else{
+            setKeywords([
+                ...keywords,
+                text
+            ]);
+            setText('')
+        }
+    }
+
+    // Handle chip deletion
+    const handleDelete = chipToDelete => () => {
+        let newKeywords = [...keywords];
+        const chipIndex = newKeywords.findIndex(newKeywords => newKeywords === chipToDelete);        
+        newKeywords.splice(chipIndex, 1);
+        setKeywords(newKeywords);
+        
+    };
+
     // Editable
     const icon = editable ? <ExpandMoreIcon /> : null;
     const [expanded, setExpanded] = React.useState(false);
@@ -53,39 +91,38 @@ export default ({ editable }) => {
         setExpanded(isExpanded);
     };
 
-    const handleChange = e => {
-        setAge(e.target.value);
-    };
-
     return (
         <div className={classes.wrapper}>
             <ExpansionPanel expanded={editable ? expanded : false} onChange={handleExpandedChange}>
                 <ExpansionPanelSummary expandIcon={icon} aria-controls='panel1bh-content' id='panel1bh-header'>
                     <div className={classes.summary}>
-                        <Targets />
+                            {keywords.map(word => {                    
+                                return (
+                                <Chip
+                                    key={word.index}
+                                    label={word}
+                                    onDelete={handleDelete(word)}
+                                    className={classes.chip}
+                                />
+                                );
+                            })}
                     </div>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Grid container direction = "row">                    
+                    <Grid container direction = "row">
                         <FormControl className={classes.selectFormCtrl}>
-                            <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                                Keyword
-                            </InputLabel>
-                            <Select
-                            labelId="demo-simple-select-placeholder-label-label"
-                            id="demo-simple-select-placeholder-label"
-                            value={age}
-                            onChange={handleChange}
-                            displayEmpty
-                            className={classes.selectEmpty}
-                            >
-                            <MenuItem value="">
-                                <em>Help center</em>
-                            </MenuItem>
-                            </Select>
+                            <TextField
+                                label={l('addKeywordLabelText')}
+                                margin="normal"
+                                value={text}
+                                onChange={handleKeywordChange}
+                            />
                         </FormControl>
-                        <Button className={classes.buttonAdd} color='primary'>
-                            Add
+                        <Button 
+                            className={classes.buttonAdd} 
+                            color='primary'
+                            onClick={handleAddKeyword} >
+                            {l('addButtonText')}
                         </Button>
                     </Grid>
                 </ExpansionPanelDetails>
