@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Typography,
-  Button,
   Box,
   Grid,
   ExpansionPanel,
@@ -113,7 +112,7 @@ export default ({
                 className={globalClasses.detailsWrapper}
               >
                 <Grid item xs={4}>
-                  <FormControl className={globalClasses.selectFormControl}>
+                  <FormControl className={globalClasses.formControl}>
                     <InputLabel id="contact-select-method-label">
                       Method
                     </InputLabel>
@@ -131,7 +130,7 @@ export default ({
                   </FormControl>
                 </Grid>
                 <Grid item xs={8}>
-                  <FormControl className={globalClasses.selectFormControl}>
+                  <FormControl className={globalClasses.formControl}>
                     <TextField
                       label="Contact"
                       value={contact}
@@ -140,7 +139,7 @@ export default ({
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl className={globalClasses.selectFormControl}>
+                  <FormControl className={globalClasses.formControl}>
                     <TextField
                       label="Internal Message"
                       multiline

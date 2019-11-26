@@ -25,7 +25,7 @@ const styles = makeStyles(theme => ({
   detailsWrapper: {
     marginBottom: '20px'
   },
-  selectFormControl: {
+  formControl: {
     width: '100%'
   },
   buttonAdd: {
@@ -60,6 +60,11 @@ const styles = makeStyles(theme => ({
     display: 'inline-block',
     marginLeft: '0.5rem',
     borderRadius: '100%'
+  },
+  expansionPanelRemoveActionContainer: {
+    display: 'flex',
+    alignSelf: 'flex-end',
+    justifyContent: 'flex-end'
   }
 }));
 

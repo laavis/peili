@@ -4,7 +4,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import { ExpansionPanelDetails, ExpansionPanelSummary } from '@material-ui/core';
+import {
+  ExpansionPanelDetails,
+  ExpansionPanelSummary
+} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -16,127 +19,144 @@ import Grid from '@material-ui/core/Grid';
 import { Targets } from './';
 
 const useStyles = makeStyles(theme => ({
-    wrapper: {
-        marginBottom: 8
-    },
-    summary: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        width: '100%'
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-    selectFormCtrl: {
-        margin: theme.spacing(1),
-        width: '45%'
-    }
+  wrapper: {
+    marginBottom: 8
+  },
+  summary: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    width: '100%'
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2)
+  },
+  selectFormCtrl: {
+    margin: theme.spacing(1),
+    width: '45%'
+  }
 }));
 
 export default ({ editable }) => {
-    const classes = useStyles();
-    const [age, setAge] = React.useState('');  
-    
-    // Editable
-    const icon = editable ? <ExpandMoreIcon /> : null;
-    const [expanded, setExpanded] = React.useState(false);
-    const handleExpandedChange = (event, isExpanded) => {
-        if (!editable) return;
-        setExpanded(isExpanded);
-    };
+  const classes = useStyles();
+  const [age, setAge] = React.useState('');
 
-    const handleChange = e => {
-        setAge(e.target.value);
-    };
+  // Editable
+  const icon = editable ? <ExpandMoreIcon /> : null;
+  const [expanded, setExpanded] = React.useState(false);
+  const handleExpandedChange = (event, isExpanded) => {
+    if (!editable) return;
+    setExpanded(isExpanded);
+  };
 
-    return (
-        <div className={classes.wrapper}>
-            <ExpansionPanel expanded={editable ? expanded : false} onChange={handleExpandedChange}>
-                <ExpansionPanelSummary expandIcon={icon} aria-controls='panel1bh-content' id='panel1bh-header'>
-                    <Grid container direction = "row">
-                        <FormControl required className={classes.selectFormCtrl}>
-                            <InputLabel id="demo-simple-select-required-label">Age</InputLabel>
-                            <Select
-                            labelId="demo-simple-select-required-label"
-                            id="demo-simple-select-required"
-                            value={age}
-                            onChange={handleChange}
-                            className={classes.selectEmpty}
-                            >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                            <FormHelperText>Required</FormHelperText>
-                        </FormControl>
-                    </Grid>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <Grid container direction = "row">                      
-                        <FormControl className={classes.selectFormCtrl}>
-                            <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                                From
-                            </InputLabel>
-                            <Select
-                            labelId="demo-simple-select-placeholder-label-label"
-                            id="demo-simple-select-placeholder-label"
-                            value={age}
-                            onChange={handleChange}
-                            displayEmpty
-                            className={classes.selectEmpty}
-                            >
-                            <MenuItem value={18}>18</MenuItem>
-                            <MenuItem value={22}>22</MenuItem>
-                            <MenuItem value={30}>30</MenuItem>
-                            </Select>
-                        </FormControl>                           
-                            
-                        <FormControl className={classes.selectFormCtrl}>
-                            <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                                To
-                            </InputLabel>
-                            <Select
-                            labelId="demo-simple-select-placeholder-label-label"
-                            id="demo-simple-select-placeholder-label"
-                            value={age}
-                            onChange={handleChange}
-                            displayEmpty
-                            className={classes.selectEmpty}
-                            >
-                            <MenuItem value={18}>18</MenuItem>
-                            <MenuItem value={22}>22</MenuItem>
-                            <MenuItem value={30}>30</MenuItem>
-                            </Select>
-                        </FormControl>
-                        
-                        <Grid item>
-                            <Targets />
-                        </Grid>
-                        
-                        <FormControl className={classes.selectFormCtrl}>
-                            <InputLabel id="demo-simple-select-placeholder-label-label">Add Target</InputLabel>
-                            <Select
-                            labelId="demo-simple-select-placeholder-label-label"
-                            id="demo-simple-select"
-                            value={age}
-                            onChange={handleChange}
-                            displayEmpty
-                            className={classes.selectEmpty}
-                            >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-        </div>
-    )
-}
+  const handleChange = e => {
+    setAge(e.target.value);
+  };
+
+  return (
+    <div className={classes.wrapper}>
+      <ExpansionPanel
+        expanded={editable ? expanded : false}
+        onChange={handleExpandedChange}
+      >
+        <ExpansionPanelSummary
+          expandIcon={icon}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Grid container direction="row">
+            <FormControl required className={classes.selectFormCtrl}>
+              <InputLabel id="demo-simple-select-required-label">
+                Age
+              </InputLabel>
+              <Select
+                labelid="demo-simple-select-required-label"
+                id="demo-simple-select-required"
+                value={age}
+                onChange={handleChange}
+                className={classes.selectEmpty}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+              <FormHelperText>Required</FormHelperText>
+            </FormControl>
+          </Grid>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Grid container direction="row">
+            <FormControl className={classes.selectFormCtrl}>
+              <InputLabel
+                shrink
+                id="demo-simple-select-placeholder-label-label"
+              >
+                From
+              </InputLabel>
+              <Select
+                labelid="demo-simple-select-placeholder-label-label"
+                id="demo-simple-select-placeholder-label"
+                value={age}
+                onChange={handleChange}
+                displayEmpty
+                className={classes.selectEmpty}
+              >
+                <MenuItem value={18}>18</MenuItem>
+                <MenuItem value={22}>22</MenuItem>
+                <MenuItem value={30}>30</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.selectFormCtrl}>
+              <InputLabel
+                shrink
+                id="demo-simple-select-placeholder-label-label"
+              >
+                To
+              </InputLabel>
+              <Select
+                labelid="demo-simple-select-placeholder-label-label"
+                id="demo-simple-select-placeholder-label"
+                value={age}
+                onChange={handleChange}
+                displayEmpty
+                className={classes.selectEmpty}
+              >
+                <MenuItem value={18}>18</MenuItem>
+                <MenuItem value={22}>22</MenuItem>
+                <MenuItem value={30}>30</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Grid item>
+              <Targets />
+            </Grid>
+
+            <FormControl className={classes.selectFormCtrl}>
+              <InputLabel id="demo-simple-select-placeholder-label-label">
+                Add Target
+              </InputLabel>
+              <Select
+                labelid="demo-simple-select-placeholder-label-label"
+                id="demo-simple-select"
+                value={age}
+                onChange={handleChange}
+                displayEmpty
+                className={classes.selectEmpty}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    </div>
+  );
+};

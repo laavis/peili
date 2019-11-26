@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Button, Box } from '@material-ui/core';
 
-import Contact from './Contact';
+import Service from './Service';
 
 import Locale from '../Locale';
 import Translation from './organizationLocale';
@@ -10,15 +10,15 @@ import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ editable, contacts, setContacts, changed, setChanged }) => {
+export default ({ editable, services, setServices, changed, setChanged }) => {
   const globalClasses = styles();
 
   const [open, setOpen] = React.useState(null);
 
   React.useEffect(() => {
-    const storedContacts = JSON.parse(localStorage.getItem('contacts') || '[]');
-    setContacts(storedContacts);
-  }, [setContacts]);
+    const storedServices = JSON.parse(localStorage.getItem('services') || '[]');
+    setServices(storedServices);
+  }, [setServices]);
 
   const handleOpen = index => isOpen => {
     setOpen(isOpen ? index : null);
@@ -26,51 +26,57 @@ export default ({ editable, contacts, setContacts, changed, setChanged }) => {
 
   const handleEdit = index => data => {
     setChanged(true);
-    let newContacts = [...contacts];
-    newContacts[index] = { ...newContacts[index], ...data };
-    setContacts(newContacts);
+    let newServices = [...services];
+    newServices[index] = { ...newServices[index], ...data };
+    setServices(newServices);
   };
 
-  const handleAddContact = () => {
-    let lastIndex = contacts.length;
+  const handleAdd = () => {
+    let lastIndex = services.length;
 
-    setContacts([
-      ...contacts,
+    setServices([
+      ...services,
       {
-        method: '',
-        contact: '',
-        internal_msg: ''
+        description: '',
+        openService: true,
+        requirements: []
       }
     ]);
 
     setOpen(lastIndex);
   };
 
+  const handleRemove = index => () => {
+    let newServices = [...services];
+    newServices.splice(index, 1);
+    setServices(newServices);
+  };
+
   return (
     <Box className={globalClasses.section}>
       <Typography className={globalClasses.sectionTitle}>
-        {l('contactsHeader')}
+        {l('servicesHeader')}
         <span
           className={changed ? globalClasses.unsavedChangesIcon : ''}
         ></span>
       </Typography>
-
-      {contacts.map((contact, index) => (
-        <Contact
-          {...contact}
+      {services.map((service, index) => (
+        <Service
+          {...service}
           key={index}
           editable={editable}
           open={open === index}
           handleOpen={handleOpen(index)}
           handleEdit={handleEdit(index)}
+          handleRemove={handleRemove(index)}
         />
       ))}
       <Button
         className={editable ? globalClasses.buttonAdd : globalClasses.hide}
         color="primary"
-        onClick={handleAddContact}
+        onClick={handleAdd}
       >
-        {l('addLocationButtonText')}
+        {l('addServiceButtonText')}
       </Button>
     </Box>
   );
