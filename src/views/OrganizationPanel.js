@@ -14,6 +14,7 @@ import { Feeds, Keywords, TargetGroup } from '../components/organization';
 
 import Locations from '../components/organization/Locations';
 import Contacts from '../components/organization/Contacts';
+import Services from '../components/organization/Services';
 
 // Localization
 import Locale from '../components/Locale';
@@ -82,7 +83,7 @@ export const OrganizationPanel = () => {
 
   const [locations, setLocations] = React.useState([]);
   const [contacts, setContacts] = React.useState([]);
-  // const [keywords, setKeywords] = React.useState([]);
+  const [services, setServices] = React.useState([]);
 
   const [editable, setEditable] = React.useState(false);
 
@@ -90,6 +91,8 @@ export const OrganizationPanel = () => {
 
   // Enables editing
   const handleEditClick = () => {
+    localStorage.setItem('services', JSON.stringify(services));
+
     setEditable(true);
   };
 
@@ -97,6 +100,7 @@ export const OrganizationPanel = () => {
   const handleSaveClick = () => {
     localStorage.setItem('locations', JSON.stringify(locations));
     localStorage.setItem('contacts', JSON.stringify(contacts));
+    localStorage.setItem('services', JSON.stringify(services));
     setChanged(false);
     setEditable(false);
   };
@@ -147,6 +151,13 @@ export const OrganizationPanel = () => {
               editable={editable}
               contacts={contacts}
               setContacts={setContacts}
+              changed={changed}
+              setChanged={setChanged}
+            />
+            <Services
+              editable={editable}
+              services={services}
+              setServices={setServices}
               changed={changed}
               setChanged={setChanged}
             />

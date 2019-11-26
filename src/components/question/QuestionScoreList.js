@@ -11,6 +11,7 @@ import Locale from '../Locale';
 import Translation from './questionLocale.json';
 import { openDialog } from './QuestionScoreDialog';
 import { handleSurveyQuestionUpdate } from './QuestionUtil';
+import { parseScore, SCORE_TYPE } from './Score';
 
 const l = Locale(Translation);
 
@@ -29,181 +30,142 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const parseSourceValue = ({ source, survey }) => {
-  if (source.type === 'set') {
-    return { ...source };
-  }
-
-  if (source.type === 'value') {
-    const inputList = [];
-
-    for (const input of source.value) {
-      const parts = input.split('.');
-
-      const value = {
-        type: parts[0],
-        source: parts[1],
-        value: parts[2]
-      };
-
-      if (value.type === 'question') {
-        value.source = survey.questions.find(x => x.id === value.source);
-      }
-
-      if (value.type === 'question' && value.value !== 'score') {
-        value.value = value.source.source.find(x => x[0].id === value.value);
-      }
-
-      inputList.push(value);
-    }
-
-    return { type: source.type, value: inputList };
-  }
-
-  throw new Error('Unknown identifier', source);
-};
-
 export const QuestionScoreList = ({
   survey,
   index,
   questionId,
-  sourceList,
+  scoreList,
   setSurvey
 }) => {
   const classes = useStyles();
 
-  const handleSourceUpdate = source => {
+  const handleScoreUpdate = score => {
     setSurvey(
       handleSurveyQuestionUpdate(survey, index, {
-        source
+        score
       })
     );
   };
 
-  const handleValueUpdate = (p, i) => async () => {
-    const value = await openDialog(
-      sourceList[p][0].id,
-      questionId,
-      sourceList[p][1].value
-    );
+  const handleValueUpdate = p => async () => {
+    const value = await openDialog(questionId, scoreList[p]);
+
     if (value) {
-      const dataCache = [...sourceList];
-      dataCache[p][i].value = value;
-      handleSourceUpdate([...dataCache]);
+      const dataCache = [...scoreList];
+      dataCache[p] = value;
+      handleScoreUpdate([...dataCache]);
     }
   };
 
-  let trailing = false;
+  return scoreList.map((line, p) => {
+    // const locked = !!line[0].locked;
 
-  return sourceList.map((line, p) => {
-    const locked = !!line[0].locked;
+    const scoreStepList = parseScore(line);
+    const labelParts = l`questionScoreVariable`.split('SCORE');
+
+    const actualStepCount = scoreStepList.steps.filter(
+      x => x.type !== SCORE_TYPE.OPERATOR && x.type !== SCORE_TYPE.COMPARATOR
+    ).length;
+    const hasBadge = actualStepCount > 1;
+    const hasContent = !!actualStepCount;
+    const isDefault = scoreStepList.id === 'score';
+
+    const currentQuestion = survey.questions.find(x => x.id === questionId);
+
+    let name = l`questionScorePickValue`;
+    if (hasContent && scoreStepList.steps[0].type === SCORE_TYPE.VALUE) {
+      if (scoreStepList.steps[0].from === null) {
+        name = scoreStepList.steps[0].value;
+      } else {
+        const question = survey.questions.find(
+          x => x.id === scoreStepList.steps[0].from
+        );
+        const score = parseScore(
+          question.score.find(
+            x => x[0].split('.')[1] === scoreStepList.steps[0].value
+          )
+        );
+
+        name = score.name;
+      }
+    }
+
+    if (hasBadge) {
+      name += '…';
+    }
+
+    const createAnswerScoreName = () => {
+      const answerList = [
+        ...new Set(currentQuestion.options.map(x => `${x.score}`))
+      ];
+      return (
+        answerList.slice(0, -1).join(',') +
+        ` ${l`questionScoreListOr`} ` +
+        answerList.slice(-1)
+      );
+    };
+
+    const chip = (
+      <Chip
+        icon={<AttachmentIcon className={classes.value} />}
+        label={isDefault ? createAnswerScoreName() : name}
+        style={{
+          borderRadius: '0 16px 16px 0'
+        }}
+        color={hasContent || isDefault ? 'primary' : 'secondary'}
+        variant="outlined"
+        onClick={isDefault ? null : handleValueUpdate(p)}
+        onDelete={isDefault ? null : () => {}}
+      />
+    );
 
     return (
       <Box className={classes.row} key={`line-${p}`}>
-        {line.map((point, i) => {
-          const props = { key: `point-${i}` };
-          const corner = {
-            left: !trailing,
-            right: true
-          };
-
-          const source = parseSourceValue({ source: point, survey });
-
-          if (source.type === 'set') {
-            props.icon = <ArrowForwardIcon className={classes.value} />;
-
-            const labelParts = l`questionScoreVariable`.split('SCORE');
-            props.label = (
-              <>
-                {labelParts[0]}
-                <span className={classes.label}>{source.value}</span>
-                {labelParts[1]}
-              </>
-            );
-            props.color = 'primary';
-
-            trailing = true;
+        <Chip
+          icon={<ArrowForwardIcon className={classes.value} />}
+          label={
+            <>
+              {labelParts[0]}
+              <span className={classes.label}>{scoreStepList.name}</span>
+              {labelParts[1]}
+            </>
           }
+          style={{
+            borderRadius: '16px 0 0 16px'
+          }}
+          color="primary"
+        />
+        {hasBadge && (
+          <Badge badgeContent={actualStepCount} max={9} color="secondary">
+            {chip}
+          </Badge>
+        )}
+        {!hasBadge && chip}
+        {/*
+          if (firstValue.type === 'question') {
+            // Input
+            let name = l`questionScoreSourceDynamicDefaultTitle`;
+            if (firstValue.value !== 'score') {
+              name = firstValue.value[0].value;
+            }
 
-          if (source.type === 'value') {
-            props.icon = <AttachmentIcon className={classes.value} />;
-            props.color = 'primary';
-            props.variant = 'outlined';
-
+            let label = l`questionScoreSourceDynamicDefaultTitle`;
             if (!locked) {
-              props.onClick = handleValueUpdate(p, i);
+              label = `${firstValue.source.index + 1}. ${name}`;
             }
 
-            if (!source.value.length) {
-              props.label = l`questionScorePickValue`;
-              props.color = 'secondary';
-            } else {
-              const firstValue = source.value[0];
-
-              if (firstValue.type === 'question') {
-                // Input
-                let name = l`questionScoreSourceDynamicDefaultTitle`;
-                if (firstValue.value !== 'score') {
-                  name = firstValue.value[0].value;
-                }
-
-                let label = l`questionScoreSourceDynamicDefaultTitle`;
-                if (!locked) {
-                  label = `${firstValue.source.index + 1}. ${name}`;
-                }
-
-                props.label = label;
-              } else {
-                // Static value
-                props.label = `${firstValue.source}.${firstValue.value || 0}`;
-              }
-
-              if (source.value.length > 1) {
-                props.label += ' …';
-              }
-            }
-
-            trailing = false;
-          }
-
-          if (!locked && i === line.length - 1) {
-            props.onDelete = () => {};
-          }
-
-          if (trailing) {
-            corner.right = false;
-          }
-
-          const chip = (
-            <Chip
-              {...props}
-              style={{
-                borderRadius: `${corner.left ? '16px' : 0} ${
-                  corner.right ? '16px' : 0
-                } ${corner.right ? '16px' : 0} ${corner.left ? '16px' : 0}`
-              }}
-            />
-          );
-
-          if (point.type === 'value' && point.value.length > 1) {
-            return (
-              <Badge
-                key={`point-${i}-badge`}
-                badgeContent={
-                  point.value.filter(x => x.split('.')[0] !== 'operator').length
-                }
-                max={9}
-                color="secondary"
-              >
-                {chip}
-              </Badge>
-            );
+            props.label = label;
           } else {
-            return chip;
+            // Static value
+            props.label = `${firstValue.source}.${firstValue.value || 0}`;
           }
-        })}
 
-        {locked && (
+          if (source.value.length > 1) {
+            props.label += ' …';
+          }
+        */}
+
+        {isDefault && (
           <Tooltip
             title={`Every question will output the default "Score" source`}
             placement="right"

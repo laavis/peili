@@ -62,5 +62,69 @@
   "addButtonText": {
     "en": "Add",
     "fi": ""
+  },
+  "servicesHeader": {
+    "en": "Services",
+    "fi": "Palvelut"
+  },
+  "serviceCriteriaKelaRehabilitee": {
+    "en": "KELA-rehabilitee",
+    "fi": "KELA-kuntoutuja"
+  },
+  "addServiceButtonText": {
+    "en": "Add Service",
+    "fi": "Lisää palvelu"
+  },
+  "age": {
+    "en": "Age",
+    "fi": "Ikä"
+  },
+  "gender": {
+    "en": "Gender",
+    "fi": "Sukupuoli"
+  },
+  "criteria": {
+    "en": "Criteria",
+    "fi": "Kriteeri"
+  },
+  "inputDescription": {
+    "en": "Description",
+    "fi": "Kuvaus"
+  },
+  "serviceClosedRadioButtonHelper": {
+    "en": "Closed Service",
+    "fi": "Suljettu palvelu"
+  },
+  "serviceOpen": {
+    "en": "Open for everybody",
+    "fi": "Avoin kaikille"
+  },
+  "serviceClosed": {
+    "en": "Closed Service",
+    "fi": "Suljettu Palvelu"
+  },
+  "serviceCriteriaAddFirstButton": {
+    "en": "Add First Criteria",
+    "fi": "Lisää ensimmäinen kriteeri"
+  },
+  "serviceCriteriaAddButton": {
+    "en": "Add Criteria",
+    "fi": "Lisää kriteeri"
+  },
+  "serviceCriteriaType": {
+    "en": {
+      "age": "Age",
+      "gender": "Gender",
+      "kelaRehabilitee": "KELA-rehabilitee"
+    },
+    "fi": {
+      "age": "Ikä",
+      "gender": "Sukupuoli",
+      "kelaRehabilitee": "KELA-kuntoutuja"
+    }
+  },
+  "removeServiceConfirmationTitle": {
+    "en": "Remove Service?",
+    "fi": "Poista palvelu?"
   }
 }

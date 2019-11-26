@@ -89,6 +89,8 @@ export const Question = ({
 }) => {
   const classes = useStyles();
 
+  const contentRef = React.useRef(null);
+
   const questionTypes = l('questionsType');
 
   return (
@@ -134,14 +136,17 @@ export const Question = ({
           )}
         </Box>
       </StyledExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        {expanded && (
+      <ExpansionPanelDetails ref={contentRef}>
+        {(expanded || !contentRef.current) && (
           <QuestionDetails
             index={index}
             survey={survey}
             question={question}
             setSurvey={setSurvey}
           />
+        )}
+        {!expanded && contentRef.current && (
+          <Box style={{ height: contentRef.current.offsetHeight }} />
         )}
       </ExpansionPanelDetails>
     </ExpansionPanel>

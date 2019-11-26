@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Button
+  ExpansionPanelSummary
 } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { makeStyles } from '@material-ui/core/styles';

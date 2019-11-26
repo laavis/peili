@@ -41,6 +41,8 @@ import * as inputDialog from './QuestionScoreInputDialog';
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 
+import { parseScore, createOperator, SCORE_TYPE, OPERATOR_TYPE } from './Score';
+
 const l = Locale(Translation);
 
 const mathIconList = {
@@ -51,7 +53,7 @@ const mathIconList = {
 };
 
 let setOpenState = null;
-let currentSourceId = null;
+let currentScoreId = null;
 let currentQuestionId = null;
 let setContentState = null;
 let resolveDialog = null;
@@ -103,11 +105,14 @@ const closeDialog = data => {
   }
 };
 
-const openDialog = (id = null, questionId = null, list = []) =>
+const openDialog = (questionId = null, score) =>
   new Promise(resolve => {
-    setContentState([...list]);
-    currentSourceId = id;
+    setContentState(score);
+    const scoreStep = parseScore(score);
+    currentScoreId = scoreStep.id;
+
     currentQuestionId = questionId;
+
     resolveDialog = resolve;
     setOpenState(true);
   });
@@ -126,6 +131,8 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
 
   const mathOperatorTexts = l('questionScoreOperatorText');
 
+  const scoreStep = parseScore(input);
+
   const handleMenuClick = (index = null) => event => {
     menuEditIndex = index;
     setMenuAnchorEl(event.currentTarget);
@@ -137,18 +144,18 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
 
     if (menuEditIndex !== null) {
       const inputCache = [...input];
-      inputCache[menuEditIndex] = `operator.${action}`;
+      inputCache[menuEditIndex] = createOperator(action);
 
       setInput([...inputCache]);
       return;
     }
 
-    const inputCache = [...input, `operator.${action}`];
+    const inputCache = [...input, createOperator(action)];
 
     const value = await inputDialog.openDialog(
-      currentSourceId,
+      currentScoreId,
       currentQuestionId,
-      !input.length
+      input.length <= 1
     );
 
     if (value) {
@@ -165,15 +172,16 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
   };
 
   const handleAddSourceClick = (index = null) => async event => {
-    if (index === null && input.length > 0) {
+    if (index === null && scoreStep.steps.length > 0) {
       return handleMenuClick(null)(event);
     }
 
     const value = await inputDialog.openDialog(
-      currentSourceId,
+      currentScoreId,
       currentQuestionId,
-      !input.length
+      input.length <= 1
     );
+
     if (value) {
       if (index === null) {
         setInput([...input, value]);
@@ -212,23 +220,18 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
             </Typography>
           </DialogContentText>
 
-          {input.length > 1 && (
+          {scoreStep.steps.length > 1 && (
             <ArrowDownwardIcon className={classes.helperArrow} />
           )}
 
           <List component="nav" aria-label="source">
-            {input.map((value, i) => {
-              const parts = value.split('.');
-              const type = parts[0];
-              const primary = parts[1];
-              const secondary = parts[2];
-
-              if (type === 'operator') {
-                const text = mathOperatorTexts[primary];
-                const icon = mathIconList[primary];
+            {scoreStep.steps.map((value, i) => {
+              if (value.type === SCORE_TYPE.OPERATOR) {
+                const text = mathOperatorTexts[value.sign];
+                const icon = mathIconList[value.sign];
 
                 return (
-                  <ListItem button onClick={handleMenuClick(i)} key={i}>
+                  <ListItem button onClick={handleMenuClick(i + 1)} key={i}>
                     <ListItemIcon>
                       <Icon path={icon} size={1} className={classes.mdi} />
                     </ListItemIcon>
@@ -237,9 +240,13 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                 );
               }
 
-              if (type === 'static') {
+              if (value.type === SCORE_TYPE.VALUE && value.from === null) {
                 return (
-                  <ListItem button onClick={handleAddSourceClick(i)} key={i}>
+                  <ListItem
+                    button
+                    onClick={handleAddSourceClick(i + 1)}
+                    key={i}
+                  >
                     <ListItemIcon>
                       <Icon
                         path={mdiCalculator}
@@ -248,14 +255,14 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                       />
                     </ListItemIcon>
                     <ListItemText
-                      primary={`${primary}.${secondary || 0}`}
+                      primary={value.value}
                       secondary={l`questionScoreValueStatic`}
                     />
                     <ListItemSecondaryAction>
                       <IconButton
                         edge="end"
                         aria-label="edit"
-                        onClick={handleAddSourceClick(i)}
+                        onClick={handleAddSourceClick(i + 1)}
                       >
                         <EditIcon />
                       </IconButton>
@@ -263,7 +270,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                         <IconButton
                           edge="end"
                           aria-label="remove"
-                          onClick={handleRemove(i)}
+                          onClick={handleRemove(i + 1)}
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -273,13 +280,15 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                 );
               }
 
-              const question = survey.questions.find(x => x.id === primary);
-              const score = question.source.find(x => x[0].id === secondary);
+              const question = survey.questions.find(x => x.id === value.from);
+              const score = parseScore(
+                question.score.find(x => x[0].split('.')[1] === value.value)
+              );
 
               return (
-                <ListItem button onClick={handleAddSourceClick(i)} key={i}>
+                <ListItem button onClick={handleAddSourceClick(i + 1)} key={i}>
                   <ListItemIcon>
-                    {secondary === 'score' ? (
+                    {value.value === 'score' ? (
                       <StarRoundedIcon />
                     ) : (
                       <StarBorderRoundedIcon />
@@ -287,9 +296,9 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                   </ListItemIcon>
                   <ListItemText
                     primary={
-                      secondary === 'score'
+                      value.value === 'score'
                         ? l`questionScoreSourceDynamicDefaultTitle`
-                        : score[0].value
+                        : score.name
                     }
                     secondary={`${question.index + 1}. ${question.title}`}
                   />
@@ -298,7 +307,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                     <IconButton
                       edge="end"
                       aria-label="edit"
-                      onClick={handleAddSourceClick(i)}
+                      onClick={handleAddSourceClick(i + 1)}
                     >
                       <EditIcon />
                     </IconButton>
@@ -306,7 +315,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                       <IconButton
                         edge="end"
                         aria-label="remove"
-                        onClick={handleRemove(i)}
+                        onClick={handleRemove(i + 1)}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -320,10 +329,10 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
               <Button
                 variant="contained"
                 color="primary"
-                size={input.length ? 'small' : 'large'}
+                size={scoreStep.steps.length ? 'small' : 'large'}
                 className={classes.button}
                 startIcon={
-                  input.length ? (
+                  scoreStep.steps.length ? (
                     <Icon path={mdiCalculatorVariant} size={1} color="#FFF" />
                   ) : (
                     <AddIcon />
@@ -331,7 +340,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                 }
                 onClick={handleAddSourceClick(null)}
               >
-                {input.length
+                {scoreStep.steps.length
                   ? l`questionScoreValueCreateButton`
                   : l`questionScoreValueCreateButtonFirst`}
               </Button>
@@ -361,7 +370,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
         onClose={handleMenuClose(null)}
         style={{ zIndex: 2000 }}
       >
-        {Object.keys(mathIconList).map(x => (
+        {Object.values(OPERATOR_TYPE).map(x => (
           <MenuItem onClick={handleMenuClose(x)} key={x}>
             <ListItemIcon>
               <Icon path={mathIconList[x]} size={1} className={classes.mdi} />
