@@ -175,11 +175,11 @@ export const OrganizationPanel = () => {
               setChanged={setChanged}
             />
             <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>Keywords</Typography>
+              <Typography className={classes.sectionTitle}>{l('keywordHeader')}</Typography>
               <Keywords editable={editable} />
             </div>
             <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>Feeds</Typography>
+              <Typography className={classes.sectionTitle}>{l('feedsHeader')}</Typography>
               <Feeds editable={editable} />
             </div>
           </Grid>

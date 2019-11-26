@@ -39,6 +39,30 @@
     "en": "Contacts",
     "fi": "Yhteystiedot"
   },
+  "keywordHeader": {
+    "en": "Keywords",
+    "fi": ""
+  },
+  "addKeywordLabelText": {
+    "en": "Enter Keyword",
+    "fi": ""
+  },
+  "feedsHeader": {
+    "en": "Feeds",
+    "fi": ""
+  },
+  "feedsHandle": {
+    "en": "@username",
+    "fi": ""
+  },
+  "addFeedsLabelText": {
+    "en": "Enter Feeds",
+    "fi": ""
+  },
+  "addButtonText": {
+    "en": "Add",
+    "fi": ""
+  },
   "servicesHeader": {
     "en": "Services",
     "fi": "Palvelut"
