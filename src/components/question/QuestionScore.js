@@ -27,6 +27,14 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
     );
   };
 
+  const handleScoreUpdate = score => {
+    setSurvey(
+      handleSurveyQuestionUpdate(survey, index, {
+        score
+      })
+    );
+  };
+
   const handleMenuClick = event => {
     setMenuAnchorEl(event.currentTarget);
   };
@@ -38,20 +46,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
       const name = await sourceDialog.openDialog();
       if (!name) return;
 
-      handleSourceUpdate([
-        ...question.source,
-        [
-          {
-            id: uuid(),
-            type: 'set',
-            value: name
-          },
-          {
-            type: 'value',
-            value: []
-          }
-        ]
-      ]);
+      handleScoreUpdate([...question.score, [`id.${uuid()}.${name}`]]);
     }
   };
 
@@ -63,7 +58,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
             survey={survey}
             index={index}
             questionId={question.id}
-            sourceList={question.source}
+            scoreList={question.score}
             setSurvey={setSurvey}
           />
 
