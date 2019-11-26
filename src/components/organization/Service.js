@@ -32,6 +32,8 @@ import Locale from '../Locale';
 import Translation from './organizationLocale';
 import { makeStyles } from '@material-ui/styles';
 
+import { handleEditTest } from './actionsHelper';
+
 import globalStyles from './styles';
 
 const l = Locale(Translation);
@@ -236,7 +238,7 @@ export default ({
   const isFirstRequirement = !requirements.length;
 
   return (
-    <Box className={globalClasses.wrapper}>
+    <Box className={globalClasses.expansionPanelContainer}>
       <ExpansionPanel
         className={globalClasses.expansionPanel}
         expanded={editable ? open : false}

@@ -12,6 +12,9 @@ const styles = makeStyles(theme => ({
     marginLeft: '1rem',
     marginBottom: '0.5rem'
   },
+  expansionPanelContainer: {
+    marginBottom: '8px'
+  },
   expansionPanel: {
     padding: '0 1rem 0 1rem'
   },

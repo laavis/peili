@@ -102,5 +102,17 @@
   "removeServiceConfirmationTitle": {
     "en": "Remove Service?",
     "fi": "Poista palvelu?"
+  },
+  "targetGroupSectionHeader": {
+    "en": "Target Groups",
+    "fi": "Kohderyhmät"
+  },
+  "addTargetGroupButtonText": {
+    "en": "Add Target Group",
+    "fi": "Lisää kohderyhmä"
+  },
+  "emptySectionTitle": {
+    "en": "Nothing to see here",
+    "fi": "Ei mittään nähtävää"
   }
 }

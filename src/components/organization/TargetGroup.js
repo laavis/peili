@@ -2,21 +2,41 @@
 // One criteria per component
 
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
 import {
+  Typography,
+  Button,
+  Box,
+  Grid,
+  ExpansionPanel,
+  ExpansionPanelSummary,
   ExpansionPanelDetails,
-  ExpansionPanelSummary
+  FormControl,
+  InputLabel,
+  Select,
+  Menu,
+  MenuItem,
+  Tooltip,
+  IconButton,
+  FormControlLabel,
+  Switch,
+  RadioGroup,
+  Radio,
+  Slider,
+  Checkbox
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Grid from '@material-ui/core/Grid';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-import { Targets } from './';
+import TextField from '../question/CachedInput';
+import { openDialog } from '../ConfirmationDialog';
+
+import Locale from '../Locale';
+import Translation from './organizationLocale';
+
+// styles
+import styles from './styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -39,8 +59,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ editable }) => {
+export default ({ targetGroupType, editable }) => {
   const classes = useStyles();
+  const globalClasses = styles();
   const [age, setAge] = React.useState('');
 
   // Editable
@@ -56,107 +77,12 @@ export default ({ editable }) => {
   };
 
   return (
-    <div className={classes.wrapper}>
-      <ExpansionPanel
-        expanded={editable ? expanded : false}
-        onChange={handleExpandedChange}
-      >
-        <ExpansionPanelSummary
-          expandIcon={icon}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Grid container direction="row">
-            <FormControl required className={classes.selectFormCtrl}>
-              <InputLabel id="demo-simple-select-required-label">
-                Age
-              </InputLabel>
-              <Select
-                labelid="demo-simple-select-required-label"
-                id="demo-simple-select-required"
-                value={age}
-                onChange={handleChange}
-                className={classes.selectEmpty}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-              <FormHelperText>Required</FormHelperText>
-            </FormControl>
-          </Grid>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Grid container direction="row">
-            <FormControl className={classes.selectFormCtrl}>
-              <InputLabel
-                shrink
-                id="demo-simple-select-placeholder-label-label"
-              >
-                From
-              </InputLabel>
-              <Select
-                labelid="demo-simple-select-placeholder-label-label"
-                id="demo-simple-select-placeholder-label"
-                value={age}
-                onChange={handleChange}
-                displayEmpty
-                className={classes.selectEmpty}
-              >
-                <MenuItem value={18}>18</MenuItem>
-                <MenuItem value={22}>22</MenuItem>
-                <MenuItem value={30}>30</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl className={classes.selectFormCtrl}>
-              <InputLabel
-                shrink
-                id="demo-simple-select-placeholder-label-label"
-              >
-                To
-              </InputLabel>
-              <Select
-                labelid="demo-simple-select-placeholder-label-label"
-                id="demo-simple-select-placeholder-label"
-                value={age}
-                onChange={handleChange}
-                displayEmpty
-                className={classes.selectEmpty}
-              >
-                <MenuItem value={18}>18</MenuItem>
-                <MenuItem value={22}>22</MenuItem>
-                <MenuItem value={30}>30</MenuItem>
-              </Select>
-            </FormControl>
-
-            <Grid item>
-              <Targets />
-            </Grid>
-
-            <FormControl className={classes.selectFormCtrl}>
-              <InputLabel id="demo-simple-select-placeholder-label-label">
-                Add Target
-              </InputLabel>
-              <Select
-                labelid="demo-simple-select-placeholder-label-label"
-                id="demo-simple-select"
-                value={age}
-                onChange={handleChange}
-                displayEmpty
-                className={classes.selectEmpty}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </ExpansionPanelDetails>
+    <Box className={globalClasses.expansionPanelContainer}>
+      <ExpansionPanel>
+        <Typography className={globalClasses.textEmphasis}>
+          {targetGroupType}
+        </Typography>
       </ExpansionPanel>
-    </div>
+    </Box>
   );
 };

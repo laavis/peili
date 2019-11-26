@@ -10,11 +10,12 @@ import DefaultImage from '../img/Image.png';
 import Button from '@material-ui/core/Button';
 
 // Components
-import { Feeds, Keywords, TargetGroup } from '../components/organization';
+import { Feeds, Keywords } from '../components/organization';
 
 import Locations from '../components/organization/Locations';
 import Contacts from '../components/organization/Contacts';
 import Services from '../components/organization/Services';
+import TargetGroups from '../components/organization/TargetGroups';
 
 // Localization
 import Locale from '../components/Locale';
@@ -84,6 +85,7 @@ export const OrganizationPanel = () => {
   const [locations, setLocations] = React.useState([]);
   const [contacts, setContacts] = React.useState([]);
   const [services, setServices] = React.useState([]);
+  const [targetGroups, setTargetGroups] = React.useState([]);
 
   const [editable, setEditable] = React.useState(false);
 
@@ -101,6 +103,7 @@ export const OrganizationPanel = () => {
     localStorage.setItem('locations', JSON.stringify(locations));
     localStorage.setItem('contacts', JSON.stringify(contacts));
     localStorage.setItem('services', JSON.stringify(services));
+    localStorage.setItem('targetGroups', JSON.stringify(targetGroups));
     setChanged(false);
     setEditable(false);
   };
@@ -164,15 +167,13 @@ export const OrganizationPanel = () => {
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
-            <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>
-                Target Groups
-              </Typography>
-              <TargetGroup editable={editable} />
-              <Button className={classes.buttonAdd} color="primary">
-                Add Target Group
-              </Button>
-            </div>
+            <TargetGroups
+              editable={editable}
+              targetGroups={targetGroups}
+              setTargetGroups={setTargetGroups}
+              changed={changed}
+              setChanged={setChanged}
+            />
             <div className={classes.sectionWrapper}>
               <Typography className={classes.sectionTitle}>Keywords</Typography>
               <Keywords editable={editable} />
