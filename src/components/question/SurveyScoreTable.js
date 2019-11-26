@@ -10,6 +10,7 @@ import Locale from '../Locale';
 import Translation from './questionLocale.json';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
+import { parseScore } from './Score';
 
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
 import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
@@ -40,13 +41,11 @@ export const SurveyScoreTable = ({ survey }) => {
 
   const scoreList = survey.questions
     .map(x =>
-      x.source
-        .filter(y => y.length > 1 && y[1].value.length)
-        .map(y => ({
-          source: y,
-          question: x,
-          isAnswerScore: y[0].locked
-        }))
+      x.score.map(parseScore).map(y => ({
+        source: y,
+        question: x,
+        isAnswerScore: y.id === 'score'
+      }))
     )
     .flat();
 
@@ -71,7 +70,7 @@ export const SurveyScoreTable = ({ survey }) => {
         </TableHead>
         <TableBody>
           {scoreList.map((x, i) => (
-            <TableRow key={x.source[0].id}>
+            <TableRow key={x.source.id}>
               <TableCell
                 width={16}
                 className={classes.routeIconCell}
@@ -101,11 +100,11 @@ export const SurveyScoreTable = ({ survey }) => {
                 scope="row"
               >
                 <Typography variant="body2" style={{ fontWeight: 'bold' }}>
-                  {x.source[0].value}
+                  {x.source.name}
                 </Typography>
                 <Typography variant="caption" component="div">
                   {x.isAnswerScore
-                    ? l`questionScoreSourceDynamicDefaultTitle`
+                    ? l`questionScoreSourceDynamicDefaultDescription`
                     : l`questionScoreSourceDynamicCustomDescription`}
                 </Typography>
               </TableCell>
@@ -118,7 +117,7 @@ export const SurveyScoreTable = ({ survey }) => {
                 align="right"
               >
                 <Checkbox
-                  value={x.source[0].id}
+                  value={x.source.id}
                   inputProps={{
                     'aria-label': 'save score'
                   }}

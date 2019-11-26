@@ -232,6 +232,10 @@
     "en": "You can add, subtract, multiply and divide after this first source has been added.",
     "fi": "Voit summata, vähentää, kertoa ja jakaa ensimmäisen lähteen lisäämisen jälkeen."
   },
+  "questionScoreListOr": {
+    "en": "or",
+    "fi": "tai"
+  },
   "questionRouteTableDirectionIn": {
     "en": "In",
     "fi": "Sisään"

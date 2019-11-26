@@ -127,21 +127,7 @@ export const generateEmptyQuestion = (index, type) => {
     type,
     defaultRoute: null,
     options: [...OptionDefaults[type].many],
-    source: [
-      [
-        {
-          id: uuid(),
-          type: 'set',
-          value: 'Answer Score',
-          locked: true
-        },
-        {
-          type: 'value',
-          value: [`question.${id}.score`]
-        }
-      ]
-    ],
-    score: []
+    score: [['id.score']]
   };
 };
 

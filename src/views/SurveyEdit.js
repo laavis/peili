@@ -244,8 +244,6 @@ export const SurveyEdit = ({ match, history }) => {
 
   const isFirstQuestion = !survey.questions.length;
 
-  console.log('survey', survey);
-
   return (
     <div className={classes.root}>
       <Grid container spacing={0}>

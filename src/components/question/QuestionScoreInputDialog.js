@@ -24,6 +24,7 @@ import React from 'react';
 import Locale from '../Locale';
 import { HelpBox } from './HelpBox';
 import Translation from './questionLocale.json';
+import { parseScore, createValue } from './Score';
 
 const l = Locale(Translation);
 
@@ -133,9 +134,14 @@ const QuestionScoreInputDialog = ({ survey }) => {
   const handleClose = action => () => {
     if (action === 'confirm') {
       if (selectedSection === 'source' && selectedSource) {
-        closeDialog(selectedSource);
+        closeDialog(
+          createValue({
+            from: selectedSource.question,
+            value: selectedSource.score
+          })
+        );
       } else if (selectedSection === 'static' && value) {
-        closeDialog(`static.${value}`);
+        closeDialog(createValue({ value }));
       } else {
         closeDialog('cancel');
       }
@@ -164,10 +170,10 @@ const QuestionScoreInputDialog = ({ survey }) => {
     }
   };
 
-  const handleSourceSelect = source => () => {
-    setSelectedSource(source);
+  const handleQuestionSourceSelect = (question, score) => () => {
+    setSelectedSource(question ? { question, score } : null);
 
-    if (source && selectedSection !== 'source') {
+    if (question && selectedSection !== 'source') {
       setSelectedSection('source');
     }
   };
@@ -246,9 +252,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
                       button
                       key={`question-${question.id}-score`}
                       role={undefined}
-                      onClick={handleSourceSelect(
-                        `question.${question.id}.score`
-                      )}
+                      onClick={handleQuestionSourceSelect(question.id, 'score')}
                     >
                       <ListItemIcon>
                         <StarRoundedIcon />
@@ -262,57 +266,63 @@ const QuestionScoreInputDialog = ({ survey }) => {
                         <Checkbox
                           edge="start"
                           checked={
-                            selectedSource === `question.${question.id}.score`
+                            selectedSource !== null &&
+                            selectedSource.question === question.id &&
+                            selectedSource.score === 'score'
                           }
                           tabIndex={-1}
                           disableRipple
                           inputProps={{
                             'aria-labelledby': `question-${question.id}-score-text`
                           }}
-                          onChange={handleSourceSelect(
-                            `question.${question.id}.score`
+                          onChange={handleQuestionSourceSelect(
+                            question.id,
+                            'score'
                           )}
                         />
                       </ListItemSecondaryAction>
                     </ListItem>
 
-                    {question.source
+                    {question.score
                       .filter(
                         x =>
-                          x[0].type === 'set' &&
-                          !x[0].locked &&
-                          x[0].id !== currentSourceId
+                          x[0].split('.')[1] !== 'score' &&
+                          x[0].split('.')[1] !== currentSourceId
                       )
-                      .map(source => (
+                      .map(parseScore)
+                      .map(score => (
                         <ListItem
                           button
-                          key={`question-${question.id}-${source[0].id}`}
-                          onClick={handleSourceSelect(
-                            `question.${question.id}.${source[0].id}`
+                          key={`${question.id}-${score.id}`}
+                          onClick={handleQuestionSourceSelect(
+                            question.id,
+                            score.id
                           )}
                         >
                           <ListItemIcon>
                             <StarBorderRoundedIcon />
                           </ListItemIcon>
                           <ListItemText
-                            id={`question-${question.id}-${source[0].id}-text`}
-                            primary={source[0].value}
+                            id={`${question.id}-${score.id}-text`}
+                            primary={score.name}
                             secondary={l`questionScoreSourceDynamicCustomDescription`}
                           />
                           <ListItemSecondaryAction>
                             <Checkbox
                               edge="start"
                               checked={
-                                selectedSource ===
-                                `question.${question.id}.${source[0].id}`
+                                selectedSource !== null &&
+                                selectedSource.question === question.id &&
+                                selectedSource.score === score.id
                               }
                               tabIndex={-1}
                               disableRipple
-                              onChange={handleSourceSelect(
-                                `question.${question.id}.${source[0].id}`
+                              onChange={handleQuestionSourceSelect(
+                                question.id,
+                                score.id
                               )}
                               inputProps={{
-                                'aria-labelledby': `question-${question.id}-${source[0].id}-text`
+                                'aria-labelledby': `${question.id}-${score.id}-text`
                               }}
                             />
                           </ListItemSecondaryAction>
@@ -353,6 +363,10 @@ const QuestionScoreInputDialog = ({ survey }) => {
             onChange={handleValueChange}
             variant="outlined"
             type="number"
+            autoComplete="false"
+            inputProps={{
+              autocompletetype: 'false'
+            }}
           />
         </Box>
 
