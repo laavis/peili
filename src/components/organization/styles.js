@@ -18,8 +18,12 @@ const styles = makeStyles(theme => ({
   expansionPanel: {
     padding: '0 1rem 0 1rem'
   },
+  outerContainerPadding: {
+    padding: '1rem',
+    position: 'relative'
+  },
   expansionPanelPaddingReset: {
-    padding: '0',
+    padding: '0 !important',
     margin: '0'
   },
   summaryWrapper: {
@@ -68,6 +72,18 @@ const styles = makeStyles(theme => ({
     display: 'flex',
     alignSelf: 'flex-end',
     justifyContent: 'flex-end'
+  },
+  feedInnerContent: {
+    padding: '0.5rem',
+    paddingTop: '1rem'
+  },
+  removeIconButton2: {
+    position: 'absolute',
+    right: '1rem',
+    bottom: '1rem'
+  },
+  smallSpacingLeft: {
+    marginLeft: '0.5rem'
   }
 }));
 

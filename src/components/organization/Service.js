@@ -58,12 +58,6 @@ export default ({
   const classes = useStyles();
   const globalClasses = globalStyles();
 
-  const criteriaSelect = [
-    { id: 'age', criteria: l('age') },
-    { id: 'gender', criteria: l('gender') },
-    { id: 'kelaRehabilitee', criteria: l('serviceCriteriaKelaRehabilitee') }
-  ];
-
   const [openState, setOpenState] = React.useState(false);
   const [criteriaMenuAnchorEl, setCriteriaMenuAnchorEl] = React.useState(null);
 

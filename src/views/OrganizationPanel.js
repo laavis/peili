@@ -16,6 +16,7 @@ import Locations from '../components/organization/Locations';
 import Contacts from '../components/organization/Contacts';
 import Services from '../components/organization/Services';
 import TargetGroups from '../components/organization/TargetGroups';
+import Feeds2 from '../components/organization/Feeds2';
 
 // Localization
 import Locale from '../components/Locale';
@@ -86,6 +87,7 @@ export const OrganizationPanel = () => {
   const [contacts, setContacts] = React.useState([]);
   const [services, setServices] = React.useState([]);
   const [targetGroups, setTargetGroups] = React.useState([]);
+  const [feeds, setFeeds] = React.useState([]);
 
   const [editable, setEditable] = React.useState(false);
 
@@ -104,6 +106,7 @@ export const OrganizationPanel = () => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
     localStorage.setItem('services', JSON.stringify(services));
     localStorage.setItem('targetGroups', JSON.stringify(targetGroups));
+    localStorage.setItem('feeds', JSON.stringify(feeds));
     setChanged(false);
     setEditable(false);
   };
@@ -167,21 +170,32 @@ export const OrganizationPanel = () => {
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
-            <TargetGroups
+            {/*<TargetGroups
               editable={editable}
               targetGroups={targetGroups}
               setTargetGroups={setTargetGroups}
               changed={changed}
               setChanged={setChanged}
+            />*/}
+            <Feeds2
+              editable={editable}
+              feeds={feeds}
+              setFeeds={setFeeds}
+              changed={changed}
+              setChanged={setChanged}
             />
             <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>{l('keywordHeader')}</Typography>
+              <Typography className={classes.sectionTitle}>
+                {l('keywordHeader')}
+              </Typography>
               <Keywords editable={editable} />
             </div>
-            <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>{l('feedsHeader')}</Typography>
+            {/*<div className={classes.sectionWrapper}>
+              <Typography className={classes.sectionTitle}>
+                {l('feedsHeader')}
+              </Typography>
               <Feeds editable={editable} />
-            </div>
+  </div>*/}
           </Grid>
         </Grid>
       </div>
