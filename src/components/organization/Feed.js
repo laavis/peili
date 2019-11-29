@@ -1,31 +1,27 @@
-import React from 'react';
 import {
-  Typography,
   Box,
-  Grid,
   Card,
+  CardContent,
   Chip,
-  InputAdornment,
-  Tooltip,
+  Grid,
   IconButton,
+  InputAdornment,
   TextField,
-  CardContent
+  Tooltip,
+  Typography
 } from '@material-ui/core';
-
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-
-import CustomTextField from '../question/CachedInput';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import { makeStyles } from '@material-ui/styles';
+import React from 'react';
+import CustomTextField from '../CachedInput';
 import { openDialog } from '../ConfirmationDialog';
-
 import Locale from '../Locale';
 import Translation from './organizationLocale';
-import { makeStyles } from '@material-ui/styles';
 import styles from './styles';
-
-import InstagramIcon from '@material-ui/icons/Instagram';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
 
 const l = Locale(Translation);
 

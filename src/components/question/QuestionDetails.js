@@ -2,38 +2,21 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from './CachedInput';
 import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Select from '@material-ui/core/Select';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import React from 'react';
-
-import {
-  listPossibleRoutes,
-  listIncomingRoutes,
-  listOutgoingRoutes,
-  getDefaultRoute,
-  handleSurveyQuestionUpdate,
-  handleSurveyOptionRemove
-} from './QuestionUtil';
-
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
-import { QuestionChooseOne } from './QuestionChooseOne';
-import { QuestionChooseMultiple } from './QuestionChooseMultiple';
-import { QuestionText } from './QuestionText';
+import Locale from '../Locale';
+import TextField from '../CachedInput';
+import { QuestionChooseMultiple } from './type/QuestionChooseMultiple';
+import { QuestionChooseOne } from './type/QuestionChooseOne';
+import Translation from './questionLocale.json';
 import { QuestionRouteTable } from './QuestionRouteTable';
 import { QuestionScore } from './QuestionScore';
-
-import Translation from './questionLocale.json';
-import Locale from '../Locale';
+import { QuestionText } from './QuestionText';
+import {
+  getDefaultRoute,
+  handleSurveyQuestionUpdate,
+  listPossibleRoutes
+} from './QuestionUtil';
 
 const l = Locale(Translation);
 

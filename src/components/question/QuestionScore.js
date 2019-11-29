@@ -19,6 +19,7 @@ const l = Locale(Translation);
 export const QuestionScore = ({ survey, index, question, setSurvey }) => {
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
 
+  /*
   const handleSourceUpdate = source => {
     setSurvey(
       handleSurveyQuestionUpdate(survey, index, {
@@ -26,6 +27,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
       })
     );
   };
+  */
 
   const handleScoreUpdate = score => {
     setSurvey(
@@ -35,9 +37,11 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
     );
   };
 
+  /*
   const handleMenuClick = event => {
     setMenuAnchorEl(event.currentTarget);
   };
+  */
 
   const handleMenuClose = action => async () => {
     setMenuAnchorEl(null);

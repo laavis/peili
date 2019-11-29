@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import TextField from '../question/CachedInput';
+import TextField from '../CachedInput';
 
 import Locale from '../Locale';
 import Translation from './organizationLocale';

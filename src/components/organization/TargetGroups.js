@@ -1,8 +1,6 @@
 import React from 'react';
 import { Typography, Button, Box, Menu, MenuItem } from '@material-ui/core';
 
-import targetGroup from './TargetGroup';
-
 import Locale from '../Locale';
 import Translation from './organizationLocale';
 

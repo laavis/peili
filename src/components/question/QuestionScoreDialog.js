@@ -41,7 +41,13 @@ import * as inputDialog from './QuestionScoreInputDialog';
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 
-import { parseScore, createOperator, SCORE_TYPE, OPERATOR_TYPE } from './Score';
+import {
+  parseScore,
+  createOperator,
+  createConditional,
+  SCORE_TYPE,
+  OPERATOR_TYPE
+} from './Score';
 
 const l = Locale(Translation);
 
@@ -159,7 +165,11 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
     );
 
     if (value) {
-      setInput([...inputCache, value]);
+      if (value === 'if') {
+        setInput([...inputCache, ...createConditional()]);
+      } else {
+        setInput([...inputCache, value]);
+      }
     }
   };
 
@@ -183,11 +193,16 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
     );
 
     if (value) {
+      let insertValue = [value];
+      if (value === 'if') {
+        insertValue = createConditional();
+      }
+
       if (index === null) {
-        setInput([...input, value]);
+        setInput([...input, ...insertValue]);
       } else {
         const inputCache = [...input];
-        inputCache[index] = value;
+        inputCache.splice(index, 0, ...insertValue);
         setInput([...inputCache]);
       }
     }
@@ -240,6 +255,10 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                 );
               }
 
+              if (value.type === SCORE_TYPE.CONDITIONAL) {
+                return value.step;
+              }
+
               if (value.type === SCORE_TYPE.VALUE && value.from === null) {
                 return (
                   <ListItem
@@ -278,6 +297,13 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                     </ListItemSecondaryAction>
                   </ListItem>
                 );
+              }
+
+              if (
+                value.type === SCORE_TYPE.VALUE &&
+                value.from === 'placeholder'
+              ) {
+                return 'Placeholder';
               }
 
               const question = survey.questions.find(x => x.id === value.from);

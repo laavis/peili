@@ -1,22 +1,18 @@
-import React from 'react';
 import {
-  Typography,
-  Button,
   Box,
+  Button,
+  ListItemIcon,
   Menu,
   MenuItem,
-  ListItemIcon
+  Typography
 } from '@material-ui/core';
-
-import Feed from './Feed';
-
-import InstagramIcon from '@material-ui/icons/Instagram';
 import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
 import TwitterIcon from '@material-ui/icons/Twitter';
-
+import React from 'react';
 import Locale from '../Locale';
+import Feed from './Feed';
 import Translation from './organizationLocale';
-
 import styles from './styles';
 
 const l = Locale(Translation);

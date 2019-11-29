@@ -118,6 +118,7 @@ export const parseScore = score => {
 };
 
 export const createValue = ({ from = null, value }) => {
+  if (from === null && value === null) return 'value.placeholder';
   return `value.${from ? from : 'static'}.${value}`;
 };
 
@@ -138,9 +139,7 @@ export const createConditional = () => {
 };
 
 export const createComparator = type => {
-  return [
-    `comparator.${Object.keys(COMPARATOR_SIGN).find(
-      key => COMPARATOR_SIGN[key] === type
-    )}`
-  ];
+  return `comparator.${Object.keys(COMPARATOR_SIGN).find(
+    key => COMPARATOR_SIGN[key] === type
+  )}`;
 };

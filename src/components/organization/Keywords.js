@@ -3,26 +3,23 @@
 // Component for target groups eg. criteria: Age from 18 to 30
 // One criteria per component
 
-import React from 'react';
 import {
-  Typography,
   Box,
-  Button,
   Card,
-  Grid,
-  Chip,
   CardContent,
-  FormControl,
+  Chip,
+  Grid,
   IconButton,
-  TextField
+  TextField,
+  Typography
 } from '@material-ui/core';
-import styles from './styles';
-
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-
-import Translation from './organizationLocale';
+import React from 'react';
 import Locale from '../Locale';
+import Translation from './organizationLocale';
+import styles from './styles';
+
 const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
@@ -100,11 +97,13 @@ export default ({ editable, changed }) => {
   };
 
   // Editable
+  /*
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandedChange = (event, isExpanded) => {
     if (!editable) return;
     setExpanded(isExpanded);
   };
+  */
 
   let hasKeywords = keywords.length;
 
