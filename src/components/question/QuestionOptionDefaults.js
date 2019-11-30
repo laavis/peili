@@ -1,3 +1,8 @@
+/**
+ * @file Default data for different question type options. This will be used when adding a new question to the survey.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 import uuid from 'uuid/v4';

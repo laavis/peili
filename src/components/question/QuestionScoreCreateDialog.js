@@ -1,3 +1,8 @@
+/**
+ * @file Handles picking a name for a new score.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -55,7 +60,7 @@ const openDialog = () =>
     setOpenState(true);
   });
 
-const QuestionScoreSourceDialog = ({ survey, index, question }) => {
+const QuestionScoreCreateDialog = ({ survey, index, question }) => {
   // const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -121,5 +126,5 @@ const QuestionScoreSourceDialog = ({ survey, index, question }) => {
   );
 };
 
-export default QuestionScoreSourceDialog;
+export default QuestionScoreCreateDialog;
 export { openDialog, closeDialog };

@@ -1,3 +1,8 @@
+/**
+ * @file The primary view for the survey editor. Handles modification of the basic survey data, and lists all the questions.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';

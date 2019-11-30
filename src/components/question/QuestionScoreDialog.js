@@ -1,52 +1,49 @@
-import React from 'react';
+/**
+ * @file Displays the logic that calculates a single score. Handles adding to and modifying that logic.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import EditIcon from '@material-ui/icons/Edit';
-
-import Icon from '@mdi/react';
-import {
-  mdiPlusBox,
-  mdiMinusBox,
-  mdiCloseBox,
-  mdiDivisionBox,
-  mdiCalculator,
-  mdiCalculatorVariant
-} from '@mdi/js';
-
+import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
-import StarRoundedIcon from '@material-ui/icons/StarRounded';
-import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
-import DeleteIcon from '@material-ui/icons/Delete';
-
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-
-import * as inputDialog from './QuestionScoreInputDialog';
-
-import Translation from './questionLocale.json';
-import Locale from '../Locale';
-
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
+import StarRoundedIcon from '@material-ui/icons/StarRounded';
 import {
-  parseScore,
-  createOperator,
+  mdiCalculator,
+  mdiCalculatorVariant,
+  mdiCloseBox,
+  mdiDivisionBox,
+  mdiMinusBox,
+  mdiPlusBox
+} from '@mdi/js';
+import Icon from '@mdi/react';
+import React from 'react';
+import Locale from '../Locale';
+import Translation from './questionLocale.json';
+import * as inputDialog from './QuestionScoreInputDialog';
+import {
   createConditional,
-  SCORE_TYPE,
-  OPERATOR_TYPE
+  createOperator,
+  OPERATOR_TYPE,
+  parseScore,
+  SCORE_TYPE
 } from './Score';
 
 const l = Locale(Translation);

@@ -1,3 +1,8 @@
+/**
+ * @file Helper functions for question logic and data that are used in multiple different components.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Translation from './questionLocale.json';
 import Locale from '../Locale';
 import uuid from 'uuid/v4';
@@ -5,10 +10,16 @@ import OptionDefaults from './QuestionOptionDefaults';
 
 const l = Locale(Translation);
 
+/**
+ * List all possible outgoing routes for a question.
+ */
 export const listPossibleRoutes = (questionList, questionIndex) => {
   return [...questionList.filter((x, i) => i > questionIndex)];
 };
 
+/**
+ * List all active incoming routes for a question.
+ */
 export const listIncomingRoutes = (questionList, questionIndex) => {
   const question = questionList[questionIndex];
 
@@ -38,6 +49,9 @@ export const listIncomingRoutes = (questionList, questionIndex) => {
   return routeList;
 };
 
+/**
+ * List all active outgoing routes for a question.
+ */
 export const listOutgoingRoutes = (questionList, questionIndex) => {
   const question = questionList[questionIndex];
 
@@ -73,6 +87,9 @@ export const listOutgoingRoutes = (questionList, questionIndex) => {
   return routeList;
 };
 
+/**
+ * Get the default next question for a specific question.
+ */
 export const getDefaultRoute = (questionList, questionIndex) => {
   const question = questionList[questionIndex];
 
@@ -91,12 +108,18 @@ export const getDefaultRoute = (questionList, questionIndex) => {
   return defaultRoute;
 };
 
+/**
+ * Get the number of a default next question for a specific question.
+ */
 export const getDefaultRouteNumber = (questionList, questionIndex) => {
   const route = getDefaultRoute(questionList, questionIndex);
   if (route === 'end') return null;
   return route ? `${route.index + 1}.` : null;
 };
 
+/**
+ * Decide if a "modified score" badge should be visible in a question.
+ */
 export const checkScoreStatus = question => {
   // TODO: Add support for custom score
 
@@ -108,6 +131,9 @@ export const checkScoreStatus = question => {
   }
 };
 
+/**
+ * Decide if a "modified route" badge should be visible in a question.
+ */
 export const checkRouteStatus = question => {
   if (question.defaultRoute) return true;
   for (const option of question.options) {
@@ -117,6 +143,9 @@ export const checkRouteStatus = question => {
   return false;
 };
 
+/**
+ * Generate the data for a new empty question with default values fo type.
+ */
 export const generateEmptyQuestion = (index, type) => {
   const id = uuid();
 
@@ -131,6 +160,9 @@ export const generateEmptyQuestion = (index, type) => {
   };
 };
 
+/**
+ * Create a new empty question of type.
+ */
 export const handleSurveyQuestionCreate = (survey, type) => {
   let surveyUpdate = { ...survey };
   surveyUpdate.questions = [
@@ -141,6 +173,9 @@ export const handleSurveyQuestionCreate = (survey, type) => {
   return surveyUpdate;
 };
 
+/**
+ * Update a specific question.
+ */
 export const handleSurveyQuestionUpdate = (survey, index, question) => {
   let surveyUpdate = { ...survey };
   surveyUpdate.questions[index] = {
@@ -151,6 +186,9 @@ export const handleSurveyQuestionUpdate = (survey, index, question) => {
   return surveyUpdate;
 };
 
+/**
+ * Switch places of two specific questions.
+ */
 export const handleSurveyQuestionReorder = (survey, a, b) => {
   let surveyUpdate = { ...survey };
   let questionCache = surveyUpdate.questions[a];
@@ -166,6 +204,9 @@ export const handleSurveyQuestionReorder = (survey, a, b) => {
   return surveyUpdate;
 };
 
+/**
+ * Create a new empty option with default values fo type.
+ */
 export const handleSurveyOptionCreate = (survey, questionIndex, type) => {
   let surveyUpdate = { ...survey };
   let questionUpdate = { ...surveyUpdate.questions[questionIndex] };
@@ -179,6 +220,9 @@ export const handleSurveyOptionCreate = (survey, questionIndex, type) => {
   return surveyUpdate;
 };
 
+/**
+ * Update a specific option.
+ */
 export const handleSurveyOptionUpdate = (
   survey,
   questionIndex,
@@ -198,6 +242,9 @@ export const handleSurveyOptionUpdate = (
   return surveyUpdate;
 };
 
+/**
+ * Switch places of two specific options.
+ */
 export const handleSurveyOptionReorder = (survey, index, a, b) => {
   let surveyUpdate = { ...survey };
   let questionUpdate = { ...surveyUpdate.questions[index] };
@@ -211,6 +258,9 @@ export const handleSurveyOptionReorder = (survey, index, a, b) => {
   return surveyUpdate;
 };
 
+/**
+ * Remove a specific option.
+ */
 export const handleSurveyOptionRemove = (
   survey,
   questionIndex,

@@ -1,3 +1,8 @@
+/**
+ * @file The primary component for a question. Will handle all the nessesary logic for single question management.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';

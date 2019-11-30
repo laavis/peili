@@ -1,3 +1,8 @@
+/**
+ * @file A placeholder view for the specialists that lists all their surveys.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';

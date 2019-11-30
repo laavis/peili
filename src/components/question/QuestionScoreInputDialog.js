@@ -1,3 +1,8 @@
+/**
+ * @file The source picker for a score input. Lists all possible input sources and options. Used by {@link QuestionScoreDialog}.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';

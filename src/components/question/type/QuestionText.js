@@ -1,3 +1,8 @@
+/**
+ * @file Renders and manages the functionality of the "Text" question options.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -6,12 +11,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react';
 
-import { handleSurveyOptionUpdate } from './QuestionUtil';
+import { handleSurveyOptionUpdate } from '../QuestionUtil';
 
-import { QuestionOptionRoute } from './QuestionOptionRoute';
+import { QuestionOptionRoute } from '../QuestionOptionRoute';
 
-import Translation from './questionLocale.json';
-import Locale from '../Locale';
+import Translation from '../questionLocale.json';
+import Locale from '../../Locale';
 
 const l = Locale(Translation);
 

@@ -1,3 +1,8 @@
+/**
+ * @file Test everything to do with the custom score data.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import * as Score from './Score';
 import assert from 'assert';
 

@@ -1,3 +1,8 @@
+/**
+ * @file A tiny but handy translation library that uses JSON files to translate between different languages.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 export default (dataset, language = null) => option => {
   if (!language) language = localStorage.getItem('lang') || 'en';
 

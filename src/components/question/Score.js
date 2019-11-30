@@ -1,3 +1,8 @@
+/**
+ * @file Handle everything to do with the custom score data.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Locale from '../Locale';
 import Translation from './questionLocale.json';
 

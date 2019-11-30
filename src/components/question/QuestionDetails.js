@@ -1,3 +1,8 @@
+/**
+ * @file Common functionality amongst different question types. Will also render the appropriate question type options.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -11,7 +16,7 @@ import { QuestionChooseOne } from './type/QuestionChooseOne';
 import Translation from './questionLocale.json';
 import { QuestionRouteTable } from './QuestionRouteTable';
 import { QuestionScore } from './QuestionScore';
-import { QuestionText } from './QuestionText';
+import { QuestionText } from './type/QuestionText';
 import {
   getDefaultRoute,
   handleSurveyQuestionUpdate,

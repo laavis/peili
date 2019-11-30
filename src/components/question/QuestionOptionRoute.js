@@ -1,3 +1,8 @@
+/**
+ * @file Route selector for a single question option.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import CallSplitIcon from '@material-ui/icons/CallSplit';

@@ -1,3 +1,8 @@
+/**
+ * @file Renders and manages the functionality of the "Choose One" question options.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
