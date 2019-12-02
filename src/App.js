@@ -9,6 +9,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import ConfirmationDialog from './components/ConfirmationDialog';
+import { Home, Login, Register } from './pages'
 
 const theme = createMuiTheme({
   palette: {
@@ -22,6 +23,10 @@ const App = () => (
   <ThemeProvider theme={theme}>
     <Router>
       <div style={{ backgroundColor: '#EEE' }}>
+        <Route exact path = '/' component = { Home } />
+        <Route exact path = '/login' component = { Login } />
+        <Route exact path = '/register' component = { Register } />
+
         <Header />
 
         <Switch>
