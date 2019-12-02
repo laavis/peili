@@ -1,24 +1,19 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
 import Fab from '@material-ui/core/Fab';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
-import Card from '@material-ui/core/Card';
-import DefaultImage from '../img/Image.png';
-import Button from '@material-ui/core/Button';
-
-// Components
-import { Feeds, Keywords, TargetGroup } from '../components/organization';
-
-import Locations from '../components/organization/Locations';
-import Contacts from '../components/organization/Contacts';
-import Services from '../components/organization/Services';
-
-// Localization
+import React from 'react';
 import Locale from '../components/Locale';
+import { Keywords } from '../components/organization';
+import Contacts from '../components/organization/Contacts';
+import Feeds2 from '../components/organization/Feeds2';
+import Locations from '../components/organization/Locations';
 import Translation from '../components/organization/organizationLocale';
+import Services from '../components/organization/Services';
+import DefaultImage from '../img/Image.png';
 
 const l = Locale(Translation);
 
@@ -84,6 +79,8 @@ export const OrganizationPanel = () => {
   const [locations, setLocations] = React.useState([]);
   const [contacts, setContacts] = React.useState([]);
   const [services, setServices] = React.useState([]);
+  // const [targetGroups, setTargetGroups] = React.useState([]);
+  const [feeds, setFeeds] = React.useState([]);
 
   const [editable, setEditable] = React.useState(false);
 
@@ -101,6 +98,8 @@ export const OrganizationPanel = () => {
     localStorage.setItem('locations', JSON.stringify(locations));
     localStorage.setItem('contacts', JSON.stringify(contacts));
     localStorage.setItem('services', JSON.stringify(services));
+    // localStorage.setItem('targetGroups', JSON.stringify(targetGroups));
+    localStorage.setItem('feeds', JSON.stringify(feeds));
     setChanged(false);
     setEditable(false);
   };
@@ -164,23 +163,32 @@ export const OrganizationPanel = () => {
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
+            {/*<TargetGroups
+              editable={editable}
+              targetGroups={targetGroups}
+              setTargetGroups={setTargetGroups}
+              changed={changed}
+              setChanged={setChanged}
+            />*/}
+            <Feeds2
+              editable={editable}
+              feeds={feeds}
+              setFeeds={setFeeds}
+              changed={changed}
+              setChanged={setChanged}
+            />
             <div className={classes.sectionWrapper}>
               <Typography className={classes.sectionTitle}>
-                Target Groups
+                {l('keywordHeader')}
               </Typography>
-              <TargetGroup editable={editable} />
-              <Button className={classes.buttonAdd} color="primary">
-                Add Target Group
-              </Button>
-            </div>
-            <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>{l('keywordHeader')}</Typography>
               <Keywords editable={editable} />
             </div>
-            <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>{l('feedsHeader')}</Typography>
+            {/*<div className={classes.sectionWrapper}>
+              <Typography className={classes.sectionTitle}>
+                {l('feedsHeader')}
+              </Typography>
               <Feeds editable={editable} />
-            </div>
+  </div>*/}
           </Grid>
         </Grid>
       </div>

@@ -1,3 +1,8 @@
+/**
+ * @file Generic confirmation dialog that can be called from anywhere and uses promises for response handling.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';

@@ -1,3 +1,8 @@
+/**
+ * @file The route table for a single question. Will display all incoming and outgoing routes.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';

@@ -1,3 +1,8 @@
+/**
+ * @file Lists the scores attached to a single question. Handles modifying and removing simgle scores. Used by {@link QuestionScore}
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';

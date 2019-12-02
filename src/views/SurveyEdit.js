@@ -1,37 +1,38 @@
+/**
+ * @file The primary view for the survey editor. Handles modification of the basic survey data, and lists all the questions.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
-import uuid from 'uuid/v4';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '../components/question/CachedInput';
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import { Question } from '../components/question/Question';
-import { handleSurveyQuestionCreate } from '../components/question/QuestionUtil';
-import { SurveyScoreTable } from '../components/question/SurveyScoreTable';
-import AddIcon from '@material-ui/icons/Add';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import { Redirect } from 'react-router-dom';
-import ListItemText from '@material-ui/core/ListItemText';
-import { openDialog } from '../components/ConfirmationDialog';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Grid from '@material-ui/core/Grid';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import SubjectIcon from '@material-ui/icons/Subject';
-
-import Translation from '../components/question/questionLocale.json';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import uuid from 'uuid/v4';
+import { openDialog } from '../components/ConfirmationDialog';
+import { HelpBox } from '../components/HelpBox';
 import Locale from '../components/Locale';
-
-import QuestionScoreInputDialog from '../components/question/QuestionScoreInputDialog';
+import TextField from '../components/CachedInput';
+import { Question } from '../components/question/Question';
+import Translation from '../components/question/questionLocale.json';
 import QuestionScoreDialog from '../components/question/QuestionScoreDialog';
-
-import { HelpBox } from '../components/question/HelpBox';
+import QuestionScoreInputDialog from '../components/question/QuestionScoreInputDialog';
+import { handleSurveyQuestionCreate } from '../components/question/QuestionUtil';
+import { SurveyScoreTable } from '../components/question/SurveyScoreTable';
 
 const l = Locale(Translation);
 

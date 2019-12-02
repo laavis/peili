@@ -1,34 +1,34 @@
+/**
+ * @file Renders and manages the functionality of the "Choose One" question options.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from './CachedInput';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-
+import TextField from '../../CachedInput';
+import { openDialog } from '../../ConfirmationDialog';
+import Locale from '../../Locale';
+import { QuestionOptionRoute } from '../QuestionOptionRoute';
 import {
   handleSurveyOptionCreate,
-  handleSurveyOptionUpdate,
+  handleSurveyOptionRemove,
   handleSurveyOptionReorder,
-  handleSurveyOptionRemove
-} from './QuestionUtil';
-
-import { QuestionOptionRoute } from './QuestionOptionRoute';
-
-import { openDialog } from '../ConfirmationDialog';
-
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
-import Translation from './questionLocale.json';
-import Locale from '../Locale';
+  handleSurveyOptionUpdate
+} from '../QuestionUtil';
+import Translation from '../questionLocale.json';
 
 const l = Locale(Translation);
 

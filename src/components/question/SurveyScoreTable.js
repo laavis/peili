@@ -1,3 +1,8 @@
+/**
+ * @file List all custom and default scores in the survey. Used in {@link SurveyEdit}
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';

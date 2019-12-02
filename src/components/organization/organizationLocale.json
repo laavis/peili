@@ -44,12 +44,16 @@
     "fi": ""
   },
   "addKeywordLabelText": {
-    "en": "Enter Keyword",
-    "fi": ""
+    "en": "Keyword",
+    "fi": "Avainsana"
   },
   "feedsHeader": {
     "en": "Feeds",
-    "fi": ""
+    "fi": "Feedit"
+  },
+  "addFeedButtonText": {
+    "en": "Add Feed",
+    "fi": "Lisää Feedi"
   },
   "feedsHandle": {
     "en": "@username",
@@ -126,5 +130,47 @@
   "removeServiceConfirmationTitle": {
     "en": "Remove Service?",
     "fi": "Poista palvelu?"
+  },
+  "targetGroupSectionHeader": {
+    "en": "Target Groups",
+    "fi": "Kohderyhmät"
+  },
+  "addTargetGroupButtonText": {
+    "en": "Add Target Group",
+    "fi": "Lisää kohderyhmä"
+  },
+  "emptySectionTitle": {
+    "en": "Nothing to see here",
+    "fi": "Ei mittään nähtävää"
+  },
+  "targetGroupType": {
+    "en": {
+      "age": "Age",
+      "gender": "Gender"
+    },
+    "fi": {
+      "age": "Ikä",
+      "gender": "Sukupuoli"
+    }
+  },
+  "feedType": {
+    "en": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "Twitter"
+    },
+    "fi": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "Twitter"
+    }
+  },
+  "username": {
+    "en": "Username",
+    "fi": "Käyttäjätunnus"
+  },
+  "add": {
+    "en": "Add",
+    "fi": "Lisää"
   }
 }

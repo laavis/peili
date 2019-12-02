@@ -1,3 +1,8 @@
+/**
+ * @file Scoring functionality for a single question. Will handle displaying and adding scores.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -11,7 +16,7 @@ import uuid from 'uuid/v4';
 import Locale from '../Locale';
 import Translation from './questionLocale.json';
 import { QuestionScoreList } from './QuestionScoreList';
-import QuestionScoreSourceDialog, * as sourceDialog from './QuestionScoreSourceDialog';
+import QuestionScoreCreateDialog, * as sourceDialog from './QuestionScoreCreateDialog';
 import { handleSurveyQuestionUpdate } from './QuestionUtil';
 
 const l = Locale(Translation);
@@ -19,6 +24,7 @@ const l = Locale(Translation);
 export const QuestionScore = ({ survey, index, question, setSurvey }) => {
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
 
+  /*
   const handleSourceUpdate = source => {
     setSurvey(
       handleSurveyQuestionUpdate(survey, index, {
@@ -26,6 +32,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
       })
     );
   };
+  */
 
   const handleScoreUpdate = score => {
     setSurvey(
@@ -35,9 +42,11 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
     );
   };
 
+  /*
   const handleMenuClick = event => {
     setMenuAnchorEl(event.currentTarget);
   };
+  */
 
   const handleMenuClose = action => async () => {
     setMenuAnchorEl(null);
@@ -103,7 +112,7 @@ export const QuestionScore = ({ survey, index, question, setSurvey }) => {
         </MenuItem>
       </Menu>
 
-      <QuestionScoreSourceDialog
+      <QuestionScoreCreateDialog
         survey={survey}
         index={index}
         question={question}

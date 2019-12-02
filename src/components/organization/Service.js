@@ -1,47 +1,45 @@
-import React from 'react';
 import {
-  Typography,
-  Button,
   Box,
-  Grid,
+  Button,
+  Checkbox,
   ExpansionPanel,
-  ExpansionPanelSummary,
   ExpansionPanelDetails,
+  ExpansionPanelSummary,
   FormControl,
-  InputLabel,
-  Select,
+  FormControlLabel,
+  Grid,
+  IconButton,
   Menu,
   MenuItem,
-  Tooltip,
-  IconButton,
-  FormControlLabel,
-  Switch,
-  RadioGroup,
   Radio,
+  RadioGroup,
   Slider,
-  Checkbox
+  Switch,
+  Tooltip,
+  Typography
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-
-import TextField from '../question/CachedInput';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import { makeStyles } from '@material-ui/styles';
+import React from 'react';
+import TextField from '../CachedInput';
 import { openDialog } from '../ConfirmationDialog';
-
 import Locale from '../Locale';
 import Translation from './organizationLocale';
-import { makeStyles } from '@material-ui/styles';
-
+// import { handleEditTest } from './actionsHelper';
 import globalStyles from './styles';
 
 const l = Locale(Translation);
 
+/*
 const useStyles = makeStyles(theme => ({
   singleCriteriaContainer: {
     marginLeft: '8px',
     background: 'rgba(0, 0, 0, 0.07)'
   }
 }));
+*/
 
 export default ({
   description,
@@ -53,14 +51,8 @@ export default ({
   handleEdit,
   handleRemove
 }) => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const globalClasses = globalStyles();
-
-  const criteriaSelect = [
-    { id: 'age', criteria: l('age') },
-    { id: 'gender', criteria: l('gender') },
-    { id: 'kelaRehabilitee', criteria: l('serviceCriteriaKelaRehabilitee') }
-  ];
 
   const [openState, setOpenState] = React.useState(false);
   const [criteriaMenuAnchorEl, setCriteriaMenuAnchorEl] = React.useState(null);
@@ -127,8 +119,6 @@ export default ({
   const setKelaValue = isRequired => {
     const requirementsCache = requirements;
     const kelaIndex = requirementsCache.findIndex(x => x.type === 'kela');
-
-    console.log(requirementsCache);
 
     if (kelaIndex < 0) {
       requirementsCache.push({ type: 'kela', isRequired });
@@ -236,7 +226,7 @@ export default ({
   const isFirstRequirement = !requirements.length;
 
   return (
-    <Box className={globalClasses.wrapper}>
+    <Box className={globalClasses.expansionPanelContainer}>
       <ExpansionPanel
         className={globalClasses.expansionPanel}
         expanded={editable ? open : false}
@@ -293,6 +283,7 @@ export default ({
                     if (x.type === 'gender') return gender(x.isMale);
                     if (x.type === 'age') return age();
                     if (x.type === 'kela') return kela(x.isRequired);
+                    return null;
                   })}
                   <Button
                     variant="contained"

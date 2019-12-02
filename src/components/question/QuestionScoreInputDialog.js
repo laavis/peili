@@ -1,3 +1,8 @@
+/**
+ * @file The source picker for a score input. Lists all possible input sources and options. Used by {@link QuestionScoreDialog}.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -21,10 +26,10 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
 import React from 'react';
+import { HelpBox } from '../HelpBox';
 import Locale from '../Locale';
-import { HelpBox } from './HelpBox';
 import Translation from './questionLocale.json';
-import { parseScore, createValue } from './Score';
+import { createValue, parseScore } from './Score';
 
 const l = Locale(Translation);
 
@@ -130,6 +135,9 @@ const QuestionScoreInputDialog = ({ survey }) => {
   if (selectedSection === 'static' && value) {
     isConfirmEnabled = true;
   }
+  if (selectedSection === 'if') {
+    isConfirmEnabled = true;
+  }
 
   const handleClose = action => () => {
     if (action === 'confirm') {
@@ -142,6 +150,8 @@ const QuestionScoreInputDialog = ({ survey }) => {
         );
       } else if (selectedSection === 'static' && value) {
         closeDialog(createValue({ value }));
+      } else if (selectedSection === 'if') {
+        closeDialog('if');
       } else {
         closeDialog('cancel');
       }
@@ -194,6 +204,17 @@ const QuestionScoreInputDialog = ({ survey }) => {
     >
       <DialogTitle id="input-dialog-title">{l`questionScoreSourceTitle`}</DialogTitle>
       <DialogContent>
+        <FormControlLabel
+          value="if"
+          control={
+            <Radio
+              checked={selectedSection === 'if'}
+              onChange={handleRadioButtonToggle('if')}
+            />
+          }
+          label={`Logic "If" statement`}
+        />
+
         <FormControlLabel
           value="source"
           control={

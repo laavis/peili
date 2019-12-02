@@ -1,16 +1,20 @@
-import React from 'react';
+/**
+ * @file Handles picking a name for a new score.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
+// import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-
-import Translation from './questionLocale.json';
+import Typography from '@material-ui/core/Typography';
+import React from 'react';
 import Locale from '../Locale';
+import Translation from './questionLocale.json';
 
 const l = Locale(Translation);
 
@@ -18,6 +22,7 @@ let setOpenState = null;
 let setInputState = null;
 let resolveDialog = null;
 
+/*
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -38,6 +43,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(4)
   }
 }));
+*/
 
 const closeDialog = action => {
   setOpenState(false);
@@ -54,8 +60,8 @@ const openDialog = () =>
     setOpenState(true);
   });
 
-const QuestionScoreSourceDialog = ({ survey, index, question }) => {
-  const classes = useStyles();
+const QuestionScoreCreateDialog = ({ survey, index, question }) => {
+  // const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
@@ -120,5 +126,5 @@ const QuestionScoreSourceDialog = ({ survey, index, question }) => {
   );
 };
 
-export default QuestionScoreSourceDialog;
+export default QuestionScoreCreateDialog;
 export { openDialog, closeDialog };

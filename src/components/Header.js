@@ -1,3 +1,8 @@
+/**
+ * @file The placeholder header. Currently only has language change functionality.
+ * @author Tuomas Pöyry <tuomas.poyry@metropolia.fi>
+ */
+
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
