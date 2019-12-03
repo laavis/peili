@@ -5,3 +5,8 @@ export const handleEditTest = (index, dataType, setChanged) => data => {
   let newData = [...dataType];
   newData[index] = { ...newData[index], ...data };
 };
+
+const removeTest = (index, dataSet) => () => {
+  let newDataSet = [...dataSet];
+  newDataSet.splice(index, 1);
+};
