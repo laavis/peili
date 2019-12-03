@@ -14,6 +14,7 @@ import {
   IconButton
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import HelpIcon from '@material-ui/icons/HelpOutline';
 
 import TextField from '../CachedInput';
 
@@ -42,8 +43,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default ({
-  method,
-  contact,
+  name,
+  phone,
+  email,
+  description,
   internalMsg,
   open,
   editable,
@@ -53,12 +56,6 @@ export default ({
   const classes = useStyles();
   const globalClasses = globalStyles();
 
-  const contactMethods = [
-    { id: 1, method: 'SMS' },
-    { id: 2, method: 'Phone' },
-    { id: 3, method: 'Email' }
-  ];
-
   const icon = editable ? <ExpandMoreIcon /> : null;
 
   const handleExpandedChange = (event, isExpanded) => {
@@ -66,16 +63,45 @@ export default ({
     handleOpen(isExpanded);
   };
 
-  const handleMethodChange = event => {
-    handleEdit({ method: event.target.value });
+  const handleNameChange = name => {
+    handleEdit({ name });
   };
 
-  const handleContactChange = contact => {
-    handleEdit({ contact });
+  const handlePhoneChange = phone => {
+    handleEdit({ phone });
+  };
+
+  const handleEmailChange = email => {
+    handleEdit({ email });
+  };
+
+  const handleDescriptionChange = description => {
+    handleEdit({ description });
   };
 
   const handleInternalMsgChange = internalMsg => {
     handleEdit({ internalMsg });
+  };
+
+  const summary = () => {
+    return (
+      <ExpansionPanelSummary
+        className={globalClasses.expansionPanelPaddingReset}
+        expandIcon={icon}
+      >
+        <Box className={globalClasses.summaryWrapper}>
+          <Typography className={globalClasses.textCapitalizedSmall}>
+            {name}
+          </Typography>
+          <Typography className={globalClasses.textEmphasis}>
+            {phone}
+          </Typography>
+          <Typography className={classes.textInternalMsg}>
+            {internalMsg}
+          </Typography>
+        </Box>
+      </ExpansionPanelSummary>
+    );
   };
 
   return (
@@ -85,22 +111,8 @@ export default ({
         expanded={editable ? open : false}
         onChange={handleExpandedChange}
       >
-        <ExpansionPanelSummary
-          className={globalClasses.expansionPanelPaddingReset}
-          expandIcon={icon}
-        >
-          <Box className={globalClasses.summaryWrapper}>
-            <Typography className={globalClasses.textCapitalizedSmall}>
-              {method}
-            </Typography>
-            <Typography className={globalClasses.textEmphasis}>
-              {contact}
-            </Typography>
-            <Typography className={classes.textInternalMsg}>
-              {internalMsg}
-            </Typography>
-          </Box>
-        </ExpansionPanelSummary>
+        {!editable ? summary() : null}
+
         <ExpansionPanelDetails
           className={globalClasses.expansionPanelPaddingReset}
         >
@@ -111,43 +123,74 @@ export default ({
                 spacing={2}
                 className={globalClasses.detailsWrapper}
               >
-                <Grid item xs={4}>
-                  <FormControl className={globalClasses.formControl}>
-                    <InputLabel id="contact-select-method-label">
-                      Method
-                    </InputLabel>
-                    <Select
-                      labelid="contact-select-method-label"
-                      value={method}
-                      onChange={handleMethodChange}
-                    >
-                      {contactMethods.map((x, i) => (
-                        <MenuItem key={i} value={x.method}>
-                          {x.method}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12}>
                   <FormControl className={globalClasses.formControl}>
                     <TextField
-                      label="Contact"
-                      value={contact}
-                      onChange={handleContactChange}
+                      label={l('name')}
+                      value={name}
+                      onChange={handleNameChange}
+                    />
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <FormControl className={globalClasses.formControl}>
+                    <TextField
+                      label={l('phone')}
+                      value={phone}
+                      onChange={handlePhoneChange}
                     />
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl className={globalClasses.formControl}>
                     <TextField
-                      label="Internal Message"
+                      label={l('email')}
+                      value={email}
+                      onChange={handleEmailChange}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={globalClasses.formControl}>
+                    <TextField
+                      label={l('description')}
                       multiline
                       rows="4"
+                      variant="outlined"
+                      defaultValue={description}
+                      onChange={handleDescriptionChange}
+                    />
+                    <Tooltip
+                      title={l('contactDescriptionHelpText')}
+                      className={globalClasses.infoTooltip}
+                    >
+                      <HelpIcon
+                        color="primary"
+                        className={globalClasses.helpIcon}
+                      />
+                    </Tooltip>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={globalClasses.formControl}>
+                    <TextField
+                      label={l('internalMsg')}
+                      multiline
+                      rows="2"
                       variant="outlined"
                       defaultValue={internalMsg}
                       onChange={handleInternalMsgChange}
                     />
+                    <Tooltip
+                      title={l('contactInternalMsgHelperText')}
+                      className={globalClasses.infoTooltip}
+                    >
+                      <HelpIcon
+                        color="primary"
+                        className={globalClasses.helpIcon}
+                      />
+                    </Tooltip>
                   </FormControl>
                 </Grid>
               </Grid>

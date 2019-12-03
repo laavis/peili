@@ -82,15 +82,11 @@ export const OrganizationPanel = () => {
   // const [targetGroups, setTargetGroups] = React.useState([]);
   const [feeds, setFeeds] = React.useState([]);
 
-  const [editable, setEditable] = React.useState(false);
-
   const [changed, setChanged] = React.useState(false);
 
   // Enables editing
   const handleEditClick = () => {
     localStorage.setItem('services', JSON.stringify(services));
-
-    setEditable(true);
   };
 
   // Save
@@ -101,7 +97,6 @@ export const OrganizationPanel = () => {
     // localStorage.setItem('targetGroups', JSON.stringify(targetGroups));
     localStorage.setItem('feeds', JSON.stringify(feeds));
     setChanged(false);
-    setEditable(false);
   };
 
   return (
@@ -141,20 +136,14 @@ export const OrganizationPanel = () => {
         <Grid className={classes.grid} container spacing={4}>
           {/* Left Column */}
           <Grid item xs={12} md={6}>
-            <Locations
-              editable={editable}
-              locations={locations}
-              setLocations={setLocations}
-            />
+            <Locations locations={locations} setLocations={setLocations} />
             <Contacts
-              editable={editable}
               contacts={contacts}
-              setContacts={setContacts}
               changed={changed}
+              setContacts={setContacts}
               setChanged={setChanged}
             />
             <Services
-              editable={editable}
               services={services}
               setServices={setServices}
               changed={changed}
@@ -163,15 +152,7 @@ export const OrganizationPanel = () => {
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
-            {/*<TargetGroups
-              editable={editable}
-              targetGroups={targetGroups}
-              setTargetGroups={setTargetGroups}
-              changed={changed}
-              setChanged={setChanged}
-            />*/}
             <Feeds2
-              editable={editable}
               feeds={feeds}
               setFeeds={setFeeds}
               changed={changed}
@@ -181,33 +162,11 @@ export const OrganizationPanel = () => {
               <Typography className={classes.sectionTitle}>
                 {l('keywordHeader')}
               </Typography>
-              <Keywords editable={editable} />
             </div>
-            {/*<div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>
-                {l('feedsHeader')}
-              </Typography>
-              <Feeds editable={editable} />
-  </div>*/}
           </Grid>
         </Grid>
       </div>
-      <div>
-        <Fab
-          onClick={editable ? handleSaveClick : handleEditClick}
-          className={classes.fab}
-          color="primary"
-          variant="extended"
-          aria-label="save"
-        >
-          {editable ? (
-            <SaveIcon className={classes.extendedIcon} />
-          ) : (
-            <EditIcon className={classes.extendedIcon} />
-          )}
-          {editable ? 'SAVE' : 'EDIT'}
-        </Fab>
-      </div>
+      <div></div>
     </div>
   );
 };
