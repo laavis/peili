@@ -45,6 +45,8 @@ it('creates a conditional with placeholders', () => {
     'value.placeholder',
     'conditional.then',
     'value.placeholder',
+    'conditional.else',
+    'value.placeholder',
     'conditional.end'
   ]);
 });
