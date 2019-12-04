@@ -139,6 +139,8 @@ export const createConditional = () => {
     'value.placeholder',
     'conditional.then',
     'value.placeholder',
+    'conditional.else',
+    'value.placeholder',
     'conditional.end'
   ];
 };

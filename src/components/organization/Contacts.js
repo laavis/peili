@@ -1,19 +1,22 @@
 import React from 'react';
-import { Typography, Button, Box } from '@material-ui/core';
+import { Typography, Button, Box, IconButton } from '@material-ui/core';
 
 import Contact from './Contact';
-
+import EditIcon from '@material-ui/icons/Edit';
 import Locale from '../Locale';
 import Translation from './organizationLocale';
+
+import EmptySection from './EmptySection';
 
 import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ editable, contacts, setContacts, changed, setChanged }) => {
+export default ({ contacts, setContacts, changed, setChanged }) => {
   const globalClasses = styles();
 
   const [open, setOpen] = React.useState(null);
+  const [editable, setEditable] = React.useState(false);
 
   React.useEffect(() => {
     const storedContacts = JSON.parse(localStorage.getItem('contacts') || '[]');
@@ -37,8 +40,10 @@ export default ({ editable, contacts, setContacts, changed, setChanged }) => {
     setContacts([
       ...contacts,
       {
-        method: '',
-        contact: '',
+        name: '',
+        phone: '',
+        email: '',
+        description: '',
         internal_msg: ''
       }
     ]);
@@ -46,15 +51,38 @@ export default ({ editable, contacts, setContacts, changed, setChanged }) => {
     setOpen(lastIndex);
   };
 
+  let hasData = contacts.length;
+
+  const handleEditClick = () => {
+    setEditable(true);
+  };
+
+  const handleSaveClick = () => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+    setOpen(false);
+    setEditable(false);
+  };
+
   return (
     <Box className={globalClasses.section}>
-      <Typography className={globalClasses.sectionTitle}>
-        {l('contactsHeader')}
-        <span
-          className={changed ? globalClasses.unsavedChangesIcon : ''}
-        ></span>
-      </Typography>
+      <Box className={globalClasses.sectionTitleContainer}>
+        <Typography className={globalClasses.sectionTitle}>
+          {l('contactsHeader')}
+          <span
+            className={changed ? globalClasses.unsavedChangesIcon : ''}
+          ></span>
+        </Typography>
+        <IconButton
+          onClick={handleEditClick}
+          className={globalClasses.editSectionButton}
+          aria-label="language"
+          color="primary"
+        >
+          <EditIcon />
+        </IconButton>
+      </Box>
 
+      {!hasData ? <EmptySection /> : null}
       {contacts.map((contact, index) => (
         <Contact
           {...contact}
@@ -65,13 +93,18 @@ export default ({ editable, contacts, setContacts, changed, setChanged }) => {
           handleEdit={handleEdit(index)}
         />
       ))}
-      <Button
-        className={editable ? globalClasses.buttonAdd : globalClasses.hide}
-        color="primary"
-        onClick={handleAddContact}
+      <Box
+        className={
+          editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
+        }
       >
-        {l('addLocationButtonText')}
-      </Button>
+        <Button color="primary" onClick={handleAddContact}>
+          {l('addLocationButtonText')}
+        </Button>
+        <Button onClick={handleSaveClick} color="primary" variant="contained">
+          {l('save')}
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -6,17 +6,23 @@ const styles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column'
   },
+  sectionTitleContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '0.5rem'
+  },
   sectionTitle: {
     fontSize: '1.125rem', // 18px
     fontWeight: 600,
     marginLeft: '1rem',
-    marginBottom: '0.5rem'
+    marginBottom: '0 !important'
   },
   expansionPanelContainer: {
     marginBottom: '8px'
   },
   expansionPanel: {
-    padding: '0 1rem 0 1rem'
+    padding: '1rem'
   },
   outerContainerPadding: {
     padding: '1rem',
@@ -24,7 +30,7 @@ const styles = makeStyles(theme => ({
   },
   expansionPanelPaddingReset: {
     padding: '0 !important',
-    margin: '0'
+    margin: '0 !important'
   },
   summaryWrapper: {
     flexDirection: 'column'
@@ -84,6 +90,21 @@ const styles = makeStyles(theme => ({
   },
   smallSpacingLeft: {
     marginLeft: '0.5rem'
+  },
+  editSectionButton: {
+    padding: '0.5rem'
+  },
+  infoTooltip: {
+    position: 'absolute',
+    right: '-1.5rem'
+  },
+  helpIcon: {
+    width: '1rem',
+    height: '1rem'
+  },
+  sectionButtonsContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 }));
 

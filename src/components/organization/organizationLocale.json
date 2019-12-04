@@ -172,5 +172,37 @@
   "add": {
     "en": "Add",
     "fi": "Lisää"
+  },
+  "name": {
+    "en": "Name",
+    "fi": "Nimi"
+  },
+  "phone": {
+    "en": "Phone",
+    "fi": "Puhelinnumero"
+  },
+  "email": {
+    "en": "Email",
+    "fi": "Sähköposti"
+  },
+  "description": {
+    "en": "Description",
+    "fi": "Lisätietoja"
+  },
+  "internalMsg": {
+    "en": "Internal Message",
+    "fi": "Sisäinen ilmoitus"
+  },
+  "contactDescriptionHelpText": {
+    "en": "More information about the contact person. E.g preferred contact method: WhatsApp",
+    "fi": "Lisätietoja yhteyshenkilöstä, esim. Yhteys WhatsAppilla, kellonajat"
+  },
+  "contactInternalMsgHelperText": {
+    "en": "A note that is visible only for organization members",
+    "fi": "Viesti joka näkyy vain organisaation jäsenille"
+  },
+  "save": {
+    "en": "Save",
+    "fi": "Tallenna"
   }
 }

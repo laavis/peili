@@ -156,6 +156,26 @@
       "division": "Jaa"
     }
   },
+  "questionScoreComparatorText": {
+    "en": {
+      "1": "Greater Than",
+      "2": "Less Than",
+      "3": "Greater Than or Equal",
+      "4": "Less Than or Equal",
+      "5": "Equals",
+      "6": "And",
+      "7": "Or"
+    },
+    "fi": {
+      "1": "Suurempi Kuin",
+      "2": "Pienempi Kuin",
+      "3": "Suurempi tai Yhtäsuuri Kuin",
+      "4": "Pienempi tai Yhtäsuuri Kuin",
+      "5": "Yhtäsuuri Kuin",
+      "6": "Ja (And)",
+      "7": "Tai (Or)"
+    }
+  },
   "questionScoreVariable": {
     "en": "Set SCORE as",
     "fi": "Aseta SCORE arvoksi"
