@@ -17,7 +17,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -31,7 +31,14 @@ import {
   mdiCloseBox,
   mdiDivisionBox,
   mdiMinusBox,
-  mdiPlusBox
+  mdiPlusBox,
+  mdiCodeGreaterThan,
+  mdiCodeLessThan,
+  mdiCodeGreaterThanOrEqual,
+  mdiCodeLessThanOrEqual,
+  mdiEqualBox,
+  mdiCircle,
+  mdiCircleOutline
 } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
@@ -43,7 +50,9 @@ import {
   createOperator,
   OPERATOR_TYPE,
   parseScore,
-  SCORE_TYPE
+  SCORE_TYPE,
+  COMPARATOR_TYPE,
+  createComparator
 } from './Score';
 
 const l = Locale(Translation);
@@ -55,12 +64,23 @@ const mathIconList = {
   division: mdiDivisionBox
 };
 
+const comparatorIconList = {
+  1: mdiCodeGreaterThan,
+  2: mdiCodeLessThan,
+  3: mdiCodeGreaterThanOrEqual,
+  4: mdiCodeLessThanOrEqual,
+  5: mdiEqualBox,
+  6: mdiCircle,
+  7: mdiCircleOutline
+};
+
 let setOpenState = null;
 let currentScoreId = null;
 let currentQuestionId = null;
 let setContentState = null;
 let resolveDialog = null;
 let menuEditIndex = null;
+let menuEditReplace = true;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -97,6 +117,9 @@ const useStyles = makeStyles(theme => ({
     left: theme.spacing(1.5),
     width: 16,
     height: 16
+  },
+  if: {
+    borderLeft: `3px solid ${theme.palette.primary.main}`
   }
 }));
 
@@ -124,20 +147,28 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
-
   const [input, setInput] = React.useState([]);
+  const theme = useTheme();
 
   setOpenState = setOpen;
   setContentState = setInput;
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
+  const [comparatorMenuAnchorEl, setComparatorMenuAnchorEl] = React.useState(
+    null
+  );
 
   const mathOperatorTexts = l('questionScoreOperatorText');
+  const comparatorTexts = l('questionScoreComparatorText');
 
   const scoreStep = parseScore(input);
 
-  const handleMenuClick = (index = null) => event => {
+  let depthLevel = 0;
+  let lastStep = null;
+
+  const handleMenuClick = (index = null, replace = true) => event => {
     menuEditIndex = index;
+    menuEditReplace = replace;
     setMenuAnchorEl(event.currentTarget);
   };
 
@@ -145,15 +176,13 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
     setMenuAnchorEl(null);
     if (!action) return;
 
-    if (menuEditIndex !== null) {
+    if (menuEditIndex !== null && menuEditReplace) {
       const inputCache = [...input];
       inputCache[menuEditIndex] = createOperator(action);
 
       setInput([...inputCache]);
       return;
     }
-
-    const inputCache = [...input, createOperator(action)];
 
     const value = await inputDialog.openDialog(
       currentScoreId,
@@ -162,10 +191,60 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
     );
 
     if (value) {
-      if (value === 'if') {
-        setInput([...inputCache, ...createConditional()]);
+      const inputCombiner = createOperator(action);
+      const inputValue =
+        value === 'if'
+          ? [inputCombiner, ...createConditional()]
+          : [inputCombiner, value];
+
+      if (menuEditIndex !== null) {
+        const inputCache = [...input];
+        inputCache.splice(menuEditIndex + 1, 0, ...inputValue);
+        setInput([...inputCache]);
       } else {
-        setInput([...inputCache, value]);
+        setInput([...input, inputCombiner, value]);
+      }
+    }
+  };
+
+  const handleComparatorMenuClick = (index = null, replace = true) => event => {
+    menuEditIndex = index;
+    menuEditReplace = replace;
+    setComparatorMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleComparatorMenuClose = action => async () => {
+    setComparatorMenuAnchorEl(null);
+
+    if (!action) return;
+
+    if (menuEditIndex !== null && menuEditReplace) {
+      const inputCache = [...input];
+      inputCache[menuEditIndex] = createComparator(action);
+
+      setInput([...inputCache]);
+      return;
+    }
+
+    const value = await inputDialog.openDialog(
+      currentScoreId,
+      currentQuestionId,
+      input.length <= 1
+    );
+
+    if (value) {
+      const inputComparator = createComparator(action);
+      const inputValue =
+        value === 'if'
+          ? [inputComparator, ...createConditional()]
+          : [inputComparator, value];
+
+      if (menuEditIndex !== null) {
+        const inputCache = [...input];
+        inputCache.splice(menuEditIndex + 1, 0, ...inputValue);
+        setInput([...inputCache]);
+      } else {
+        setInput([...input, inputComparator, value]);
       }
     }
   };
@@ -199,7 +278,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
         setInput([...input, ...insertValue]);
       } else {
         const inputCache = [...input];
-        inputCache.splice(index, 0, ...insertValue);
+        inputCache.splice(index, 1, ...insertValue);
         setInput([...inputCache]);
       }
     }
@@ -212,6 +291,44 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
     inputCache.splice(index - 1, 2);
     setInput([...inputCache]);
   };
+
+  const renderInlineButtons = (i, depthStyle, comparator = false) => (
+    <ListItem button key={i} className={classes.if} style={depthStyle}>
+      <ListItemText>
+        {comparator && (
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleComparatorMenuClick(i + 1, false)}
+            startIcon={
+              <Icon
+                path={mdiCodeGreaterThanOrEqual}
+                size={1}
+                color={theme.palette.primary.main}
+              />
+            }
+          >
+            Compare
+          </Button>
+        )}
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={handleMenuClick(i + 1, false)}
+          style={{ marginLeft: comparator ? theme.spacing(1) : 0 }}
+          startIcon={
+            <Icon
+              path={mdiCalculatorVariant}
+              size={1}
+              color={theme.palette.primary.main}
+            />
+          }
+        >
+          Combine
+        </Button>
+      </ListItemText>
+    </ListItem>
+  );
 
   return (
     <>
@@ -238,12 +355,91 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
 
           <List component="nav" aria-label="source">
             {scoreStep.steps.map((value, i) => {
+              // Calculating if start statement depth
+              if (
+                value.type === SCORE_TYPE.CONDITIONAL &&
+                value.step === 'if'
+              ) {
+                depthLevel++;
+              }
+
+              // Styling based on depth
+              let depthColor =
+                depthLevel % 2 === 0
+                  ? theme.palette.secondary.main
+                  : theme.palette.primary.main;
+              let depthStyle = {
+                marginLeft: Math.max(0, depthLevel - 1) * 16,
+                borderLeft: `3px solid ${depthColor}`
+              };
+              if (depthLevel === 0) depthStyle = null;
+
+              const isInsideIfCondition = depthLevel > 0 && lastStep === 'if';
+              const isInsideIfOutput =
+                depthLevel > 0 &&
+                (lastStep === 'then' || lastStep === 'else') &&
+                value.type !== SCORE_TYPE.CONDITIONAL;
+              const isLastInsideIfCondition =
+                isInsideIfCondition &&
+                scoreStep.steps[i + 1].type === SCORE_TYPE.CONDITIONAL &&
+                scoreStep.steps[i + 1].step === 'then';
+              const isLastInsideIfOutput =
+                isInsideIfOutput &&
+                scoreStep.steps[i + 1].type === SCORE_TYPE.CONDITIONAL &&
+                (scoreStep.steps[i + 1].step === 'else' ||
+                  scoreStep.steps[i + 1].step === 'end');
+
+              const isPermanent =
+                (isInsideIfCondition &&
+                  scoreStep.steps[i - 1].type === SCORE_TYPE.CONDITIONAL &&
+                  scoreStep.steps[i - 1].step === 'if') ||
+                (isInsideIfOutput &&
+                  scoreStep.steps[i - 1].type === SCORE_TYPE.CONDITIONAL);
+
+              // Calculating if end statement depth
+              if (
+                value.type === SCORE_TYPE.CONDITIONAL &&
+                value.step === 'end'
+              ) {
+                depthLevel--;
+              }
+
+              if (value.type === SCORE_TYPE.CONDITIONAL) {
+                lastStep = value.step;
+
+                depthStyle.backgroundColor = depthColor;
+              }
+
               if (value.type === SCORE_TYPE.OPERATOR) {
                 const text = mathOperatorTexts[value.sign];
                 const icon = mathIconList[value.sign];
 
                 return (
-                  <ListItem button onClick={handleMenuClick(i + 1)} key={i}>
+                  <ListItem
+                    button
+                    onClick={handleMenuClick(i + 1)}
+                    key={i}
+                    style={depthStyle}
+                  >
+                    <ListItemIcon>
+                      <Icon path={icon} size={1} className={classes.mdi} />
+                    </ListItemIcon>
+                    <ListItemText>{text}</ListItemText>
+                  </ListItem>
+                );
+              }
+
+              if (value.type === SCORE_TYPE.COMPARATOR) {
+                const text = comparatorTexts[value.compare];
+                const icon = comparatorIconList[value.compare];
+
+                return (
+                  <ListItem
+                    button
+                    onClick={handleMenuClick(i + 1)}
+                    key={i}
+                    style={depthStyle}
+                  >
                     <ListItemIcon>
                       <Icon path={icon} size={1} className={classes.mdi} />
                     </ListItemIcon>
@@ -253,27 +449,120 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
               }
 
               if (value.type === SCORE_TYPE.CONDITIONAL) {
-                return value.step;
+                return (
+                  <ListItem
+                    button
+                    onClick={handleMenuClick(i + 1)}
+                    key={i}
+                    className={classes.if}
+                    style={depthStyle}
+                  >
+                    <ListItemText>{value.step}</ListItemText>
+                  </ListItem>
+                );
               }
 
-              if (value.type === SCORE_TYPE.VALUE && value.from === null) {
+              if (
+                value.type === SCORE_TYPE.VALUE &&
+                value.from === null &&
+                value.value === null
+              ) {
                 return (
                   <ListItem
                     button
                     onClick={handleAddSourceClick(i + 1)}
                     key={i}
+                    className={classes.if}
+                    style={depthStyle}
+                  >
+                    <ListItemText>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<AddIcon />}
+                      >
+                        Pick Value
+                      </Button>
+                    </ListItemText>
+                  </ListItem>
+                );
+              }
+
+              if (value.type === SCORE_TYPE.VALUE && value.from === null) {
+                return (
+                  <>
+                    <ListItem
+                      button
+                      onClick={handleAddSourceClick(i + 1)}
+                      key={i}
+                      style={depthStyle}
+                    >
+                      <ListItemIcon>
+                        <Icon
+                          path={mdiCalculator}
+                          size={1}
+                          color="rgba(0, 0, 0, 0.54)"
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={value.value}
+                        secondary={l`questionScoreValueStatic`}
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          edge="end"
+                          aria-label="edit"
+                          onClick={handleAddSourceClick(i + 1)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        {i !== 0 && !isPermanent && (
+                          <IconButton
+                            edge="end"
+                            aria-label="remove"
+                            onClick={handleRemove(i + 1)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    {isLastInsideIfCondition &&
+                      renderInlineButtons(i, depthStyle, true)}
+                    {isLastInsideIfOutput && renderInlineButtons(i, depthStyle)}
+                  </>
+                );
+              }
+
+              const question = survey.questions.find(x => x.id === value.from);
+              const score = parseScore(
+                question.score.find(x => x[0].split('.')[1] === value.value)
+              );
+
+              return (
+                <>
+                  <ListItem
+                    button
+                    onClick={handleAddSourceClick(i + 1)}
+                    key={i}
+                    style={depthStyle}
                   >
                     <ListItemIcon>
-                      <Icon
-                        path={mdiCalculator}
-                        size={1}
-                        color="rgba(0, 0, 0, 0.54)"
-                      />
+                      {value.value === 'score' ? (
+                        <StarRoundedIcon />
+                      ) : (
+                        <StarBorderRoundedIcon />
+                      )}
                     </ListItemIcon>
                     <ListItemText
-                      primary={value.value}
-                      secondary={l`questionScoreValueStatic`}
+                      primary={
+                        value.value === 'score'
+                          ? l`questionScoreSourceDynamicDefaultTitle`
+                          : score.name
+                      }
+                      secondary={`${question.index + 1}. ${question.title}`}
                     />
+
                     <ListItemSecondaryAction>
                       <IconButton
                         edge="end"
@@ -282,7 +571,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                       >
                         <EditIcon />
                       </IconButton>
-                      {i !== 0 && (
+                      {i !== 0 && !isPermanent && (
                         <IconButton
                           edge="end"
                           aria-label="remove"
@@ -293,58 +582,10 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
                       )}
                     </ListItemSecondaryAction>
                   </ListItem>
-                );
-              }
-
-              if (
-                value.type === SCORE_TYPE.VALUE &&
-                value.from === 'placeholder'
-              ) {
-                return 'Placeholder';
-              }
-
-              const question = survey.questions.find(x => x.id === value.from);
-              const score = parseScore(
-                question.score.find(x => x[0].split('.')[1] === value.value)
-              );
-
-              return (
-                <ListItem button onClick={handleAddSourceClick(i + 1)} key={i}>
-                  <ListItemIcon>
-                    {value.value === 'score' ? (
-                      <StarRoundedIcon />
-                    ) : (
-                      <StarBorderRoundedIcon />
-                    )}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      value.value === 'score'
-                        ? l`questionScoreSourceDynamicDefaultTitle`
-                        : score.name
-                    }
-                    secondary={`${question.index + 1}. ${question.title}`}
-                  />
-
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="edit"
-                      onClick={handleAddSourceClick(i + 1)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    {i !== 0 && (
-                      <IconButton
-                        edge="end"
-                        aria-label="remove"
-                        onClick={handleRemove(i + 1)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    )}
-                  </ListItemSecondaryAction>
-                </ListItem>
+                  {isLastInsideIfCondition &&
+                    renderInlineButtons(i, depthStyle, true)}
+                  {isLastInsideIfOutput && renderInlineButtons(i, depthStyle)}
+                </>
               );
             })}
 
@@ -399,6 +640,28 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
               <Icon path={mathIconList[x]} size={1} className={classes.mdi} />
             </ListItemIcon>
             {mathOperatorTexts[x]}
+          </MenuItem>
+        ))}
+      </Menu>
+
+      <Menu
+        id="comparator-menu"
+        anchorEl={comparatorMenuAnchorEl}
+        keepMounted
+        open={Boolean(comparatorMenuAnchorEl)}
+        onClose={handleComparatorMenuClose(null)}
+        style={{ zIndex: 2000 }}
+      >
+        {Object.values(COMPARATOR_TYPE).map(x => (
+          <MenuItem onClick={handleComparatorMenuClose(x)} key={x}>
+            <ListItemIcon>
+              <Icon
+                path={comparatorIconList[x]}
+                size={1}
+                className={classes.mdi}
+              />
+            </ListItemIcon>
+            {comparatorTexts[x]}
           </MenuItem>
         ))}
       </Menu>
