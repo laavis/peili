@@ -132,7 +132,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
   if (selectedSection === 'source' && selectedSource) {
     isConfirmEnabled = true;
   }
-  if (selectedSection === 'static' && value) {
+  if (selectedSection === 'static' && value !== '' && value !== null) {
     isConfirmEnabled = true;
   }
   if (selectedSection === 'if') {
@@ -148,7 +148,7 @@ const QuestionScoreInputDialog = ({ survey }) => {
             value: selectedSource.score
           })
         );
-      } else if (selectedSection === 'static' && value) {
+      } else if (selectedSection === 'static' && (value || value === 0)) {
         closeDialog(createValue({ value }));
       } else if (selectedSection === 'if') {
         closeDialog('if');

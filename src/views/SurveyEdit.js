@@ -33,6 +33,7 @@ import QuestionScoreDialog from '../components/question/QuestionScoreDialog';
 import QuestionScoreInputDialog from '../components/question/QuestionScoreInputDialog';
 import { handleSurveyQuestionCreate } from '../components/question/QuestionUtil';
 import { SurveyScoreTable } from '../components/question/SurveyScoreTable';
+import { SurveyScore } from '../components/question/SurveyScore';
 
 const l = Locale(Translation);
 
@@ -40,7 +41,8 @@ let data = {
   title: '',
   description: '',
   intro: '',
-  questions: []
+  questions: [],
+  score: []
 };
 
 const enabledQuestionTypes = {
@@ -410,7 +412,9 @@ export const SurveyEdit = ({ match, history }) => {
                     </Typography>
                   </Box>
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails></ExpansionPanelDetails>
+                <ExpansionPanelDetails>
+                  <SurveyScore survey={survey} setSurvey={setSurvey} />
+                </ExpansionPanelDetails>
               </ExpansionPanel>
             </Box>
           </Box>

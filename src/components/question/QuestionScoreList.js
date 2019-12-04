@@ -45,11 +45,15 @@ export const QuestionScoreList = ({
   const classes = useStyles();
 
   const handleScoreUpdate = score => {
-    setSurvey(
-      handleSurveyQuestionUpdate(survey, index, {
-        score
-      })
-    );
+    if (index !== null) {
+      setSurvey(
+        handleSurveyQuestionUpdate(survey, index, {
+          score
+        })
+      );
+    } else {
+      setSurvey({ ...survey, score });
+    }
   };
 
   const handleValueUpdate = p => async () => {
