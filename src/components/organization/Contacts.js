@@ -51,6 +51,12 @@ export default ({ contacts, setContacts, changed, setChanged }) => {
     setOpen(lastIndex);
   };
 
+  const handleRemove = index => () => {
+    let newLocations = [...contacts];
+    newLocations.splice(index, 1);
+    setContacts(newLocations);
+  };
+
   let hasData = contacts.length;
 
   const handleEditClick = () => {
@@ -91,6 +97,7 @@ export default ({ contacts, setContacts, changed, setChanged }) => {
           open={open === index}
           handleOpen={handleOpen(index)}
           handleEdit={handleEdit(index)}
+          handleRemove={handleRemove(index)}
         />
       ))}
       <Box

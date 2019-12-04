@@ -1,18 +1,18 @@
+import { Box, Button, IconButton, Typography } from '@material-ui/core';
 import React from 'react';
-import { Typography, Button, Box } from '@material-ui/core';
-import Location from './Location';
-
 import Locale from '../Locale';
+import Location from './Location';
 import Translation from './organizationLocale';
-
 import styles from './styles';
+import EditIcon from '@material-ui/icons/Edit';
 
 const l = Locale(Translation);
 
-export default ({ editable, locations, setLocations }) => {
-  const classes = styles();
+export default ({ locations, setLocations }) => {
+  const globalClasses = styles();
 
   const [open, setOpen] = React.useState(null);
+  const [editable, setEditable] = React.useState(false);
 
   React.useEffect(() => {
     // get locations (or empty array if there are no locations) from local storage
@@ -60,11 +60,31 @@ export default ({ editable, locations, setLocations }) => {
     setOpen(lastIndex);
   };
 
+  const handleEditClick = () => {
+    setEditable(true);
+  };
+
+  const handleSaveClick = () => {
+    localStorage.setItem('locations', JSON.stringify(locations));
+    setOpen(false);
+    setEditable(false);
+  };
+
   return (
-    <Box className={classes.section}>
-      <Typography className={classes.sectionTitle}>
-        {l('locationsHeader')}
-      </Typography>
+    <Box className={globalClasses.section}>
+      <Box className={globalClasses.sectionTitleContainer}>
+        <Typography className={globalClasses.sectionTitle}>
+          {l('locationsHeader')}
+        </Typography>
+        <IconButton
+          onClick={handleEditClick}
+          className={globalClasses.editSectionButton}
+          aria-label="language"
+          color="primary"
+        >
+          <EditIcon />
+        </IconButton>
+      </Box>
       {locations.map((location, index) => (
         <Location
           {...location}
@@ -76,13 +96,24 @@ export default ({ editable, locations, setLocations }) => {
           handleRemove={handleLocationRemove(index)}
         />
       ))}
-      <Button
-        className={editable ? classes.buttonAdd : classes.hide}
-        color="primary"
-        onClick={handleAddLocation}
+
+      <Box
+        className={
+          editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
+        }
       >
-        {l('addLocationButtonText')}
-      </Button>
+        <Button
+          className={editable ? globalClasses.buttonAdd : globalClasses.hide}
+          color="primary"
+          onClick={handleAddLocation}
+        >
+          {l('addLocationButtonText')}
+        </Button>
+
+        <Button onClick={handleSaveClick} color="primary" variant="contained">
+          {l('save')}
+        </Button>
+      </Box>
     </Box>
   );
 };

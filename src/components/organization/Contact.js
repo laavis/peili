@@ -1,27 +1,23 @@
-import React from 'react';
 import {
-  Typography,
   Box,
-  Grid,
   ExpansionPanel,
-  ExpansionPanelSummary,
   ExpansionPanelDetails,
+  ExpansionPanelSummary,
   FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
+  Grid,
+  IconButton,
   Tooltip,
-  IconButton
+  Typography
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HelpIcon from '@material-ui/icons/HelpOutline';
-
+import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 import TextField from '../CachedInput';
-
+import { openDialog } from '../ConfirmationDialog';
 import Locale from '../Locale';
 import Translation from './organizationLocale';
-import { makeStyles } from '@material-ui/styles';
-
 import globalStyles from './styles';
 
 const l = Locale(Translation);
@@ -51,7 +47,8 @@ export default ({
   open,
   editable,
   handleOpen,
-  handleEdit
+  handleEdit,
+  handleRemove
 }) => {
   const classes = useStyles();
   const globalClasses = globalStyles();
@@ -81,6 +78,17 @@ export default ({
 
   const handleInternalMsgChange = internalMsg => {
     handleEdit({ internalMsg });
+  };
+
+  const handleConfirmationDialog = async () => {
+    const action = await openDialog({
+      title: l('removeLocationConfirmationTitle'),
+      description: l('confirmationWarning')
+    });
+
+    if (action === 'confirm') {
+      handleRemove();
+    }
   };
 
   const summary = () => {
@@ -205,6 +213,18 @@ export default ({
               </Grid>
             </Grid>
           </Grid>
+          <Tooltip title={l('removeText')}>
+            <IconButton
+              className={
+                editable ? globalClasses.removeIconButton2 : globalClasses.hide
+              }
+              onClick={handleConfirmationDialog}
+              aria-label={l('removeText')}
+              size="small"
+            >
+              <DeleteIcon fontSize="inherit" />
+            </IconButton>
+          </Tooltip>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </Box>

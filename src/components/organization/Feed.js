@@ -78,7 +78,6 @@ export default ({
   };
 
   const handleIdentifierRemove = index => () => {
-    console.log('vihhuun täältä');
     identifiers.splice(index, 1);
     handleEdit({ identifiers });
   };
