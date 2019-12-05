@@ -2,7 +2,6 @@ import {
   Box,
   ExpansionPanel,
   ExpansionPanelDetails,
-  ExpansionPanelSummary,
   FormControl,
   Grid,
   IconButton,
@@ -19,6 +18,8 @@ import { openDialog } from '../ConfirmationDialog';
 import Locale from '../Locale';
 import Translation from './organizationLocale';
 import globalStyles from './styles';
+
+import { StyledExpansionPanelSummary } from './StyledExpansionPanelSummary';
 
 const l = Locale(Translation);
 
@@ -93,7 +94,7 @@ export default ({
 
   const summary = () => {
     return (
-      <ExpansionPanelSummary
+      <StyledExpansionPanelSummary
         className={globalClasses.expansionPanelPaddingReset}
         expandIcon={icon}
       >
@@ -108,7 +109,7 @@ export default ({
             {internalMsg}
           </Typography>
         </Box>
-      </ExpansionPanelSummary>
+      </StyledExpansionPanelSummary>
     );
   };
 

@@ -1,5 +1,13 @@
 import React from 'react';
-import { Typography, Button, Box, Menu, MenuItem } from '@material-ui/core';
+import {
+  Typography,
+  Button,
+  Box,
+  Menu,
+  MenuItem,
+  IconButton
+} from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 
 import Locale from '../Locale';
 import Translation from './organizationLocale';
@@ -10,23 +18,20 @@ import EmptySection from './EmptySection';
 
 const l = Locale(Translation);
 
-export default ({
-  editable,
-  targetGroups,
-  setTargetGroups,
-  changed,
-  setChanged
-}) => {
+export default () => {
   const globalClasses = styles();
+
+  const [open, setOpen] = React.useState(null);
+  const [editable, setEditable] = React.useState(false);
+  const [changed, setChanged] = React.useState(false);
+  const [targetGroups, setTargetGroups] = React.useState([]);
 
   React.useEffect(() => {
     const storedTargetGroups = JSON.parse(
-      localStorage.getItem('targetGroups') || '[]'
+      localStorage.getItem('target_groups') || '[]'
     );
     setTargetGroups(storedTargetGroups);
   }, [setTargetGroups]);
-
-  const [open, setOpen] = React.useState(null);
 
   const handleOpen = index => isOpen => {
     setOpen(isOpen ? index : null);
@@ -39,13 +44,14 @@ export default ({
     setTargetGroups(newTargetGroups);
   };
 
-  const handleAdd = criteria => {
+  const handleAdd = type => {
     let lastIndex = targetGroups.length;
 
     setTargetGroups([
       ...targetGroups,
       {
-        criteria: criteria
+        name: type,
+        criteria: []
       }
     ]);
 
@@ -75,8 +81,6 @@ export default ({
   const handleCloseTargetGroupTypeMenu = type => () => {
     setTargetGroupTypeMenuAnchorEl(null);
 
-    console.log(type);
-
     switch (type) {
       case 'gender':
         handleAdd(type);
@@ -90,16 +94,36 @@ export default ({
     }
   };
 
+  const handleEditClick = () => {
+    setEditable(true);
+  };
+
+  const handleSaveClick = () => {
+    localStorage.setItem('target_groups', JSON.stringify(targetGroups));
+    setOpen(false);
+    setEditable(false);
+  };
+
   let hasTargetGroups = targetGroups.length;
 
   return (
     <Box className={globalClasses.section}>
-      <Typography className={globalClasses.sectionTitle}>
-        {l('targetGroupSectionHeader')}
-        <span
-          className={changed ? globalClasses.unsavedChangesIcon : ''}
-        ></span>
-      </Typography>
+      <Box className={globalClasses.sectionTitleContainer}>
+        <Typography className={globalClasses.sectionTitle}>
+          {l('targetGroupSectionHeader')}
+          <span
+            className={changed ? globalClasses.unsavedChangesIcon : ''}
+          ></span>
+        </Typography>
+        <IconButton
+          onClick={handleEditClick}
+          className={globalClasses.editSectionButton}
+          aria-label="language"
+          color="primary"
+        >
+          <EditIcon />
+        </IconButton>
+      </Box>
       {!hasTargetGroups ? EmptySection() : null}
       {targetGroups.map((targetGroup, index) => (
         <TargetGroup
@@ -112,26 +136,37 @@ export default ({
           handleRemove={handleRemove(index)}
         />
       ))}
-      <Button
-        className={editable ? globalClasses.buttonAdd : globalClasses.hide}
-        color="primary"
-        onClick={handleOpenTargetGroupTypeMenu}
+
+      <Box
+        className={
+          editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
+        }
       >
-        {l('addTargetGroupButtonText')}
-      </Button>
-      <Menu
-        id="target-group-type-menu"
-        anchorEl={targetGroupTypeMenuAnchorEl}
-        keepMounted
-        open={Boolean(targetGroupTypeMenuAnchorEl)}
-        onClose={handleCloseTargetGroupTypeMenu}
-      >
-        {Object.keys(enabledTypes).map(x => (
-          <MenuItem onClick={handleCloseTargetGroupTypeMenu(x)}>
-            <Typography>{l`targetGroupType`[x]}</Typography>
-          </MenuItem>
-        ))}
-      </Menu>
+        <Button
+          className={editable ? globalClasses.buttonAdd : globalClasses.hide}
+          color="primary"
+          onClick={handleOpenTargetGroupTypeMenu}
+        >
+          {l('addTargetGroupButtonText')}
+        </Button>
+        <Menu
+          id="target-group-type-menu"
+          anchorEl={targetGroupTypeMenuAnchorEl}
+          keepMounted
+          open={Boolean(targetGroupTypeMenuAnchorEl)}
+          onClose={handleCloseTargetGroupTypeMenu}
+        >
+          {Object.keys(enabledTypes).map(x => (
+            <MenuItem onClick={handleCloseTargetGroupTypeMenu(x)}>
+              <Typography>{l`targetGroupType`[x]}</Typography>
+            </MenuItem>
+          ))}
+        </Menu>
+
+        <Button onClick={handleSaveClick} color="primary" variant="contained">
+          {l('save')}
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -16,32 +16,37 @@ import {
   Slider,
   Switch,
   Tooltip,
-  Typography
+  Typography,
+  makeStyles
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 import TextField from '../CachedInput';
 import { openDialog } from '../ConfirmationDialog';
 import Locale from '../Locale';
 import Translation from './organizationLocale';
-// import { handleEditTest } from './actionsHelper';
+
+import { StyledExpansionPanelSummary } from './StyledExpansionPanelSummary';
+
 import globalStyles from './styles';
+
+import GenderCriteria from './GenderCriteria';
 
 const l = Locale(Translation);
 
-/*
 const useStyles = makeStyles(theme => ({
-  singleCriteriaContainer: {
-    marginLeft: '8px',
-    background: 'rgba(0, 0, 0, 0.07)'
+  description: {
+    marginTop: '0.75rem'
+  },
+  criterias: {
+    marginTop: '0.75rem'
   }
 }));
-*/
 
 export default ({
+  name,
   description,
   openService,
   requirements,
@@ -51,8 +56,8 @@ export default ({
   handleEdit,
   handleRemove
 }) => {
-  // const classes = useStyles();
   const globalClasses = globalStyles();
+  const classes = useStyles();
 
   const [openState, setOpenState] = React.useState(false);
   const [criteriaMenuAnchorEl, setCriteriaMenuAnchorEl] = React.useState(null);
@@ -72,6 +77,10 @@ export default ({
   const handleExpandedChange = (event, isExpanded) => {
     if (!editable) return;
     handleOpen(isExpanded);
+  };
+
+  const handleNameChange = name => {
+    handleEdit({ name });
   };
 
   const handleDescriptionChange = description => {
@@ -197,8 +206,6 @@ export default ({
   const handleCloseAddCriteriaMenu = type => () => {
     setCriteriaMenuAnchorEl(null);
 
-    console.log(type);
-
     switch (type) {
       case 'gender':
         setGenderValue(true);
@@ -223,6 +230,58 @@ export default ({
     if (action === 'confirm') handleRemove();
   };
 
+  const summary = () => {
+    return (
+      <StyledExpansionPanelSummary
+        className={globalClasses.expansionPanelPaddingReset}
+      >
+        <Box className={globalClasses.summaryWrapper}>
+          <Typography className={globalClasses.textCapitalizedSmall}>
+            {openService ? l('serviceOpen') : l('serviceClosed')}
+          </Typography>
+          <Typography className={globalClasses.textEmphasis}>{name}</Typography>
+          <Typography className={classes.description}>{description}</Typography>
+          <Box className={classes.criterias}>
+            <Typography className={globalClasses.textCapitalizedSmall}>
+              {l('criterias')}
+            </Typography>
+            <Grid container spacing={1}>
+              {requirements.map(x => {
+                if (x.type === 'gender')
+                  return (
+                    <Grid item xs={3}>
+                      <FormControlLabel
+                        checked={true}
+                        label={x.isMale ? l('forMen') : l('forWomen')}
+                        control={<Radio color="primary" />}
+                      />
+                    </Grid>
+                  );
+                if (x.type === 'kela')
+                  return (
+                    <Grid item xs={6}>
+                      <FormControlLabel
+                        checked={true}
+                        label={l('forKelaRehabs')}
+                        control={<Radio color="primary" />}
+                      />
+                    </Grid>
+                  );
+
+                if (x.type === 'age')
+                  return (
+                    <Grid item xs={6}>
+                      <Typography></Typography>
+                    </Grid>
+                  );
+              })}
+            </Grid>
+          </Box>
+        </Box>
+      </StyledExpansionPanelSummary>
+    );
+  };
+
   const isFirstRequirement = !requirements.length;
 
   return (
@@ -232,19 +291,7 @@ export default ({
         expanded={editable ? open : false}
         onChange={handleExpandedChange}
       >
-        <ExpansionPanelSummary
-          className={globalClasses.expansionPanelPaddingReset}
-          expandIcon={icon}
-        >
-          <Box className={globalClasses.summaryWrapper}>
-            <Typography className={globalClasses.textCapitalizedSmall}>
-              {openService ? l('serviceOpen') : l('serviceClosed')}
-            </Typography>
-            <Typography className={globalClasses.textEmphasis}>
-              {description}
-            </Typography>
-          </Box>
-        </ExpansionPanelSummary>
+        {!editable ? summary() : null}
         <ExpansionPanelDetails
           className={globalClasses.expansionPanelPaddingReset}
         >
@@ -255,6 +302,15 @@ export default ({
                 spacing={2}
                 className={globalClasses.detailsWrapper}
               >
+                <Grid item xs={6}>
+                  <FormControl className={globalClasses.formControl}>
+                    <TextField
+                      label={l('name')}
+                      value={name}
+                      onChange={handleNameChange}
+                    />
+                  </FormControl>
+                </Grid>
                 <Grid item xs={12}>
                   <FormControl className={globalClasses.formControl}>
                     <TextField
@@ -280,7 +336,13 @@ export default ({
                 </Grid>
                 <Grid item xs={12}>
                   {requirements.map(x => {
-                    if (x.type === 'gender') return gender(x.isMale);
+                    if (x.type === 'gender')
+                      return (
+                        <GenderCriteria
+                          value={x.isMale}
+                          handleGenderChange={handleGenderChange}
+                        />
+                      );
                     if (x.type === 'age') return age();
                     if (x.type === 'kela') return kela(x.isRequired);
                     return null;

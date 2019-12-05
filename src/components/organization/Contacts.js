@@ -12,11 +12,12 @@ import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ contacts, setContacts, changed, setChanged }) => {
+export default ({ changed, setChanged }) => {
   const globalClasses = styles();
 
   const [open, setOpen] = React.useState(null);
   const [editable, setEditable] = React.useState(false);
+  const [contacts, setContacts] = React.useState([]);
 
   React.useEffect(() => {
     const storedContacts = JSON.parse(localStorage.getItem('contacts') || '[]');

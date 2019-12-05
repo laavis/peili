@@ -1,5 +1,6 @@
 import React from 'react';
-import { Typography, Button, Box } from '@material-ui/core';
+import { Typography, Button, Box, IconButton } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 
 import Service from './Service';
 
@@ -10,10 +11,12 @@ import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ editable, services, setServices, changed, setChanged }) => {
+export default ({ changed, setChanged }) => {
   const globalClasses = styles();
 
   const [open, setOpen] = React.useState(null);
+  const [editable, setEditable] = React.useState(false);
+  const [services, setServices] = React.useState([]);
 
   React.useEffect(() => {
     const storedServices = JSON.parse(localStorage.getItem('services') || '[]');
@@ -37,6 +40,7 @@ export default ({ editable, services, setServices, changed, setChanged }) => {
     setServices([
       ...services,
       {
+        name: '',
         description: '',
         openService: true,
         requirements: []
@@ -52,14 +56,34 @@ export default ({ editable, services, setServices, changed, setChanged }) => {
     setServices(newServices);
   };
 
+  const handleEditClick = () => {
+    setEditable(true);
+  };
+
+  const handleSaveClick = () => {
+    localStorage.setItem('services', JSON.stringify(services));
+    setOpen(false);
+    setEditable(false);
+  };
+
   return (
     <Box className={globalClasses.section}>
-      <Typography className={globalClasses.sectionTitle}>
-        {l('servicesHeader')}
-        <span
-          className={changed ? globalClasses.unsavedChangesIcon : ''}
-        ></span>
-      </Typography>
+      <Box className={globalClasses.sectionTitleContainer}>
+        <Typography className={globalClasses.sectionTitle}>
+          {l('servicesHeader')}
+          <span
+            className={changed ? globalClasses.unsavedChangesIcon : ''}
+          ></span>
+        </Typography>
+        <IconButton
+          onClick={handleEditClick}
+          className={globalClasses.editSectionButton}
+          aria-label="language"
+          color="primary"
+        >
+          <EditIcon />
+        </IconButton>
+      </Box>
       {services.map((service, index) => (
         <Service
           {...service}
@@ -71,13 +95,22 @@ export default ({ editable, services, setServices, changed, setChanged }) => {
           handleRemove={handleRemove(index)}
         />
       ))}
-      <Button
-        className={editable ? globalClasses.buttonAdd : globalClasses.hide}
-        color="primary"
-        onClick={handleAdd}
+      <Box
+        className={
+          editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
+        }
       >
-        {l('addServiceButtonText')}
-      </Button>
+        <Button
+          className={editable ? globalClasses.buttonAdd : globalClasses.hide}
+          color="primary"
+          onClick={handleAdd}
+        >
+          {l('addServiceButtonText')}
+        </Button>
+        <Button onClick={handleSaveClick} color="primary" variant="contained">
+          {l('save')}
+        </Button>
+      </Box>
     </Box>
   );
 };

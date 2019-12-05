@@ -3,7 +3,6 @@ import {
   Box,
   ExpansionPanel,
   ExpansionPanelDetails,
-  ExpansionPanelSummary,
   FormControl,
   Grid,
   IconButton,
@@ -14,6 +13,8 @@ import {
   Typography
 } from '@material-ui/core';
 import TextField from '../CachedInput';
+
+import { StyledExpansionPanelSummary } from './StyledExpansionPanelSummary';
 
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -102,7 +103,7 @@ export default ({
 
   const summary = () => {
     return (
-      <ExpansionPanelSummary
+      <StyledExpansionPanelSummary
         className={globalClasses.expansionPanelPaddingReset}
         expandIcon={icon}
         aria-controls="panel1bh-content"
@@ -116,7 +117,7 @@ export default ({
             {address}
           </Typography>
         </Box>
-      </ExpansionPanelSummary>
+      </StyledExpansionPanelSummary>
     );
   };
 

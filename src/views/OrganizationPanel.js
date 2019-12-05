@@ -3,8 +3,6 @@ import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
 import React from 'react';
 import Locale from '../components/Locale';
 import { Keywords } from '../components/organization';
@@ -14,6 +12,7 @@ import Locations from '../components/organization/Locations';
 import Translation from '../components/organization/organizationLocale';
 import Services from '../components/organization/Services';
 import DefaultImage from '../img/Image.png';
+import TargetGroups from '../components/organization/TargetGroups';
 
 const l = Locale(Translation);
 
@@ -77,23 +76,17 @@ export const OrganizationPanel = () => {
   const classes = useStyles();
 
   const [locations, setLocations] = React.useState([]);
-  const [contacts, setContacts] = React.useState([]);
-  const [services, setServices] = React.useState([]);
+
   // const [targetGroups, setTargetGroups] = React.useState([]);
   const [feeds, setFeeds] = React.useState([]);
 
   const [changed, setChanged] = React.useState(false);
 
   // Enables editing
-  const handleEditClick = () => {
-    localStorage.setItem('services', JSON.stringify(services));
-  };
+  const handleEditClick = () => {};
 
   // Save
   const handleSaveClick = () => {
-    localStorage.setItem('locations', JSON.stringify(locations));
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-    localStorage.setItem('services', JSON.stringify(services));
     // localStorage.setItem('targetGroups', JSON.stringify(targetGroups));
     localStorage.setItem('feeds', JSON.stringify(feeds));
     setChanged(false);
@@ -137,21 +130,12 @@ export const OrganizationPanel = () => {
           {/* Left Column */}
           <Grid item xs={12} md={6}>
             <Locations locations={locations} setLocations={setLocations} />
-            <Contacts
-              contacts={contacts}
-              changed={changed}
-              setContacts={setContacts}
-              setChanged={setChanged}
-            />
-            <Services
-              services={services}
-              setServices={setServices}
-              changed={changed}
-              setChanged={setChanged}
-            />
+            <Contacts changed={changed} setChanged={setChanged} />
+            <Services changed={changed} setChanged={setChanged} />
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
+            <TargetGroups />
             <Feeds2
               feeds={feeds}
               setFeeds={setFeeds}

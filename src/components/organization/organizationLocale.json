@@ -91,6 +91,10 @@
     "en": "Criteria",
     "fi": "Kriteeri"
   },
+  "criterias": {
+    "en": "Criterias",
+    "fi": "Kriteerit"
+  },
   "inputDescription": {
     "en": "Description",
     "fi": "Kuvaus"
@@ -204,5 +208,25 @@
   "save": {
     "en": "Save",
     "fi": "Tallenna"
+  },
+  "male": {
+    "en": "Male",
+    "fi": "Mies"
+  },
+  "female": {
+    "en": "Female",
+    "fi": "Nainen"
+  },
+  "forMen": {
+    "en": "For Men Only",
+    "fi": "Vain miehille"
+  },
+  "forWomen": {
+    "en": "For Women Only",
+    "fi": "Vain naisille"
+  },
+  "forKelaRehabs": {
+    "en": "For KELA-rehabilitees only",
+    "fi": "Vain KELA-kuntoutujille"
   }
 }
