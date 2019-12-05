@@ -143,7 +143,7 @@ const openDialog = (questionId = null, score) =>
     setOpenState(true);
   });
 
-const QuestionScoreDialog = ({ survey, index, question }) => {
+const QuestionScoreDialog = ({ survey }) => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -190,7 +190,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
       input.length <= 1
     );
 
-    if (value) {
+    if (value || value === 0) {
       const inputCombiner = createOperator(action);
       const inputValue =
         value === 'if'
@@ -232,7 +232,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
       input.length <= 1
     );
 
-    if (value) {
+    if (value || value === 0) {
       const inputComparator = createComparator(action);
       const inputValue =
         value === 'if'
@@ -268,7 +268,7 @@ const QuestionScoreDialog = ({ survey, index, question }) => {
       input.length <= 1
     );
 
-    if (value) {
+    if (value || value === 0) {
       let insertValue = [value];
       if (value === 'if') {
         insertValue = createConditional();

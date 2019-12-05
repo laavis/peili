@@ -23,11 +23,12 @@ const App = () => (
   <ThemeProvider theme={theme}>
     <Router>
       <div style={{ backgroundColor: '#EEE' }}>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
+        <Header />
 
         <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
           <Route path="/test">
             <div>This is a test page.</div>
           </Route>

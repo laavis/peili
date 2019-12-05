@@ -60,7 +60,7 @@ const openDialog = () =>
     setOpenState(true);
   });
 
-const QuestionScoreCreateDialog = ({ survey, index, question }) => {
+const QuestionScoreCreateDialog = () => {
   // const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
