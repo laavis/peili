@@ -1,3 +1,8 @@
+/**
+ * @file File for graphql type definitions
+ * @author Benard Gathimba <benard.gathimba@metropolia.fi>
+ */
+
 const { gql } = require('apollo-server');
 
 module.exports = gql`

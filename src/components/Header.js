@@ -15,9 +15,10 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
+import { AuthContext } from '../context/auth';
 import { openDialog } from './ConfirmationDialog';
 
 import Translation from './headerLocale.json';
@@ -53,6 +54,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Header = () => {
+  const { user, logout } = useContext(AuthContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -108,7 +110,7 @@ export const Header = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>{l`profileTitle`}</MenuItem>
-      <MenuItem onClick={handleMenuClose}>{l`signOutTitle`}</MenuItem>
+      <MenuItem onClick={logout}>{l`signOutTitle`}</MenuItem>
     </Menu>
   );
 

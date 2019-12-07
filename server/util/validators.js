@@ -1,3 +1,8 @@
+/**
+ * @file File that validates user inputs for registration
+ * @author Benard Gathimba <benard.gathimba@metropolia.fi>
+ */
+
 module.exports.validateRegisterInput = (
   type,
   username,
@@ -6,8 +11,8 @@ module.exports.validateRegisterInput = (
   confirmPassword
 ) => {
   const errors = {};
-  if(type === ''){
-    errors.type = 'Please choose a user group'
+  if (type === '') {
+    errors.type = 'Please choose a user group';
   }
   if (username.trim() === '') {
     errors.username = 'Username must not be empty';

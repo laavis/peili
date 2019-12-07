@@ -1,3 +1,8 @@
+/**
+ * @file exports the user resolvers for queries and mutations
+ * @author Benard Gathimba <benard.gathimba@metropolia.fi>
+ */
+
 const usersResolvers = require('./users');
 
 module.exports = {

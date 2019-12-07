@@ -1,34 +1,27 @@
-import React, { useState } from 'react';
+/**
+ * @file The Login view page
+ * @author Benard Gathimba <benard.gathimba@metropolia.fi>
+ */
+
+import React, { useContext, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import TextField from '../components/CachedInput';
 import Button from '@material-ui/core/Button';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
+import TextField from '../components/CachedInput';
 import Locale from '../components/Locale';
 import Translation from '../components/question/questionLocale.json';
+import { AuthContext } from '../context/auth';
 
 const l = Locale(Translation);
-
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
-  },
-  input: {
-    width: '100%'
-  },
-  button: {
-    width: '100%',
-    marginTop: theme.spacing(2)
   },
   section: {
     marginBottom: 15,
@@ -39,46 +32,44 @@ const useStyles = makeStyles(theme => ({
   },
   sectionPaper: {
     padding: '0 16px 16px 16px'
+  },
+  input: {
+    width: '100%'
+  },
+  button: {
+    width: '100%',
+    marginTop: theme.spacing(2)
   }
 }));
 
-function Register(props) {
+function Login(props) {
   const classes = useStyles();
-  let inputs = {
-    type: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  };
+  const context = useContext(AuthContext);
 
+  let inputs = {
+    username: '',
+    password: ''
+  };
   const [values, setValues] = useState({ ...inputs });
   const [errors, setErrors] = useState({});
 
   const onChange = input => value => {
     switch (input) {
-      case 'U':
-        return setValues({ ...values, type: 'U' });
-      case 'S':
-        return setValues({ ...values, type: 'S' });
-      case 'O':
-        return setValues({ ...values, type: 'O' });
       case 'username':
         return setValues({ ...values, username: value });
-      case 'email':
-        return setValues({ ...values, email: value });
       case 'password':
         return setValues({ ...values, password: value });
-      case 'confirmPassword':
-        return setValues({ ...values, confirmPassword: value });
       default:
         return values;
     }
   };
 
-  const [addUser] = useMutation(REGISTER_USER, {
+  const [loginUser] = useMutation(LOGIN_USER, {
     update(proxy, result) {
-      const category = result.data.register.type;
+      // Parse the result to the app context
+      context.login(result.data.login);
+      // redirect user to home page based on user's type
+      const category = result.data.login.type;
       switch (category) {
         case 'S':
           return props.history.push('/specialist');
@@ -96,7 +87,7 @@ function Register(props) {
 
   const onSubmit = event => {
     event.preventDefault();
-    addUser();
+    loginUser();
   };
 
   return (
@@ -105,7 +96,7 @@ function Register(props) {
         <Grid item>
           <Box className={classes.section}>
             <Typography variant="h6" className={classes.sectionTitle}>
-              Registration
+              Login
             </Typography>
             <Paper className={classes.sectionPaper}>
               <form
@@ -114,33 +105,6 @@ function Register(props) {
                 noValidate
                 autoComplete="off"
               >
-                <br />
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">Select User Group</FormLabel>
-                  <RadioGroup aria-label="position" name="type">
-                    <FormControlLabel
-                      value="U"
-                      control={<Radio color="primary" />}
-                      label="User Registration"
-                      labelPlacement="end"
-                      onChange={onChange('U')}
-                    />
-                    <FormControlLabel
-                      value="S"
-                      control={<Radio color="primary" />}
-                      label="Specialist Registration"
-                      labelPlacement="end"
-                      onChange={onChange('S')}
-                    />
-                    <FormControlLabel
-                      value="O"
-                      control={<Radio color="primary" />}
-                      label="Organization Registration"
-                      labelPlacement="end"
-                      onChange={onChange('O')}
-                    />
-                  </RadioGroup>
-                </FormControl>
                 <TextField
                   className={classes.input}
                   label="Username"
@@ -153,16 +117,6 @@ function Register(props) {
                 />
                 <TextField
                   className={classes.input}
-                  label="Email"
-                  margin="normal"
-                  variant="outlined"
-                  type="email"
-                  error={errors.email ? true : false}
-                  value={values.email}
-                  onChange={onChange('email')}
-                />
-                <TextField
-                  className={classes.input}
                   label="Password"
                   margin="normal"
                   variant="outlined"
@@ -171,16 +125,6 @@ function Register(props) {
                   value={values.password}
                   onChange={onChange('password')}
                 />
-                <TextField
-                  className={classes.input}
-                  label="Confirm Password"
-                  margin="normal"
-                  variant="outlined"
-                  type="password"
-                  error={errors.confirmPassword ? true : false}
-                  value={values.confirmPassword}
-                  onChange={onChange('confirmPassword')}
-                />
                 <Button
                   variant="contained"
                   color="primary"
@@ -188,7 +132,7 @@ function Register(props) {
                   size="large"
                   type="submit"
                 >
-                  Submit
+                  Login
                 </Button>
               </form>
               {Object.keys(errors).length > 0 && (
@@ -208,23 +152,9 @@ function Register(props) {
   );
 }
 
-const REGISTER_USER = gql`
-  mutation register(
-    $type: String!
-    $username: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
-  ) {
-    register(
-      registerInput: {
-        type: $type
-        username: $username
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
-      }
-    ) {
+const LOGIN_USER = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
       type
       username
       email
@@ -233,5 +163,4 @@ const REGISTER_USER = gql`
     }
   }
 `;
-
-export default Register;
+export default Login;

@@ -1,19 +1,30 @@
+/**
+ * @file File used to register and login users
+ * @author Benard Gathimba <benard.gathimba@metropolia.fi>
+ */
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError } = require('apollo-server');
 
-
-const { validateRegisterInput, validateLoginInput } = require('../../util/validators');
+const {
+  validateRegisterInput,
+  validateLoginInput
+} = require('../../util/validators');
 const { SECRET_KEY } = require('../../../config');
 const User = require('../../models/User');
 
-function generateToken(user){
-  return jwt.sign({
-    id: user.id,
-    type: user.type,
-    username: user.username,
-    email: user.email
-  }, SECRET_KEY, { expiresIn: '1h' });
+function generateToken(user) {
+  return jwt.sign(
+    {
+      id: user.id,
+      type: user.type,
+      username: user.username,
+      email: user.email
+    },
+    SECRET_KEY,
+    { expiresIn: '1h' }
+  );
 }
 
 module.exports = {
@@ -48,31 +59,29 @@ module.exports = {
     },
     async register(
       _,
-      {
-      registerInput: { type, username, email, password, confirmPassword },
-      },
+      { registerInput: { type, username, email, password, confirmPassword } },
       context,
       info
     ) {
       // Validate user's data
       const { valid, errors } = validateRegisterInput(
-        type, 
-        username, 
-        email, 
-        password, 
+        type,
+        username,
+        email,
+        password,
         confirmPassword
       );
-      if(!valid){
+      if (!valid) {
         throw new UserInputError('Errors', { errors });
       }
-      // TODO: Check if user exists in our db
-      const user = await User.findOne({ username })
-      if(user){
+      // Check if user exists in our db
+      const user = await User.findOne({ username });
+      if (user) {
         throw new UserInputError('Username is taken', {
           errors: {
             username: 'This username is taken'
           }
-        })
+        });
       }
 
       // hash password and create auth token
@@ -90,11 +99,11 @@ module.exports = {
 
       const token = generateToken(res);
 
-      return{
+      return {
         ...res._doc,
         id: res._id,
         token
-      }
+      };
     }
   }
 };
