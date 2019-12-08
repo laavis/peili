@@ -11,6 +11,7 @@ import {
   Typography
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
@@ -45,12 +46,16 @@ export default ({
   type,
   username,
   identifiers,
+  open,
   editable,
+  handleOpen,
   handleEdit,
   handleRemove
 }) => {
   const globalClasses = styles();
   const classes = useStyles();
+
+  const icon = editable ? <ExpandMoreIcon /> : null;
 
   const setIcon = () => {
     switch (type) {
@@ -63,6 +68,11 @@ export default ({
       default:
         return;
     }
+  };
+
+  const handleExpandedChange = (event, isExpanded) => {
+    if (!editable) return;
+    handleOpen(isExpanded);
   };
 
   const handleUsernameChange = username => {
@@ -132,9 +142,6 @@ export default ({
                     )
                   }}
                 />
-                <IconButton aria-label="language" color="primary">
-                  <AddIcon />
-                </IconButton>
               </Box>
             </Grid>
             <Grid item xs={12}>

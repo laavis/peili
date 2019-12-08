@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
@@ -10,6 +11,9 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import React from 'react';
+import EditIcon from '@material-ui/icons/Edit';
+
+import EmptySection from './EmptySection';
 import Locale from '../Locale';
 import Feed from './Feed';
 import Translation from './organizationLocale';
@@ -17,7 +21,7 @@ import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ editable, feeds, setFeeds, changed, setChanged }) => {
+export default ({ changed, setChanged }) => {
   const globalClasses = styles();
 
   const enabledFeeds = {
@@ -26,10 +30,18 @@ export default ({ editable, feeds, setFeeds, changed, setChanged }) => {
     twitter: <TwitterIcon fontSize="small" />
   };
 
+  const [open, setOpen] = React.useState(null);
+  const [editable, setEditable] = React.useState(false);
+  const [feeds, setFeeds] = React.useState([]);
+
   React.useEffect(() => {
     const storedFeeds = JSON.parse(localStorage.getItem('feeds') || '[]');
     setFeeds(storedFeeds);
   }, [setFeeds]);
+
+  const handleOpen = index => isOpen => {
+    setOpen(isOpen ? index : null);
+  };
 
   const handleEdit = index => data => {
     setChanged(true);
@@ -39,6 +51,7 @@ export default ({ editable, feeds, setFeeds, changed, setChanged }) => {
   };
 
   const handleAdd = type => {
+    let lastIndex = feeds.length;
     setFeeds([
       ...feeds,
       {
@@ -47,12 +60,26 @@ export default ({ editable, feeds, setFeeds, changed, setChanged }) => {
         identifiers: []
       }
     ]);
+
+    setOpen(lastIndex);
   };
 
   const handleRemove = index => () => {
     let newFeeds = [...feeds];
     newFeeds.splice(index, 1);
     setFeeds(newFeeds);
+  };
+
+  let hasData = feeds.length;
+
+  const handleEditClick = () => {
+    setEditable(true);
+  };
+
+  const handleSaveClick = () => {
+    localStorage.setItem('feeds', JSON.stringify(feeds));
+    setOpen(false);
+    setEditable(false);
   };
 
   // New feed creation
@@ -85,43 +112,66 @@ export default ({ editable, feeds, setFeeds, changed, setChanged }) => {
 
   return (
     <Box className={globalClasses.section}>
-      <Typography className={globalClasses.sectionTitle}>
-        {l('feedsHeader')}
-        <span
-          className={changed ? globalClasses.unsavedChangesIcon : ''}
-        ></span>
-      </Typography>
+      <Box className={globalClasses.sectionTitleContainer}>
+        <Typography className={globalClasses.sectionTitle}>
+          {l('feedsHeader')}
+          <span
+            className={changed ? globalClasses.unsavedChangesIcon : ''}
+          ></span>
+        </Typography>
+        <IconButton
+          onClick={handleEditClick}
+          className={globalClasses.editSectionButton}
+          aria-label="language"
+          color="primary"
+        >
+          <EditIcon />
+        </IconButton>
+      </Box>
+
+      {!hasData ? <EmptySection /> : null}
       {feeds.map((feed, index) => (
         <Feed
           {...feed}
-          type={feeds[index].type}
           key={index}
           editable={editable}
+          type={feeds[index].type}
+          open={open === index}
+          handleOpen={handleOpen(index)}
           handleEdit={handleEdit(index)}
           handleRemove={handleRemove(index)}
         />
       ))}
-      <Button
-        className={editable ? globalClasses.buttonAdd : globalClasses.hide}
-        color="primary"
-        onClick={handleOpenFeedSelectMenu}
+      <Box
+        className={
+          editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
+        }
       >
-        {l('addFeedButtonText')}
-      </Button>
-      <Menu
-        id="add-feed-type-menu"
-        anchorEl={feedSelectMenuAnchorEl}
-        keepMounted
-        open={Boolean(feedSelectMenuAnchorEl)}
-        onClose={handleCloseFeedSelectMenu}
-      >
-        {Object.keys(enabledFeeds).map(x => (
-          <MenuItem onClick={handleCloseFeedSelectMenu(x)} key={x}>
-            <ListItemIcon>{enabledFeeds[x]}</ListItemIcon>
-            <Typography>{l`feedType`[x]}</Typography>
-          </MenuItem>
-        ))}
-      </Menu>
+        <Button
+          className={editable ? globalClasses.buttonAdd : globalClasses.hide}
+          color="primary"
+          onClick={handleOpenFeedSelectMenu}
+        >
+          {l('addFeedButtonText')}
+        </Button>
+        <Menu
+          id="add-feed-type-menu"
+          anchorEl={feedSelectMenuAnchorEl}
+          keepMounted
+          open={Boolean(feedSelectMenuAnchorEl)}
+          onClose={handleCloseFeedSelectMenu}
+        >
+          {Object.keys(enabledFeeds).map(x => (
+            <MenuItem onClick={handleCloseFeedSelectMenu(x)} key={x}>
+              <ListItemIcon>{enabledFeeds[x]}</ListItemIcon>
+              <Typography>{l`feedType`[x]}</Typography>
+            </MenuItem>
+          ))}
+        </Menu>
+        <Button onClick={handleSaveClick} color="primary" variant="contained">
+          {l('save')}
+        </Button>
+      </Box>
     </Box>
   );
 };
