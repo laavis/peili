@@ -1,3 +1,8 @@
+/**
+ * @file Functionality of single social media feed. Editing username and adding hashtags
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import {
   Box,
   Card,

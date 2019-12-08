@@ -1,11 +1,9 @@
 import Card from '@material-ui/core/Card';
-import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import Locale from '../components/Locale';
-import { Keywords } from '../components/organization';
 import Contacts from '../components/organization/Contacts';
 import Feeds2 from '../components/organization/Feeds2';
 import Locations from '../components/organization/Locations';
@@ -13,6 +11,7 @@ import Translation from '../components/organization/organizationLocale';
 import Services from '../components/organization/Services';
 import DefaultImage from '../img/Image.png';
 import TargetGroups from '../components/organization/TargetGroups';
+import Targets from '../components/organization/Targets';
 
 const l = Locale(Translation);
 
@@ -78,19 +77,8 @@ export const OrganizationPanel = () => {
   const [locations, setLocations] = React.useState([]);
 
   // const [targetGroups, setTargetGroups] = React.useState([]);
-  const [feeds, setFeeds] = React.useState([]);
 
   const [changed, setChanged] = React.useState(false);
-
-  // Enables editing
-  const handleEditClick = () => {};
-
-  // Save
-  const handleSaveClick = () => {
-    // localStorage.setItem('targetGroups', JSON.stringify(targetGroups));
-    localStorage.setItem('feeds', JSON.stringify(feeds));
-    setChanged(false);
-  };
 
   return (
     <div className={classes.root}>
@@ -135,13 +123,9 @@ export const OrganizationPanel = () => {
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
+            <Targets />
             <TargetGroups />
-            <Feeds2
-              feeds={feeds}
-              setFeeds={setFeeds}
-              changed={changed}
-              setChanged={setChanged}
-            />
+            <Feeds2 />
             <div className={classes.sectionWrapper}>
               <Typography className={classes.sectionTitle}>
                 {l('keywordHeader')}

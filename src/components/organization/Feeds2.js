@@ -1,11 +1,18 @@
+/**
+ * @file Social media feeds save/edit/remove functionality. Three available social medias.
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import {
   Box,
   Button,
+  IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
   Typography
 } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import TwitterIcon from '@material-ui/icons/Twitter';
@@ -17,8 +24,11 @@ import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ editable, feeds, setFeeds, changed, setChanged }) => {
+export default ({ changed, setChanged }) => {
   const globalClasses = styles();
+
+  const [feeds, setFeeds] = React.useState([]);
+  const [editable, setEditable] = React.useState(false);
 
   const enabledFeeds = {
     instagram: <InstagramIcon fontSize="small" />,
@@ -83,14 +93,33 @@ export default ({ editable, feeds, setFeeds, changed, setChanged }) => {
     }
   };
 
+  const handleEditClick = () => {
+    setEditable(true);
+  };
+
+  const handleSaveClick = () => {
+    localStorage.setItem('feeds', JSON.stringify(feeds));
+    setEditable(false);
+  };
+
   return (
     <Box className={globalClasses.section}>
-      <Typography className={globalClasses.sectionTitle}>
-        {l('feedsHeader')}
-        <span
-          className={changed ? globalClasses.unsavedChangesIcon : ''}
-        ></span>
-      </Typography>
+      <Box className={globalClasses.sectionTitleContainer}>
+        <Typography className={globalClasses.sectionTitle}>
+          {l('feedsHeader')}
+          <span
+            className={changed ? globalClasses.unsavedChangesIcon : ''}
+          ></span>
+        </Typography>
+        <IconButton
+          onClick={handleEditClick}
+          className={globalClasses.editSectionButton}
+          aria-label="language"
+          color="primary"
+        >
+          <EditIcon />
+        </IconButton>
+      </Box>
       {feeds.map((feed, index) => (
         <Feed
           {...feed}
@@ -101,13 +130,22 @@ export default ({ editable, feeds, setFeeds, changed, setChanged }) => {
           handleRemove={handleRemove(index)}
         />
       ))}
-      <Button
-        className={editable ? globalClasses.buttonAdd : globalClasses.hide}
-        color="primary"
-        onClick={handleOpenFeedSelectMenu}
+      <Box
+        className={
+          editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
+        }
       >
-        {l('addFeedButtonText')}
-      </Button>
+        <Button
+          className={editable ? globalClasses.buttonAdd : globalClasses.hide}
+          color="primary"
+          onClick={handleOpenFeedSelectMenu}
+        >
+          {l('addFeedButtonText')}
+        </Button>
+        <Button onClick={handleSaveClick} color="primary" variant="contained">
+          {l('save')}
+        </Button>
+      </Box>
       <Menu
         id="add-feed-type-menu"
         anchorEl={feedSelectMenuAnchorEl}

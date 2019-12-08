@@ -4,7 +4,6 @@ import {
   Checkbox,
   ExpansionPanel,
   ExpansionPanelDetails,
-  ExpansionPanelSummary,
   FormControl,
   FormControlLabel,
   Grid,
@@ -33,6 +32,7 @@ import { StyledExpansionPanelSummary } from './StyledExpansionPanelSummary';
 import globalStyles from './styles';
 
 import GenderCriteria from './GenderCriteria';
+import AgeCriteria from './AgeCriteria';
 
 const l = Locale(Translation);
 
@@ -61,6 +61,7 @@ export default ({
 
   const [openState, setOpenState] = React.useState(false);
   const [criteriaMenuAnchorEl, setCriteriaMenuAnchorEl] = React.useState(null);
+  const [ageValue, setAgeValue] = React.useState([18, 30]);
 
   const icon = editable ? <ExpandMoreIcon /> : null;
 
@@ -106,8 +107,6 @@ export default ({
 
     handleEdit({ requirements: requirementsCache });
   };
-
-  const [ageValue, setAgeValue] = React.useState([18, 30]);
 
   const setAgeValues = (min, max) => {
     const requirementsCache = requirements;
@@ -249,7 +248,7 @@ export default ({
               {requirements.map(x => {
                 if (x.type === 'gender')
                   return (
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                       <FormControlLabel
                         checked={true}
                         label={x.isMale ? l('forMen') : l('forWomen')}
@@ -267,11 +266,12 @@ export default ({
                       />
                     </Grid>
                   );
-
                 if (x.type === 'age')
                   return (
                     <Grid item xs={6}>
-                      <Typography></Typography>
+                      <Typography>
+                        {'Age Limit: ' + x.min + ' - ' + x.max}
+                      </Typography>
                     </Grid>
                   );
               })}
@@ -343,7 +343,13 @@ export default ({
                           handleGenderChange={handleGenderChange}
                         />
                       );
-                    if (x.type === 'age') return age();
+                    if (x.type === 'age')
+                      return (
+                        <AgeCriteria
+                          value={x.ageValue}
+                          handleAgeChange={handleAgeChange}
+                        />
+                      );
                     if (x.type === 'kela') return kela(x.isRequired);
                     return null;
                   })}
