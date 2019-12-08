@@ -10,8 +10,6 @@ import {
   Tooltip,
   Typography
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
@@ -22,12 +20,12 @@ import CustomTextField from '../CachedInput';
 import { openDialog } from '../ConfirmationDialog';
 import Locale from '../Locale';
 import Translation from './organizationLocale';
-import styles from './styles';
+import globalStyles from './styles';
 
 const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
-  identfierAddWrapper: {
+  identifierAddWrapper: {
     display: 'flex',
     alignItems: 'center'
   },
@@ -46,16 +44,12 @@ export default ({
   type,
   username,
   identifiers,
-  open,
   editable,
-  handleOpen,
   handleEdit,
   handleRemove
 }) => {
-  const globalClasses = styles();
   const classes = useStyles();
-
-  const icon = editable ? <ExpandMoreIcon /> : null;
+  const globalClasses = globalStyles();
 
   const setIcon = () => {
     switch (type) {
@@ -70,11 +64,6 @@ export default ({
     }
   };
 
-  const handleExpandedChange = (event, isExpanded) => {
-    if (!editable) return;
-    handleOpen(isExpanded);
-  };
-
   const handleUsernameChange = username => {
     handleEdit({ username });
   };
@@ -84,6 +73,7 @@ export default ({
       const identifiersCache = identifiers;
       identifiersCache.push(event.target.value);
       handleEdit({ identifiers });
+      event.target.value = '';
     }
   };
 

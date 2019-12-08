@@ -7,7 +7,7 @@ import React from 'react';
 import Locale from '../components/Locale';
 import { Keywords } from '../components/organization';
 import Contacts from '../components/organization/Contacts';
-import Feeds2 from '../components/organization/Feeds2';
+import Feeds from '../components/organization/Feeds';
 import Locations from '../components/organization/Locations';
 import Translation from '../components/organization/organizationLocale';
 import Services from '../components/organization/Services';
@@ -77,9 +77,6 @@ export const OrganizationPanel = () => {
 
   const [locations, setLocations] = React.useState([]);
 
-  // const [targetGroups, setTargetGroups] = React.useState([]);
-  // const [feeds, setFeeds] = React.useState([]);
-
   const [changed, setChanged] = React.useState(false);
 
   // Enables editing
@@ -129,7 +126,7 @@ export const OrganizationPanel = () => {
           {/* Right Column */}
           <Grid item xs={12} md={6}>
             <TargetGroups />
-            <Feeds2 changed={changed} setChanged={setChanged} />
+            <Feeds changed={changed} setChanged={setChanged} />
             <div className={classes.sectionWrapper}>
               <Typography className={classes.sectionTitle}>
                 {l('keywordHeader')}
