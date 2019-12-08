@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import Locale from '../components/Locale';
 import Contacts from '../components/organization/Contacts';
-import Feeds2 from '../components/organization/Feeds2';
+import Feeds2 from '../components/organization/Feeds';
 import Locations from '../components/organization/Locations';
 import Translation from '../components/organization/organizationLocale';
 import Services from '../components/organization/Services';
