@@ -16,6 +16,7 @@ const styles = makeStyles(theme => ({
     fontSize: '1.125rem', // 18px
     fontWeight: 600,
     marginLeft: '1rem',
+    position: 'relative',
     marginBottom: '0 !important'
   },
   expansionPanelContainer: {

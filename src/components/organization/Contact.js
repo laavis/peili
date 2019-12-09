@@ -17,9 +17,8 @@ import TextField from '../CachedInput';
 import { openDialog } from '../ConfirmationDialog';
 import Locale from '../Locale';
 import Translation from './organizationLocale';
-import globalStyles from './styles';
-
 import { StyledExpansionPanelSummary } from './StyledExpansionPanelSummary';
+import globalStyles from './styles';
 
 const l = Locale(Translation);
 
@@ -105,6 +104,7 @@ export default ({
           <Typography className={globalClasses.textEmphasis}>
             {phone}
           </Typography>
+          <Typography>{description}</Typography>
           <Typography className={classes.textInternalMsg}>
             {internalMsg}
           </Typography>

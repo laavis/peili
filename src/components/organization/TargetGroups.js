@@ -5,9 +5,11 @@ import {
   Box,
   Menu,
   MenuItem,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import HelpIcon from '@material-ui/icons/HelpOutline';
 
 import Locale from '../Locale';
 import Translation from './organizationLocale';
@@ -15,6 +17,7 @@ import Translation from './organizationLocale';
 import styles from './styles';
 import TargetGroup from './TargetGroup';
 import EmptySection from './EmptySection';
+import GenderCriteria from './GenderCriteria';
 
 const l = Locale(Translation);
 
@@ -25,6 +28,11 @@ export default () => {
   const [editable, setEditable] = React.useState(false);
   const [changed, setChanged] = React.useState(false);
   const [targetGroups, setTargetGroups] = React.useState([]);
+
+  const [
+    targetGroupTypeMenuAnchorEl,
+    setTargetGroupTypeMenuAnchorEl
+  ] = React.useState(null);
 
   React.useEffect(() => {
     const storedTargetGroups = JSON.parse(
@@ -69,11 +77,6 @@ export default () => {
     gender: 'gender'
   };
 
-  const [
-    targetGroupTypeMenuAnchorEl,
-    setTargetGroupTypeMenuAnchorEl
-  ] = React.useState(null);
-
   const handleOpenTargetGroupTypeMenu = event => {
     setTargetGroupTypeMenuAnchorEl(event.currentTarget);
   };
@@ -90,7 +93,7 @@ export default () => {
         break;
       }
       default:
-        return;
+        break;
     }
   };
 
@@ -111,6 +114,14 @@ export default () => {
       <Box className={globalClasses.sectionTitleContainer}>
         <Typography className={globalClasses.sectionTitle}>
           {l('targetGroupSectionHeader')}
+          <span>
+            <Tooltip
+              title={l('targetGroupsHelpText')}
+              className={globalClasses.infoTooltip}
+            >
+              <HelpIcon color="primary" className={globalClasses.helpIcon} />
+            </Tooltip>
+          </span>
           <span
             className={changed ? globalClasses.unsavedChangesIcon : ''}
           ></span>
@@ -124,7 +135,7 @@ export default () => {
           <EditIcon />
         </IconButton>
       </Box>
-      {!hasTargetGroups ? EmptySection() : null}
+      {!hasTargetGroups ? <EmptySection /> : null}
       {targetGroups.map((targetGroup, index) => (
         <TargetGroup
           {...targetGroup}
@@ -154,10 +165,10 @@ export default () => {
           anchorEl={targetGroupTypeMenuAnchorEl}
           keepMounted
           open={Boolean(targetGroupTypeMenuAnchorEl)}
-          onClose={handleCloseTargetGroupTypeMenu}
+          onClose={handleCloseTargetGroupTypeMenu()}
         >
           {Object.keys(enabledTypes).map(x => (
-            <MenuItem onClick={handleCloseTargetGroupTypeMenu(x)}>
+            <MenuItem onClick={handleCloseTargetGroupTypeMenu(x)} key={x}>
               <Typography>{l`targetGroupType`[x]}</Typography>
             </MenuItem>
           ))}

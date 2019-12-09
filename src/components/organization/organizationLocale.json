@@ -53,11 +53,11 @@
   },
   "feedsHeader": {
     "en": "Feeds",
-    "fi": "Feedit"
+    "fi": "Fiidi"
   },
   "addFeedButtonText": {
     "en": "Add Feed",
-    "fi": "Lisää Feedi"
+    "fi": "Lisää Fiidi"
   },
   "feedsHandle": {
     "en": "@username",
@@ -232,5 +232,29 @@
   "forKelaRehabs": {
     "en": "For KELA-rehabilitees only",
     "fi": "Vain KELA-kuntoutujille"
+  },
+  "targetGroupsHelpText": {
+    "en": "",
+    "fi": "Rajaa organisaation kohderyhmien perusteella, esim. Ikä: Vain 18-30 vuotiaat käyttäjät näkevät organisaation"
+  },
+  "targetsHeader": {
+    "en": "Targets",
+    "fi": "Kohdesanat"
+  },
+  "loneliness": {
+    "en": "Loneliness",
+    "fi": "Yksinäisyys"
+  },
+  "exclusion": {
+    "en": "Exclusion",
+    "fi": "Syrjäytyminen"
+  },
+  "socialIssues": {
+    "en": "Social Issues",
+    "fi": "Sosiaaliset haasteet"
+  },
+  "mentalHealthProblems": {
+    "en": "Mental Health Problems",
+    "fi": "Mielenterveysongelmat"
   }
 }
