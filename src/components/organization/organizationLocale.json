@@ -47,6 +47,10 @@
     "en": "Keyword",
     "fi": "Avainsana"
   },
+  "addKeywordButtonText": {
+    "en": "Add Keyword",
+    "fi": "Lisää Avainsana"
+  },
   "feedsHeader": {
     "en": "Feeds",
     "fi": "Feedit"

@@ -5,20 +5,27 @@
 
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Chip,
   Grid,
   IconButton,
+  InputAdornment,
   TextField,
+  Tooltip,
   Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import React from 'react';
+import { openDialog } from '../ConfirmationDialog';
 import Locale from '../Locale';
+import EmptySection from './EmptySection';
 import Translation from './organizationLocale';
-import styles from './styles';
+import globalStyles from './styles';
 
 const l = Locale(Translation);
 
@@ -56,9 +63,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ editable, changed }) => {
+export default ({ changed, setChanged }) => {
   const classes = useStyles();
-  const globalClasses = styles();
+  const globalClasses = globalStyles();
+  const [editable, setEditable] = React.useState(false);
   const [keywords, setKeywords] = React.useState([]);
 
   React.useEffect(() => {
@@ -80,10 +88,8 @@ export default ({ editable, changed }) => {
     }
   };
 
-  const keyPress = event => {
-    if (event.keyCode === 13) {
-      handleAddKeyword(event);
-    }
+  const handleEditClick = () => {
+    setEditable(true);
   };
 
   // Handle chip deletion
@@ -96,68 +102,78 @@ export default ({ editable, changed }) => {
     setKeywords(newKeywords);
   };
 
-  // Editable
-  /*
-  const [expanded, setExpanded] = React.useState(false);
-  const handleExpandedChange = (event, isExpanded) => {
-    if (!editable) return;
-    setExpanded(isExpanded);
+  const handleSaveClick = () => {
+    localStorage.setItem('keywords', JSON.stringify(keywords));
+    setEditable(false);
   };
-  */
-
-  let hasKeywords = keywords.length;
 
   return (
-    <Box
-      className={
-        !hasKeywords && !editable ? globalClasses.hide : globalClasses.section
-      }
-    >
-      <Typography className={globalClasses.sectionTitle}>
-        {l('targetGroupSectionHeader')}
-        <span
-          className={changed ? globalClasses.unsavedChangesIcon : ''}
-        ></span>
-      </Typography>
-      <Card className={globalClasses.outerContainerPadding}>
-        <CardContent className={globalClasses.expansionPanelPaddingReset}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} className={editable ? '' : globalClasses.hide}>
-              <Box className={classes.addKeywordWrapper}>
-                <TextField
-                  className={classes.textField}
-                  placeholder={l('addKeywordLabelText')}
-                  margin="normal"
-                  variant="outlined"
-                  value={text}
-                  onKeyPress={keyPress}
-                  onChange={handleKeywordChange}
-                />
-                <IconButton
-                  className={globalClasses.smallSpacingLeft}
-                  onClick={handleAddKeyword}
-                  color="primary"
-                >
-                  <AddIcon />
-                </IconButton>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              {keywords.map(word => {
-                return (
-                  <Chip
-                    color="primary"
-                    key={word.index}
-                    label={word}
-                    onDelete={handleDelete(word)}
-                    className={classes.chip}
+    <Box className={globalClasses.section}>
+      <Box className={globalClasses.sectionTitleContainer}>
+        <Typography className={globalClasses.sectionTitle}>
+          {l('keywordHeader')}
+          <span
+            className={changed ? globalClasses.unsavedChangesIcon : ''}
+          ></span>
+        </Typography>
+        <IconButton
+          onClick={handleEditClick}
+          className={globalClasses.editSectionButton}
+          aria-label="language"
+          color="primary"
+        >
+          <EditIcon />
+        </IconButton>
+      </Box>
+      <Box className={globalClasses.expansionPanelContainer}>
+        <Card className={globalClasses.outerContainerPadding}>
+          <CardContent className={globalClasses.expansionPanelPaddingReset}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} className={editable ? '' : globalClasses.hide}>
+                <Box className={classes.addKeywordWrapper}>
+                  <TextField
+                    className={classes.textField}
+                    placeholder={l('addKeywordLabelText')}
+                    margin="normal"
+                    variant="outlined"
+                    value={text}
+                    onChange={handleKeywordChange}
                   />
-                );
-              })}
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                {keywords.map(word => {
+                  return (
+                    <Chip
+                      color="primary"
+                      key={word.index}
+                      label={word}
+                      onDelete={handleDelete(word)}
+                      className={classes.chip}
+                    />
+                  );
+                })}
+              </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </Box>
+      <Box
+        className={
+          editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
+        }
+      >
+        <Button
+          className={editable ? globalClasses.buttonAdd : globalClasses.hide}
+          color="primary"
+          onClick={handleAddKeyword}
+        >
+          {l('addKeywordButtonText')}
+        </Button>
+        <Button onClick={handleSaveClick} color="primary" variant="contained">
+          {l('save')}
+        </Button>
+      </Box>
     </Box>
   );
 };

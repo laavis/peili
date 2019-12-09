@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import Locale from '../components/Locale';
-import { Keywords } from '../components/organization';
+import Keywords from '../components/organization/Keywords';
 import Contacts from '../components/organization/Contacts';
 import Feeds from '../components/organization/Feeds';
 import Locations from '../components/organization/Locations';
@@ -127,11 +127,7 @@ export const OrganizationPanel = () => {
           <Grid item xs={12} md={6}>
             <TargetGroups />
             <Feeds changed={changed} setChanged={setChanged} />
-            <div className={classes.sectionWrapper}>
-              <Typography className={classes.sectionTitle}>
-                {l('keywordHeader')}
-              </Typography>
-            </div>
+            <Keywords changed={changed} setChanged={setChanged} />
           </Grid>
         </Grid>
       </div>
