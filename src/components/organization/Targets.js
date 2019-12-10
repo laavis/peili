@@ -44,7 +44,7 @@ export default () => {
 
   const [editable, setEditable] = React.useState(false);
   const [targets, setTargets] = React.useState([]);
-  const [chipData, setChipData] = React.useState([
+  const [chipData /*setChipData*/] = React.useState([
     { key: 0, label: l('loneliness') },
     { key: 1, label: l('exclusion') },
     { key: 2, label: l('socialIssues') },

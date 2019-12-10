@@ -20,10 +20,11 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { AuthContext } from '../context/auth';
-import Locale from '../components/Locale';
-import Translation from '../components/question/questionLocale.json';
+// import Locale from '../components/Locale';
+// import Translation from '../components/question/questionLocale.json';
 
-const l = Locale(Translation);
+// const l = Locale(Translation);
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1

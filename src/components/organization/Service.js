@@ -63,7 +63,7 @@ export default ({
 
   const [openState, setOpenState] = React.useState(false);
   const [criteriaMenuAnchorEl, setCriteriaMenuAnchorEl] = React.useState(null);
-  const [ageValue, setAgeValue] = React.useState([18, 30]);
+  // const [ageValue, setAgeValue] = React.useState([18, 30]);
 
   const handleCheckedChange = event => {
     setOpenState({ openState: event.target.checked });
@@ -120,7 +120,7 @@ export default ({
   };
 
   const handleAgeChange = (event, newValue) => {
-    setAgeValue(newValue);
+    // setAgeValue(newValue);
     setAgeValues(newValue[0], newValue[1]);
   };
 
@@ -232,6 +232,8 @@ export default ({
                       </Typography>
                     </Grid>
                   );
+
+                return null;
               })}
             </Grid>
           </Box>
