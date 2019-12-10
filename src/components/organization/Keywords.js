@@ -11,19 +11,13 @@ import {
   Chip,
   Grid,
   IconButton,
-  InputAdornment,
   TextField,
-  Tooltip,
   Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import React from 'react';
-import { openDialog } from '../ConfirmationDialog';
 import Locale from '../Locale';
-import EmptySection from './EmptySection';
 import Translation from './organizationLocale';
 import globalStyles from './styles';
 
@@ -63,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ changed, setChanged }) => {
+export default ({ changed }) => {
   const classes = useStyles();
   const globalClasses = globalStyles();
   const [editable, setEditable] = React.useState(false);
@@ -76,15 +70,15 @@ export default ({ changed, setChanged }) => {
     setKeywords(storedKeywords);
   }, [setKeywords]);
 
-  // Handle creating a keyword and adding it
-  const [text, setText] = React.useState('');
-  const handleKeywordChange = e => setText(e.target.value);
-  const handleAddKeyword = e => {
-    if (text === '') {
-      console.log('A keyword is required');
-    } else {
-      setKeywords([...keywords, text]);
-      setText('');
+  const keyPress = event => {
+    if (event.keyCode === 13) {
+      if (event.target.value !== '') {
+        let tag = event.target.value;
+        setKeywords([...keywords, tag]);
+        event.target.value = '';
+      } else {
+        console.log('A keyword is required');
+      }
     }
   };
 
@@ -136,8 +130,7 @@ export default ({ changed, setChanged }) => {
                     placeholder={l('addKeywordLabelText')}
                     margin="normal"
                     variant="outlined"
-                    value={text}
-                    onChange={handleKeywordChange}
+                    onKeyDown={keyPress}
                   />
                 </Box>
               </Grid>
@@ -163,13 +156,6 @@ export default ({ changed, setChanged }) => {
           editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
         }
       >
-        <Button
-          className={editable ? globalClasses.buttonAdd : globalClasses.hide}
-          color="primary"
-          onClick={handleAddKeyword}
-        >
-          {l('addKeywordButtonText')}
-        </Button>
         <Button onClick={handleSaveClick} color="primary" variant="contained">
           {l('save')}
         </Button>

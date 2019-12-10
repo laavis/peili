@@ -20,7 +20,7 @@ export default () => {
   return (
     <Card className={classes.container}>
       <Typography>{l('emptySectionTitle')}</Typography>
-      <Typography>perkele</Typography>
+      <Typography>{l('emptySectionText')}</Typography>
     </Card>
   );
 };

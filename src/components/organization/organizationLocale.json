@@ -41,7 +41,7 @@
   },
   "keywordHeader": {
     "en": "Keywords",
-    "fi": ""
+    "fi": "Avainsana"
   },
   "addKeywordLabelText": {
     "en": "Keyword",
@@ -150,6 +150,10 @@
   "emptySectionTitle": {
     "en": "Nothing to see here",
     "fi": "Ei mittään nähtävää"
+  },
+  "emptySectionText": {
+    "en": "Please edit first",
+    "fi": "Muokkaa ensin"
   },
   "targetGroupType": {
     "en": {

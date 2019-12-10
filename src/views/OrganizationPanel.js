@@ -118,14 +118,14 @@ export const OrganizationPanel = () => {
         <Grid className={classes.grid} container spacing={4}>
           {/* Left Column */}
           <Grid item xs={12} md={6}>
+            <Services changed={changed} setChanged={setChanged} />
             <Locations locations={locations} setLocations={setLocations} />
             <Contacts changed={changed} setChanged={setChanged} />
-            <Services changed={changed} setChanged={setChanged} />
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
-            <Targets />
             <TargetGroups />
+            <Targets />
             <Feeds changed={changed} setChanged={setChanged} />
             <Keywords changed={changed} setChanged={setChanged} />
           </Grid>
