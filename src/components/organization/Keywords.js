@@ -1,8 +1,8 @@
-// Card for adding custom keywords, kinda like hashtags
-
-// Component for target groups eg. criteria: Age from 18 to 30
-// One criteria per component
-
+/**
+ * @file Composition and functionality of adding custom keywords
+ * @author Benard Gathimba <benard.gathimba@metropolia.fi>
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
 import {
   Box,
   Button,
@@ -12,6 +12,7 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  FormControl,
   TextField,
   Tooltip,
   Typography
@@ -38,8 +39,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row'
   },
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120
+    marginBottom: '0px'
   },
   selectEmpty: {
     marginTop: theme.spacing(2)
@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   textField: {
-    marginTop: 0
+    margin: 0
   }
 }));
 
@@ -70,21 +70,24 @@ export default ({ changed, setChanged }) => {
   const [keywords, setKeywords] = React.useState([]);
 
   React.useEffect(() => {
-    // get keywords (or empty array if there are no keywords) from local storage
     const storedKeywords = JSON.parse(localStorage.getItem('keywords') || '[]');
-    // display retrieved keywords on the screen
     setKeywords(storedKeywords);
   }, [setKeywords]);
 
-  // Handle creating a keyword and adding it
   const [text, setText] = React.useState('');
+
   const handleKeywordChange = e => setText(e.target.value);
+
   const handleAddKeyword = e => {
-    if (text === '') {
-      console.log('A keyword is required');
-    } else {
+    if (text) {
       setKeywords([...keywords, text]);
       setText('');
+    }
+  };
+
+  const keyPress = event => {
+    if (event.keyCode === 13) {
+      handleAddKeyword();
     }
   };
 
@@ -92,7 +95,6 @@ export default ({ changed, setChanged }) => {
     setEditable(true);
   };
 
-  // Handle chip deletion
   const handleDelete = chipToDelete => () => {
     let newKeywords = [...keywords];
     const chipIndex = newKeywords.findIndex(
@@ -105,6 +107,25 @@ export default ({ changed, setChanged }) => {
   const handleSaveClick = () => {
     localStorage.setItem('keywords', JSON.stringify(keywords));
     setEditable(false);
+  };
+
+  const summary = () => {
+    return (
+      <Box className={globalClasses.expansionPanelPaddingReset}>
+        <Typography className={globalClasses.textCapitalizedSmall}>
+          {keywords.map(word => {
+            return (
+              <Chip
+                color="primary"
+                key={word.index}
+                label={word}
+                className={classes.chip}
+              />
+            );
+          })}
+        </Typography>
+      </Box>
+    );
   };
 
   return (
@@ -128,17 +149,37 @@ export default ({ changed, setChanged }) => {
       <Box className={globalClasses.expansionPanelContainer}>
         <Card className={globalClasses.outerContainerPadding}>
           <CardContent className={globalClasses.expansionPanelPaddingReset}>
+            {!editable ? summary() : null}
             <Grid container spacing={2}>
               <Grid item xs={12} className={editable ? '' : globalClasses.hide}>
                 <Box className={classes.addKeywordWrapper}>
-                  <TextField
-                    className={classes.textField}
-                    placeholder={l('addKeywordLabelText')}
-                    margin="normal"
-                    variant="outlined"
-                    value={text}
-                    onChange={handleKeywordChange}
-                  />
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      className={classes.textField}
+                      placeholder={l('addKeywordLabelText')}
+                      margin="normal"
+                      variant="outlined"
+                      value={text}
+                      onKeyDown={keyPress}
+                      onChange={handleKeywordChange}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">#</InputAdornment>
+                        )
+                      }}
+                    />
+                  </FormControl>
+                  <Button
+                    className={
+                      editable
+                        ? globalClasses.iconButtonAdd
+                        : globalClasses.hide
+                    }
+                    color="primary"
+                    onClick={handleAddKeyword}
+                  >
+                    <AddIcon />
+                  </Button>
                 </Box>
               </Grid>
               <Grid item xs={12}>
@@ -163,13 +204,6 @@ export default ({ changed, setChanged }) => {
           editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
         }
       >
-        <Button
-          className={editable ? globalClasses.buttonAdd : globalClasses.hide}
-          color="primary"
-          onClick={handleAddKeyword}
-        >
-          {l('addKeywordButtonText')}
-        </Button>
         <Button onClick={handleSaveClick} color="primary" variant="contained">
           {l('save')}
         </Button>

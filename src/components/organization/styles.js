@@ -106,6 +106,16 @@ const styles = makeStyles(theme => ({
   sectionButtonsContainer: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  iconButtonAdd: {
+    minWidth: '36px',
+    width: '36px',
+    height: '36px',
+    alignSelf: 'center',
+    marginLeft: '0.5rem',
+    borderRadius: '100%',
+    background: '#5A5C9C',
+    color: 'white'
   }
 }));
 
