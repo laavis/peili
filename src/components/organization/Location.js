@@ -1,3 +1,8 @@
+/**
+ * @file Composition and functionality of single location
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import React from 'react';
 import {
   Box,

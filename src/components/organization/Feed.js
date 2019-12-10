@@ -5,6 +5,7 @@
 
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Chip,
@@ -16,6 +17,7 @@ import {
   Typography
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import TwitterIcon from '@material-ui/icons/Twitter';
@@ -48,13 +50,15 @@ const useStyles = makeStyles(theme => ({
 export default ({
   type,
   username,
-  identifiers,
+  hashtags,
   editable,
   handleEdit,
   handleRemove
 }) => {
   const classes = useStyles();
   const globalClasses = globalStyles();
+
+  const [hashtag, setHashtag] = React.useState('');
 
   const setIcon = () => {
     switch (type) {
@@ -73,18 +77,27 @@ export default ({
     handleEdit({ username });
   };
 
+  const handleHashtagChange = e => setHashtag(e.target.value);
+
+  const handleAddHashtag = e => {
+    if (hashtag) {
+      hashtags.push(hashtag);
+      setHashtag('');
+    }
+  };
+
   const keyPress = event => {
     if (event.keyCode === 13) {
-      const identifiersCache = identifiers;
-      identifiersCache.push(event.target.value);
-      handleEdit({ identifiers });
+      const hashtagsCache = hashtags;
+      hashtagsCache.push(event.target.value);
+      handleEdit({ hashtags });
       event.target.value = '';
     }
   };
 
   const handleIdentifierRemove = index => () => {
-    identifiers.splice(index, 1);
-    handleEdit({ identifiers });
+    hashtags.splice(index, 1);
+    handleEdit({ hashtags });
   };
 
   const handleConfirmationDialog = async () => {
@@ -130,6 +143,8 @@ export default ({
               <Box>
                 <TextField
                   variant="outlined"
+                  value={hashtag}
+                  onChange={handleHashtagChange}
                   onKeyDown={keyPress}
                   InputProps={{
                     startAdornment: (
@@ -137,10 +152,19 @@ export default ({
                     )
                   }}
                 />
+                <Button
+                  className={
+                    editable ? globalClasses.iconButtonAdd : globalClasses.hide
+                  }
+                  color="primary"
+                  onClick={handleAddHashtag}
+                >
+                  <AddIcon />
+                </Button>
               </Box>
             </Grid>
             <Grid item xs={12}>
-              {identifiers.map((identifier, index) => {
+              {hashtags.map((identifier, index) => {
                 return (
                   <Chip
                     className={classes.chip}
@@ -162,7 +186,7 @@ export default ({
               <Typography>{'@' + username}</Typography>
             </Grid>
             <Grid item xs={12} className={classes.chipContainer}>
-              {identifiers.map((identifier, index) => {
+              {hashtags.map((identifier, index) => {
                 return (
                   <Chip
                     className={classes.chip}

@@ -1,3 +1,8 @@
+/**
+ * @file Gender criteria component
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import React from 'react';
 import {
   Typography,

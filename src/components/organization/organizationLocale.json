@@ -149,7 +149,11 @@
   },
   "emptySectionTitle": {
     "en": "Nothing to see here",
-    "fi": "Ei mittään nähtävää"
+    "fi": "Ei vielä sisältöä"
+  },
+  "emptySectionText": {
+    "en": "Click the edit icon to add content",
+    "fi": "Klikkaa muokkaa nappia lisätäksesi sisältöä"
   },
   "targetGroupType": {
     "en": {

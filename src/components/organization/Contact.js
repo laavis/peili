@@ -1,3 +1,8 @@
+/**
+ * @file Functionality of single contact. Handle edit, add & remove
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import {
   Box,
   ExpansionPanel,

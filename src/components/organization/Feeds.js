@@ -21,7 +21,7 @@ import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ changed, setChanged }) => {
+export default () => {
   const globalClasses = styles();
 
   const enabledFeeds = {
@@ -39,7 +39,6 @@ export default ({ changed, setChanged }) => {
   }, [setFeeds]);
 
   const handleEdit = index => data => {
-    setChanged(true);
     let newFeeds = [...feeds];
     newFeeds[index] = { ...newFeeds[index], ...data };
     setFeeds(newFeeds);
@@ -51,7 +50,7 @@ export default ({ changed, setChanged }) => {
       {
         type: type,
         username: '',
-        identifiers: []
+        hashtags: []
       }
     ]);
   };
@@ -106,9 +105,6 @@ export default ({ changed, setChanged }) => {
       <Box className={globalClasses.sectionTitleContainer}>
         <Typography className={globalClasses.sectionTitle}>
           {l('feedsHeader')}
-          <span
-            className={changed ? globalClasses.unsavedChangesIcon : ''}
-          ></span>
         </Typography>
         <IconButton
           onClick={handleEditClick}

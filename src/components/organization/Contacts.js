@@ -1,3 +1,8 @@
+/**
+ * @file Functionality of single contact. Editing address, country, region & postal code
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import React from 'react';
 import { Typography, Button, Box, IconButton } from '@material-ui/core';
 
@@ -12,7 +17,7 @@ import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ changed, setChanged }) => {
+export default () => {
   const globalClasses = styles();
 
   const [open, setOpen] = React.useState(null);
@@ -29,7 +34,6 @@ export default ({ changed, setChanged }) => {
   };
 
   const handleEdit = index => data => {
-    setChanged(true);
     let newContacts = [...contacts];
     newContacts[index] = { ...newContacts[index], ...data };
     setContacts(newContacts);
@@ -75,9 +79,6 @@ export default ({ changed, setChanged }) => {
       <Box className={globalClasses.sectionTitleContainer}>
         <Typography className={globalClasses.sectionTitle}>
           {l('contactsHeader')}
-          <span
-            className={changed ? globalClasses.unsavedChangesIcon : ''}
-          ></span>
         </Typography>
         <IconButton
           onClick={handleEditClick}

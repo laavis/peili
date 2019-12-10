@@ -1,3 +1,8 @@
+/**
+ * @file Composition and functionality of single service
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import {
   Box,
   Button,
@@ -11,8 +16,6 @@ import {
   Menu,
   MenuItem,
   Radio,
-  RadioGroup,
-  Slider,
   Switch,
   Tooltip,
   Typography,
@@ -20,7 +23,6 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React from 'react';
 import TextField from '../CachedInput';
 import { openDialog } from '../ConfirmationDialog';
@@ -62,8 +64,6 @@ export default ({
   const [openState, setOpenState] = React.useState(false);
   const [criteriaMenuAnchorEl, setCriteriaMenuAnchorEl] = React.useState(null);
   const [ageValue, setAgeValue] = React.useState([18, 30]);
-
-  const icon = editable ? <ExpandMoreIcon /> : null;
 
   const handleCheckedChange = event => {
     setOpenState({ openState: event.target.checked });
@@ -137,48 +137,6 @@ export default ({
     handleEdit({ requirements: requirementsCache });
   };
 
-  const gender = value => {
-    return (
-      <Box>
-        <Typography className={globalClasses.textCapitalizedSmall}>
-          {l('gender')}
-        </Typography>
-        <FormControl>
-          <RadioGroup
-            value={value ? 'male' : 'female'}
-            onChange={handleGenderChange}
-          >
-            <FormControlLabel
-              value="female"
-              label="female"
-              control={<Radio color="primary" />}
-            />
-            <FormControlLabel
-              value="male"
-              label="male"
-              control={<Radio color="primary" />}
-            />
-          </RadioGroup>
-        </FormControl>
-      </Box>
-    );
-  };
-
-  const age = () => {
-    return (
-      <Box>
-        <Typography className={globalClasses.textCapitalizedSmall}>
-          {l('age')}
-        </Typography>
-        <Slider
-          value={ageValue}
-          onChange={handleAgeChange}
-          valueLabelDisplay="auto"
-        />
-      </Box>
-    );
-  };
-
   const kela = value => {
     return (
       <Box>
@@ -248,7 +206,7 @@ export default ({
               {requirements.map(x => {
                 if (x.type === 'gender')
                   return (
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                       <FormControlLabel
                         checked={true}
                         label={x.isMale ? l('forMen') : l('forWomen')}
@@ -258,7 +216,7 @@ export default ({
                   );
                 if (x.type === 'kela')
                   return (
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                       <FormControlLabel
                         checked={true}
                         label={l('forKelaRehabs')}
@@ -268,9 +226,9 @@ export default ({
                   );
                 if (x.type === 'age')
                   return (
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                       <Typography>
-                        {'Age Limit: ' + x.min + ' - ' + x.max}
+                        {'Ikäraja: ' + x.min + ' - ' + x.max}
                       </Typography>
                     </Grid>
                   );

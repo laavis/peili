@@ -1,20 +1,21 @@
+/**
+ * @file Structure of the organization panel
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ * @author Benard Gathimba <benard.gathimba@metropolia.fi>
+ */
+
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import Locale from '../components/Locale';
 import Keywords from '../components/organization/Keywords';
 import Contacts from '../components/organization/Contacts';
 import Feeds from '../components/organization/Feeds';
 import Locations from '../components/organization/Locations';
-import Translation from '../components/organization/organizationLocale';
 import Services from '../components/organization/Services';
 import DefaultImage from '../img/Image.png';
-import TargetGroups from '../components/organization/TargetGroups';
 import Targets from '../components/organization/Targets';
-
-const l = Locale(Translation);
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -75,12 +76,6 @@ const useStyles = makeStyles(theme => ({
 export const OrganizationPanel = () => {
   const classes = useStyles();
 
-  const [locations, setLocations] = React.useState([]);
-
-  // const [targetGroups, setTargetGroups] = React.useState([]);
-
-  const [changed, setChanged] = React.useState(false);
-
   return (
     <div className={classes.root}>
       <div className={classes.topSection}>
@@ -110,7 +105,7 @@ export const OrganizationPanel = () => {
             </Grid>
           </Grid>
           <Grid item xs={6}>
-            Other stuff
+            Pidempi kuvaus
           </Grid>
         </Grid>
       </div>
@@ -118,16 +113,15 @@ export const OrganizationPanel = () => {
         <Grid className={classes.grid} container spacing={4}>
           {/* Left Column */}
           <Grid item xs={12} md={6}>
-            <Locations locations={locations} setLocations={setLocations} />
-            <Contacts changed={changed} setChanged={setChanged} />
-            <Services changed={changed} setChanged={setChanged} />
+            <Services />
+            <Locations />
+            <Contacts />
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} md={6}>
             <Targets />
-            <TargetGroups />
-            <Feeds changed={changed} setChanged={setChanged} />
-            <Keywords changed={changed} setChanged={setChanged} />
+            <Keywords />
+            <Feeds />
           </Grid>
         </Grid>
       </div>

@@ -33,10 +33,6 @@ const useStyles = makeStyles(theme => ({
   chip: {
     marginRight: '0.25rem'
   },
-  saveBtnContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  },
   targetBox: {
     marginBottom: '1rem'
   }
@@ -80,8 +76,6 @@ export default () => {
     localStorage.setItem('targets', JSON.stringify(targets));
     setEditable(false);
   };
-
-  console.log(targets);
 
   return (
     <Box className={globalClasses.section}>
@@ -141,7 +135,11 @@ export default () => {
           </CardContent>
         </Card>
       </Box>
-      <Box className={editable ? classes.saveBtnContainer : globalClasses.hide}>
+      <Box
+        className={
+          editable ? globalClasses.saveBtnContainer : globalClasses.hide
+        }
+      >
         <Button onClick={handleSaveClick} color="primary" variant="contained">
           {l('save')}
         </Button>

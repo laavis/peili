@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Button, Box, IconButton } from '@material-ui/core';
+import EmptySection from './EmptySection';
 import EditIcon from '@material-ui/icons/Edit';
 
 import Service from './Service';
@@ -11,7 +12,7 @@ import styles from './styles';
 
 const l = Locale(Translation);
 
-export default ({ changed, setChanged }) => {
+export default () => {
   const globalClasses = styles();
 
   const [open, setOpen] = React.useState(null);
@@ -28,7 +29,6 @@ export default ({ changed, setChanged }) => {
   };
 
   const handleEdit = index => data => {
-    setChanged(true);
     let newServices = [...services];
     newServices[index] = { ...newServices[index], ...data };
     setServices(newServices);
@@ -66,14 +66,13 @@ export default ({ changed, setChanged }) => {
     setEditable(false);
   };
 
+  let hasData = services.length;
+
   return (
     <Box className={globalClasses.section}>
       <Box className={globalClasses.sectionTitleContainer}>
         <Typography className={globalClasses.sectionTitle}>
           {l('servicesHeader')}
-          <span
-            className={changed ? globalClasses.unsavedChangesIcon : ''}
-          ></span>
         </Typography>
         <IconButton
           onClick={handleEditClick}
@@ -84,6 +83,7 @@ export default ({ changed, setChanged }) => {
           <EditIcon />
         </IconButton>
       </Box>
+      {!hasData ? <EmptySection /> : null}
       {services.map((service, index) => (
         <Service
           {...service}

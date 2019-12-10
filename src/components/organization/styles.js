@@ -1,3 +1,8 @@
+/**
+ * @file Global styles
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import { makeStyles } from '@material-ui/styles';
 
 const styles = makeStyles(theme => ({
@@ -116,6 +121,10 @@ const styles = makeStyles(theme => ({
     borderRadius: '100%',
     background: '#5A5C9C',
     color: 'white'
+  },
+  saveBtnContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end'
   }
 }));
 

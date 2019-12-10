@@ -14,17 +14,13 @@ import {
   InputAdornment,
   FormControl,
   TextField,
-  Tooltip,
   Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
 import React from 'react';
-import { openDialog } from '../ConfirmationDialog';
 import Locale from '../Locale';
-import EmptySection from './EmptySection';
 import Translation from './organizationLocale';
 import globalStyles from './styles';
 
@@ -60,10 +56,13 @@ const useStyles = makeStyles(theme => ({
   },
   textField: {
     margin: 0
+  },
+  headerBox: {
+    marginBottom: '1rem'
   }
 }));
 
-export default ({ changed, setChanged }) => {
+export default ({ changed }) => {
   const classes = useStyles();
   const globalClasses = globalStyles();
   const [editable, setEditable] = React.useState(false);
@@ -112,18 +111,20 @@ export default ({ changed, setChanged }) => {
   const summary = () => {
     return (
       <Box className={globalClasses.expansionPanelPaddingReset}>
-        <Typography className={globalClasses.textCapitalizedSmall}>
-          {keywords.map(word => {
-            return (
-              <Chip
-                color="primary"
-                key={word.index}
-                label={word}
-                className={classes.chip}
-              />
-            );
-          })}
-        </Typography>
+        <Box className={!editable ? classes.headerBox : null}>
+          <Typography className={globalClasses.textCapitalizedSmall}>
+            {keywords.map(word => {
+              return (
+                <Chip
+                  color="primary"
+                  key={word.index}
+                  label={word}
+                  className={classes.chip}
+                />
+              );
+            })}
+          </Typography>
+        </Box>
       </Box>
     );
   };
@@ -182,7 +183,11 @@ export default ({ changed, setChanged }) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                className={!editable ? globalClasses.hide : ''}
+                item
+                xs={12}
+              >
                 {keywords.map(word => {
                   return (
                     <Chip
@@ -201,7 +206,7 @@ export default ({ changed, setChanged }) => {
       </Box>
       <Box
         className={
-          editable ? globalClasses.sectionButtonsContainer : globalClasses.hide
+          editable ? globalClasses.saveBtnContainer : globalClasses.hide
         }
       >
         <Button onClick={handleSaveClick} color="primary" variant="contained">

@@ -1,3 +1,8 @@
+/**
+ * @file Age criteria component
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import React from 'react';
 import { Box, Slider, Typography } from '@material-ui/core';
 

@@ -1,3 +1,8 @@
+/**
+ * @file Create, edit & remove logic for locations
+ * @author Sara Suviranta <sara.suviranta@metropolia.fi>
+ */
+
 import { Box, Button, IconButton, Typography } from '@material-ui/core';
 import React from 'react';
 import Locale from '../Locale';
@@ -8,9 +13,10 @@ import EditIcon from '@material-ui/icons/Edit';
 
 const l = Locale(Translation);
 
-export default ({ locations, setLocations }) => {
+export default () => {
   const globalClasses = styles();
 
+  const [locations, setLocations] = React.useState([]);
   const [open, setOpen] = React.useState(null);
   const [editable, setEditable] = React.useState(false);
 
